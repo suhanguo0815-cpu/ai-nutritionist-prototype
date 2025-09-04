@@ -63,17 +63,23 @@
             --shadow-lg: 0 8px 32px rgba(0,0,0,0.08);
             --shadow-xl: 0 12px 48px rgba(0,0,0,0.12);
             
-            /* 字体系统 - 基于16px的倍数 */
-            --text-xs: 0.75rem;    /* 12px */
-            --text-sm: 0.875rem;   /* 14px */
-            --text-base: 1rem;     /* 16px */
-            --text-lg: 1.125rem;   /* 18px */
-            --text-xl: 1.25rem;    /* 20px */
-            --text-2xl: 1.5rem;    /* 24px */
-            --text-3xl: 1.875rem;  /* 30px */
-            --text-4xl: 2.25rem;   /* 36px */
-            --text-5xl: 3rem;      /* 48px */
-            --text-6xl: 3.75rem;   /* 60px */
+            /* 字体系统 - 基于16px的倍数，优化可读性和响应式 */
+            --text-xs: 0.8rem;     /* 12.8px - 提升小字体可读性 */
+            --text-sm: 0.95rem;    /* 15.2px - 提升小字体可读性 */
+            --text-base: 1.1rem;   /* 17.6px - 提升基础字体大小 */
+            --text-lg: 1.25rem;    /* 20px - 提升大字体 */
+            --text-xl: 1.4rem;     /* 22.4px - 提升标题字体 */
+            --text-2xl: 1.75rem;   /* 28px - 提升二级标题 */
+            --text-3xl: 2.25rem;   /* 36px - 提升三级标题 */
+            --text-4xl: 2.75rem;   /* 44px - 提升四级标题 */
+            --text-5xl: 3.5rem;    /* 56px - 提升主标题 */
+            --text-6xl: 4.25rem;   /* 68px - 提升超大标题 */
+            
+            /* 响应式字体大小 */
+            --text-hero-title: clamp(2.5rem, 5vw, 4rem);
+            --text-hero-subtitle: clamp(1.1rem, 2vw, 1.25rem);
+            --text-section-title: clamp(1.75rem, 3vw, 2.75rem);
+            --text-section-description: clamp(1rem, 1.5vw, 1.25rem);
             
             /* 行高系统 */
             --leading-tight: 1.25;
@@ -105,6 +111,12 @@
             --space-16: 4rem;     /* 64px */
             --space-20: 5rem;     /* 80px */
             --space-24: 6rem;     /* 96px */
+            
+            /* 新增：section间距系统 */
+            --section-spacing-desktop: 7.5rem;  /* 120px */
+            --section-spacing-mobile: 5rem;     /* 80px */
+            --content-spacing: 3.75rem;         /* 60px */
+            --element-spacing: 2rem;            /* 32px */
             
             /* 过渡时间 */
             --transition-fast: 0.15s;
@@ -204,7 +216,7 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            font-size: 24px;
+            font-size: var(--text-2xl);
             font-weight: 700;
             color: var(--secondary-color);
             text-decoration: none;
@@ -219,7 +231,7 @@
             align-items: center;
             justify-content: center;
             color: var(--secondary-color);
-            font-size: 20px;
+            font-size: var(--text-xl);
         }
 
         .nav-menu {
@@ -324,7 +336,7 @@
         }
 
         .hero-title {
-            font-size: var(--text-5xl);
+            font-size: var(--text-hero-title);
             font-weight: var(--font-bold);
             line-height: var(--leading-tight);
             margin-bottom: var(--space-6);
@@ -333,7 +345,7 @@
         }
 
         .hero-subtitle {
-            font-size: var(--text-xl);
+            font-size: var(--text-hero-subtitle);
             color: var(--text-gray);
             margin-bottom: var(--space-12);
             line-height: var(--leading-relaxed);
@@ -433,6 +445,7 @@
             align-items: center;
         }
 
+
         .phone-mockup {
             width: 320px;
             height: 640px;
@@ -482,7 +495,7 @@
 
         /* 产品特色区域 */
         .features-section {
-            padding: 100px 0;
+            padding: var(--section-spacing-desktop) 0;
             background: white;
         }
 
@@ -491,10 +504,35 @@
             margin: 0 auto;
             padding: 0 24px;
         }
+        
+        /* 优化内容区域最大宽度 */
+        .container--narrow {
+            max-width: 800px;
+        }
+        
+        /* 改进触摸交互 */
+        .btn, .nav-item, .faq-question {
+            min-height: 44px;
+            min-width: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* 优化过渡动画 */
+        .section, .feature-card, .btn {
+            transition: all var(--transition-normal) ease;
+        }
+        
+        /* 优化焦点样式 */
+        .btn:focus-visible, .nav-item:focus-visible {
+            outline: 2px solid var(--primary-color);
+            outline-offset: 2px;
+        }
 
         .section-header {
             text-align: center;
-            margin-bottom: 80px;
+            margin-bottom: var(--content-spacing);
         }
 
         .section-badge {
@@ -510,7 +548,7 @@
         }
 
         .section-title {
-            font-size: var(--text-4xl);
+            font-size: var(--text-section-title);
             font-weight: var(--font-bold);
             margin-bottom: var(--space-4);
             color: var(--secondary-color);
@@ -518,7 +556,7 @@
         }
 
         .section-description {
-            font-size: var(--text-lg);
+            font-size: var(--text-section-description);
             color: var(--text-gray);
             max-width: 600px;
             margin: 0 auto;
@@ -526,18 +564,18 @@
         }
 
         .features-demo-container {
-            margin-top: 80px;
+            margin-top: var(--content-spacing);
         }
 
         .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 32px;
+            gap: var(--element-spacing);
         }
 
         /* 内嵌演示区域样式 */
         .embedded-demo-section {
-            margin-top: 60px;
+            margin-top: var(--content-spacing);
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(124, 179, 66, 0.2);
             border-radius: var(--radius-2xl);
@@ -729,7 +767,7 @@
             display: flex;
             align-items: center;
             gap: var(--space-3);
-            font-size: 1.35rem;
+            font-size: var(--text-xl);
             font-weight: 700;
             color: #1e293b;
             margin-bottom: var(--space-4);
@@ -799,7 +837,7 @@
 
         .feature-content strong {
             color: #1e293b;
-            font-size: 1.1rem;
+            font-size: var(--text-lg);
             font-weight: 700;
             display: block;
             margin-bottom: var(--space-2);
@@ -808,7 +846,7 @@
 
         .feature-content p {
             color: #64748b;
-            font-size: 0.95rem;
+            font-size: var(--text-base);
             line-height: 1.5;
             margin: 0;
             font-weight: 500;
@@ -834,7 +872,7 @@
         }
 
         .demo-title-section h3 {
-            font-size: 1.75rem;
+            font-size: var(--text-2xl);
             font-weight: 700;
             color: #1e293b;
             margin-bottom: var(--space-2);
@@ -843,7 +881,7 @@
 
         .demo-title-section p {
             color: #64748b;
-            font-size: 1rem;
+            font-size: var(--text-base);
             margin: 0;
             font-weight: 500;
         }
@@ -919,7 +957,7 @@
             border: none;
             background: transparent;
             border-radius: var(--radius-md);
-            font-size: 0.9rem;
+            font-size: var(--text-sm);
             font-weight: 500;
             color: #64748b;
             cursor: pointer;
@@ -962,7 +1000,7 @@
         }
 
         .platform-btn i {
-            font-size: 1rem;
+            font-size: var(--text-base);
         }
 
         .demo-platform {
@@ -996,7 +1034,7 @@
         }
 
         .platform-info h4 {
-            font-size: 1.1rem;
+            font-size: var(--text-lg);
             font-weight: 700;
             color: #1e293b;
             margin: 0 0 4px 0;
@@ -1004,7 +1042,7 @@
         }
 
         .platform-info p {
-            font-size: 0.9rem;
+            font-size: var(--text-sm);
             color: #64748b;
             margin: 0;
             font-weight: 500;
@@ -1190,12 +1228,29 @@
             }
             
             .hero-title {
-                font-size: var(--text-4xl);
+                font-size: var(--text-hero-title);
+            }
+            
+            .hero-subtitle {
+                font-size: var(--text-hero-subtitle);
+            }
+            
+            .section-title {
+                font-size: var(--text-section-title);
+            }
+            
+            .section-description {
+                font-size: var(--text-section-description);
             }
             
             .hero-buttons {
                 flex-direction: column;
                 align-items: center;
+            }
+            
+            .hero-buttons .btn {
+                font-size: var(--text-base);
+                padding: var(--space-3) var(--space-6);
             }
             
             .hero-stats {
@@ -1211,6 +1266,14 @@
         @media (max-width: 1024px) {
             .hero-container {
                 gap: var(--space-16);
+            }
+            
+            .hero-title {
+                font-size: var(--text-hero-title);
+            }
+            
+            .section-title {
+                font-size: var(--text-section-title);
             }
             
             .interactive-features-container {
@@ -1298,7 +1361,12 @@
             }
             
             .hero-section {
-                padding: var(--space-16) 0 var(--space-12);
+                padding: var(--section-spacing-mobile) 0;
+            }
+            
+            .phone-mockup {
+                width: 280px;
+                height: 560px;
             }
             
             .interactive-features-container {
@@ -1392,14 +1460,14 @@
         }
 
         .demo-content h2 {
-            font-size: 36px;
+            font-size: var(--text-4xl);
             font-weight: 700;
             margin-bottom: 24px;
             color: var(--secondary-color);
         }
 
         .demo-content p {
-            font-size: 18px;
+            font-size: var(--text-lg);
             color: var(--text-gray);
             margin-bottom: 32px;
             line-height: 1.6;
@@ -1415,7 +1483,7 @@
             align-items: center;
             gap: 12px;
             margin-bottom: 16px;
-            font-size: 16px;
+            font-size: var(--text-base);
             color: var(--secondary-color);
         }
 
@@ -1428,7 +1496,7 @@
             align-items: center;
             justify-content: center;
             color: var(--secondary-color);
-            font-size: 12px;
+            font-size: var(--text-xs);
         }
 
         .demo-visual {
@@ -1508,7 +1576,7 @@
             color: var(--secondary-color);
             padding: 6px 20px;
             border-radius: 20px;
-            font-size: 14px;
+            font-size: var(--text-sm);
             font-weight: 600;
         }
 
@@ -1566,7 +1634,7 @@
 
         .capability-icon i {
             color: white;
-            font-size: 28px;
+            font-size: var(--text-3xl);
         }
 
         .capability-title {
@@ -1606,18 +1674,18 @@
 
         .capability-list .check i {
             color: var(--secondary-color);
-            font-size: 12px;
+            font-size: var(--text-xs);
         }
 
         .plan-name {
-            font-size: 24px;
+            font-size: var(--text-2xl);
             font-weight: 700;
             margin-bottom: 16px;
             color: var(--secondary-color);
         }
 
         .plan-price {
-            font-size: 48px;
+            font-size: var(--text-5xl);
             font-weight: 800;
             color: var(--primary-dark);
             margin-bottom: 8px;
@@ -1644,7 +1712,7 @@
 
         .plan-features .check {
             color: var(--primary-dark);
-            font-size: 16px;
+            font-size: var(--text-base);
         }
 
         /* 常见问题区域 */
@@ -1680,7 +1748,7 @@
         }
 
         .faq-question h3 {
-            font-size: 16px;
+            font-size: var(--text-base);
             font-weight: 600;
             color: var(--secondary-color);
             line-height: 1.4;
@@ -1688,7 +1756,7 @@
 
         .faq-icon {
             transition: transform 0.3s ease;
-            font-size: 14px;
+            font-size: var(--text-sm);
         }
 
         .faq-item.active .faq-icon {
@@ -1710,7 +1778,7 @@
         .faq-answer p {
             color: var(--text-gray);
             line-height: 1.5;
-            font-size: 14px;
+            font-size: var(--text-sm);
         }
 
 
@@ -1780,7 +1848,7 @@
             display: flex !important;
             align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
+            font-size: var(--text-xl);
             font-weight: 600;
             margin-bottom: 12px;
             position: relative;
@@ -1795,14 +1863,14 @@
         .stage-header h3 {
             color: #1f2937;
             margin-bottom: 4px;
-            font-size: 1.1rem;
+            font-size: var(--text-lg);
             font-weight: 600;
         }
 
         .stage-period {
             display: inline-block;
             color: #6b7280;
-            font-size: 0.85rem;
+            font-size: var(--text-sm);
             font-weight: 400;
             margin-bottom: 12px;
         }
@@ -1819,7 +1887,7 @@
 
         .stage-tasks li {
             color: #6b7280;
-            font-size: 0.9rem;
+            font-size: var(--text-sm);
             font-weight: 400;
             line-height: 1.6;
             margin-bottom: 8px;
@@ -1856,7 +1924,7 @@
             right: -6px;
             top: -6px;
             color: #9ca3af;
-            font-size: 1rem;
+            font-size: var(--text-base);
             font-weight: normal;
         }
 
@@ -2185,15 +2253,15 @@
         }
 
         .cta-section h2 {
-            font-size: 36px;
+            font-size: var(--text-3xl);
             font-weight: 700;
-            margin-bottom: 16px;
+            margin-bottom: var(--space-4);
         }
 
         .cta-section p {
-            font-size: 18px;
+            font-size: var(--text-lg);
             opacity: 0.9;
-            margin-bottom: 40px;
+            margin-bottom: var(--space-10);
         }
 
 
@@ -2201,16 +2269,16 @@
         /* iPhone 15 专用优化 */
         @media (max-width: 430px) and (max-height: 932px) {
             .hero-title {
-                font-size: 28px;
+                font-size: var(--text-2xl);
                 line-height: 1.2;
             }
             
             .hero-subtitle {
-                font-size: 16px;
+                font-size: var(--text-base);
             }
             
             .section-title {
-                font-size: 24px;
+                font-size: var(--text-2xl);
             }
             
             .feature-card {
@@ -2220,15 +2288,15 @@
             .feature-icon {
                 width: 48px;
                 height: 48px;
-                font-size: 20px;
+                font-size: var(--text-xl);
             }
             
             .feature-title {
-                font-size: 16px;
+                font-size: var(--text-base);
             }
             
             .feature-description {
-                font-size: 14px;
+                font-size: var(--text-sm);
             }
             
         }
@@ -2279,12 +2347,12 @@
             }
 
             .hero-title {
-                font-size: 32px;
+                font-size: var(--text-hero-title);
                 line-height: 1.2;
             }
             
             .hero-subtitle {
-                font-size: 18px;
+                font-size: var(--text-hero-subtitle);
             }
 
             .capabilities-grid {
@@ -2304,7 +2372,7 @@
             }
 
             .capability-icon i {
-                font-size: 20px;
+                font-size: var(--text-lg);
             }
 
             .capability-title {
@@ -2340,15 +2408,15 @@
             }
             
             .section-header {
-                margin-bottom: 48px;
+                margin-bottom: var(--content-spacing);
             }
             
             .section-title {
-                font-size: 28px;
+                font-size: var(--text-section-title);
             }
             
             .section-description {
-                font-size: 16px;
+                font-size: var(--text-section-description);
             }
             
             /* 内嵌演示区域响应式 */
@@ -2457,10 +2525,9 @@
                     <i class="fab fa-weixin"></i>
                     微信直接使用 · 无需下载APP
                 </div>
-                <h1 class="hero-title">有个AI营养师朋友<br>减重不再孤单</h1>
+                <h1 class="hero-title">有个AI营养师朋友，减重不再孤单</h1>
                 <p class="hero-subtitle">
-                    就像身边有个专业又贴心的营养师朋友，<strong style="color: var(--primary-color);">直接在微信里聊天</strong>，无需下载任何APP。
-                    拍照识别食物，智能推荐运动，记录每天进步，让减重变得轻松有趣。
+                    就像身边有个专业又贴心的营养师朋友，<strong style="color: var(--primary-color);">直接在微信里聊天</strong>，无需下载任何APP。拍照识别食物，智能推荐运动，记录每天进步，让减重变得轻松有趣。
                 </p>
                 <div class="hero-buttons">
                     <button class="btn-primary" onclick="startDemo()">
@@ -2505,7 +2572,7 @@
                 <div class="section-badge">核心功能</div>
                 <h2 class="section-title">贴心陪伴减重全流程，让每一天都有进步</h2>
                 <p class="section-description">
-                    从日常陪伴到数据监控，从方案调整到异常预警，AI文慧覆盖减重全场景，让您的减重之路更科学、更安心
+                    AI文慧覆盖减重全场景，从日常陪伴到数据监控，让您的减重之路更科学、更安心
                 </p>
             </div>
             
@@ -2545,7 +2612,7 @@
 
                     <div class="feature-category">
                         <h3 class="category-title">
-                            <i class="fas fa-chart-pulse"></i>
+                            <i class="fas fa-chart-line"></i>
                             数据监控与分析
                         </h3>
                         <div class="feature-items">
@@ -2712,7 +2779,7 @@
                 <div class="section-badge">使用流程</div>
                 <h2 class="section-title">90天减重之旅，每一步都有文慧陪伴</h2>
                 <p class="section-description">
-                    从购买到成功减重，整个过程简单清晰，AI文慧全程贴心指导
+                    从购买到成功减重，AI文慧全程贴心指导，过程简单清晰
                 </p>
             </div>
             
@@ -2987,7 +3054,7 @@
                 <div class="section-badge">技术支撑</div>
                 <h2 class="section-title">文慧的能力支撑</h2>
                 <p class="section-description">
-                    AI营养师文慧的技术支撑体系，为您提供专业、智能、个性化的健康管理服务
+                    AI营养师文慧的技术支撑体系，提供专业、智能、个性化的健康管理服务
                 </p>
             </div>
             
@@ -3086,12 +3153,13 @@
             <div class="pricing-grid">
                 <div class="pricing-card">
                     <h3 class="plan-name">体验版</h3>
-                    <div class="plan-price">¥199</div>
+                    <div class="plan-price">¥39</div>
                     <div class="plan-period">30天体验</div>
                     <ul class="plan-features">
-                        <li><span class="check"><i class="fas fa-check"></i></span> AI营养师基础咨询</li>
-                        <li><span class="check"><i class="fas fa-check"></i></span> 小程序数据记录</li>
-                        <li><span class="check"><i class="fas fa-check"></i></span> 基础健康方案</li>
+                        <li><span class="check"><i class="fab fa-weixin"></i></span> <strong>微信内直接使用，无需下载APP</strong></li>
+                        <li><span class="check"><i class="fas fa-check"></i></span> AI文慧24小时陪伴聊天</li>
+                        <li><span class="check"><i class="fas fa-check"></i></span> 拍照识别食物营养热量</li>
+                        <li><span class="check"><i class="fas fa-check"></i></span> 基础健康方案推荐</li>
                         <li><span class="check"><i class="fas fa-check"></i></span> 7天内无理由退款</li>
                     </ul>
                     <button class="btn-secondary">选择体验版</button>
@@ -3099,7 +3167,7 @@
 
                 <div class="pricing-card featured">
                     <h3 class="plan-name">90天季卡</h3>
-                    <div class="plan-price">¥599</div>
+                    <div class="plan-price">¥89</div>
                     <div class="plan-period">90天科学减重</div>
                     <ul class="plan-features">
                         <li><span class="check"><i class="fab fa-weixin"></i></span> <strong>微信内直接使用，无需下载APP</strong></li>
@@ -3114,7 +3182,7 @@
 
                 <div class="pricing-card">
                     <h3 class="plan-name">年度会员</h3>
-                    <div class="plan-price">¥1599</div>
+                    <div class="plan-price">¥299</div>
                     <div class="plan-period">365天全年陪伴</div>
                     <ul class="plan-features">
                         <li><span class="check"><i class="fas fa-check"></i></span> 季卡所有功能</li>
@@ -3156,7 +3224,7 @@
                         <i class="fas fa-chevron-down faq-icon"></i>
                     </div>
                     <div class="faq-answer">
-                        <p>基于先进AI技术和营养学专业知识，根据您的身体数据、健康目标和生活习惯，制定个性化减重方案，通过微信随时提供专业指导。</p>
+                        <p>基于先进AI技术和营养学专业知识，根据您的身体数据和生活习惯制定个性化减重方案，通过微信随时提供专业指导。</p>
                     </div>
                 </div>
 
@@ -3166,7 +3234,7 @@
                         <i class="fas fa-chevron-down faq-icon"></i>
                     </div>
                     <div class="faq-answer">
-                        <p>90天是科学验证的有效减重周期，分为适应期、加速期和巩固期三个阶段。通过AI个性化指导，95%的用户都能达到预期目标。</p>
+                        <p>90天是科学验证的有效减重周期，分为适应期、加速期和巩固期三个阶段，通过AI个性化指导，95%的用户都能达到预期目标。</p>
                     </div>
                 </div>
 
