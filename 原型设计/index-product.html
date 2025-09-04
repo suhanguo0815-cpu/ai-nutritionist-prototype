@@ -151,6 +151,10 @@
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none;
+            /* 移动端滚动优化 */
+            -webkit-overflow-scrolling: touch;
+            touch-action: pan-y;
+            overscroll-behavior: contain;
             /* iPhone 15 优化 */
             padding-top: var(--safe-area-inset-top);
             padding-bottom: var(--safe-area-inset-bottom);
@@ -162,6 +166,10 @@
         
         html {
             height: -webkit-fill-available;
+            /* 移动端滚动优化 */
+            -webkit-overflow-scrolling: touch;
+            touch-action: pan-y;
+            overscroll-behavior: contain;
         }
 
         /* 顶部导航栏 */
@@ -3845,18 +3853,7 @@
                     lastTouchEnd = now;
                 }, false);
                 
-                // 优化滚动性能
-                document.addEventListener('touchmove', function(e) {
-                    e.preventDefault();
-                }, { passive: false });
                 
-                // 防止橡皮筋效果
-                document.body.addEventListener('touchmove', function(e) {
-                    if (e.target.closest('.scrollable')) {
-                        return;
-                    }
-                    e.preventDefault();
-                }, { passive: false });
             }
         }
 
