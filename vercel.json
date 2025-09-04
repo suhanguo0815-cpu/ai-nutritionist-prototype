@@ -9,15 +9,15 @@
   "rewrites": [
     {
       "source": "/",
-      "destination": "/原型设计/index-simple.html"
-    },
-    {
-      "source": "/full",
       "destination": "/原型设计/index-product.html"
     },
     {
-      "source": "/test",
-      "destination": "/mobile-test.html"
+      "source": "/demo",
+      "destination": "/AI营养师小程序_V3-1/index.html"
+    },
+    {
+      "source": "/simple",
+      "destination": "/原型设计/index-simple.html"
     }
   ],
   "headers": [

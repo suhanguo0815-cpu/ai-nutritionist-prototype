@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI营养师文慧 - 微信端原型</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #000;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        /* iPhone 15 Pro 尺寸 */
+        .phone-container {
+            width: 393px;
+            height: 852px;
+            background: #000;
+            border-radius: 47px;
+            padding: 8px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.3);
+            position: relative;
+        }
+        
+        .screen {
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            border-radius: 39px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        /* 状态栏 */
+        .status-bar {
+            height: 44px;
+            background: #000;
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            font-size: 17px;
+            font-weight: 600;
+        }
+        
+        .status-left {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .status-right {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .signal-icon {
+            width: 18px;
+            height: 12px;
+            background: #fff;
+            border-radius: 2px;
+            position: relative;
+        }
+        
+        .signal-icon::after {
+            content: '';
+            position: absolute;
+            right: -3px;
+            top: 2px;
+            width: 3px;
+            height: 8px;
+            background: #fff;
+            border-radius: 1px;
+        }
+        
+        .wifi-icon {
+            width: 15px;
+            height: 11px;
+            background: #fff;
+            border-radius: 0 0 2px 2px;
+            position: relative;
+        }
+        
+        .wifi-icon::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: 2px;
+            width: 11px;
+            height: 8px;
+            border: 2px solid #fff;
+            border-bottom: none;
+            border-radius: 6px 6px 0 0;
+        }
+        
+        .battery {
+            width: 24px;
+            height: 12px;
+            border: 1px solid #fff;
+            border-radius: 2px;
+            position: relative;
+        }
+        
+        .battery::after {
+            content: '';
+            position: absolute;
+            right: -3px;
+            top: 3px;
+            width: 2px;
+            height: 6px;
+            background: #fff;
+            border-radius: 0 1px 1px 0;
+        }
+        
+        .battery-fill {
+            width: 80%;
+            height: 100%;
+            background: #34c759;
+            border-radius: 1px;
+        }
+        
+        /* 聊天头部 */
+        .chat-header {
+            height: 64px;
+            background: #393a3f;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            position: relative;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .back-arrow {
+            font-size: 20px;
+            color: #fff;
+        }
+        
+        .chat-title {
+            font-size: 17px;
+            font-weight: 600;
+            color: #fff;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .header-icon {
+            font-size: 18px;
+            color: #fff;
+        }
+        
+        /* 聊天内容区域 */
+        .chat-content {
+            height: calc(100% - 44px - 64px - 80px);
+            background: #f7f7f7;
+            overflow-y: auto;
+            padding: 16px;
+        }
+        
+        /* 消息样式 */
+        .message {
+            margin-bottom: 16px;
+            display: flex;
+            align-items: flex-end;
+        }
+        
+        .message.ai {
+            justify-content: flex-start;
+        }
+        
+        .message.user {
+            justify-content: flex-end;
+        }
+        
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 6px;
+            margin: 0 8px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .avatar.ai {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .avatar.user {
+            background: #07c160;
+        }
+        
+        .message-bubble {
+            max-width: 280px;
+            padding: 12px 16px;
+            border-radius: 18px;
+            font-size: 16px;
+            line-height: 1.4;
+            position: relative;
+        }
+        
+        .message-bubble.ai {
+            background: #fff;
+            border-top-left-radius: 6px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            color: #333;
+        }
+        
+        .message-bubble.user {
+            background: #07c160;
+            color: #fff;
+            border-top-right-radius: 6px;
+        }
+        
+        /* 营养分析卡片 */
+        .nutrition-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .nutrition-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        
+        .nutrition-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .calories-info {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 100%);
+            color: #fff;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+        
+        .calories-main {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+        
+        .calories-sub {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .daily-progress {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+        
+        .progress-text {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+        
+        .food-composition {
+            margin-bottom: 12px;
+        }
+        
+        .composition-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .composition-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .composition-item:last-child {
+            border-bottom: none;
+        }
+        
+        .composition-label {
+            font-size: 14px;
+            color: #333;
+        }
+        
+        .composition-value {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .composition-note {
+            font-size: 12px;
+            color: #999;
+            margin-top: 4px;
+            line-height: 1.3;
+        }
+        
+        .main-foods {
+            margin-top: 12px;
+        }
+        
+        .main-foods-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .food-list {
+            font-size: 14px;
+            color: #333;
+            line-height: 1.4;
+        }
+        
+        /* 输入区域 */
+        .input-area {
+            height: 80px;
+            background: #fff;
+            border-top: 1px solid #e5e5e5;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            gap: 12px;
+        }
+        
+        .input-actions {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .action-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 6px;
+            background: #f5f5f5;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .action-btn:hover {
+            background: #e5e5e5;
+        }
+        
+        .input-field {
+            flex: 1;
+            height: 36px;
+            border: 1px solid #e5e5e5;
+            border-radius: 18px;
+            padding: 0 16px;
+            font-size: 16px;
+            outline: none;
+            background: #f5f5f5;
+        }
+        
+        .input-field:focus {
+            background: #fff;
+            border-color: #07c160;
+        }
+        
+        .send-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 18px;
+            background: #07c160;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        
+        .send-btn:hover {
+            background: #06ad56;
+        }
+        
+        /* 底部导航条 */
+        .bottom-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 34px;
+            background: #000;
+            border-radius: 0 0 39px 39px;
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 430px) {
+            .phone-container {
+                width: 100vw;
+                height: 100vh;
+                border-radius: 0;
+                padding: 0;
+            }
+            
+            .screen {
+                border-radius: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-container">
+        <div class="screen">
+            <!-- 状态栏 -->
+            <div class="status-bar">
+                <div class="status-left">
+                    <span>10:36</span>
+                </div>
+                <div class="status-right">
+                    <div class="signal-icon"></div>
+                    <div class="wifi-icon"></div>
+                    <span>5GA</span>
+                    <div class="battery">
+                        <div class="battery-fill"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 聊天头部 -->
+            <div class="chat-header">
+                <div class="header-left">
+                    <span class="back-arrow">‹</span>
+                    <span class="chat-title">7月2期郭素涵-T盘-抗炎减脂(6)</span>
+                </div>
+                <div class="header-right">
+                    <span class="header-icon">🔍</span>
+                    <span class="header-icon">⋯</span>
+                </div>
+            </div>
+            
+            <!-- 聊天内容 -->
+            <div class="chat-content">
+                <!-- AI消息1 -->
+                <div class="message ai">
+                    <div class="avatar ai">AI</div>
+                    <div class="message-bubble ai">
+                        素涵,您如果是在咖啡厅的话,早餐一般也会有相对比较健康,就是少油少糖的那种三明治哈,也可以搭配上哦,早餐营养吃够,开启活力满满的一天 😜
+                    </div>
+                </div>
+                
+                <!-- 用户消息1 -->
+                <div class="message user">
+                    <div class="message-bubble user">
+                        GSH郭素涵:
+                    </div>
+                </div>
+                
+                <!-- 用户消息2 -->
+                <div class="message user">
+                    <div class="message-bubble user">
+                        @何文慧修改热量,喝了一半
+                    </div>
+                    <div class="avatar user">G</div>
+                </div>
+                
+                <!-- AI消息2 -->
+                <div class="message ai">
+                    <div class="avatar ai">何</div>
+                    <div class="message-bubble ai">
+                        嗯嗯
+                    </div>
+                </div>
+                
+                <!-- AI消息3 - 营养分析 -->
+                <div class="message ai">
+                    <div class="avatar ai">何</div>
+                    <div class="message-bubble ai">
+                        <div class="nutrition-card">
+                            <div class="nutrition-header">
+                                <span>🔥</span>
+                                <span class="nutrition-title">总热量: 92.5千卡</span>
+                            </div>
+                            
+                            <div class="daily-progress">
+                                <div class="progress-text">
+                                    今天推荐1535千卡,已经吃了682.5大卡,还可以吃852.5大卡
+                                </div>
+                            </div>
+                            
+                            <div class="food-composition">
+                                <div class="composition-title">
+                                    <span>🍽️</span>
+                                    <span>食物构成:</span>
+                                </div>
+                                <div class="composition-item">
+                                    <span class="composition-label">蔬菜:</span>
+                                    <span class="composition-value">0g (0%)</span>
+                                </div>
+                                <div class="composition-item">
+                                    <span class="composition-label">蛋白:</span>
+                                    <span class="composition-value">125g (100%)</span>
+                                </div>
+                                <div class="composition-item">
+                                    <span class="composition-label">主食:</span>
+                                    <span class="composition-value">0g (0%)</span>
+                                </div>
+                                <div class="composition-note">
+                                    (本餐以蛋白质食材为主,未包含蔬菜及主食)
+                                </div>
+                            </div>
+                            
+                            <div class="main-foods">
+                                <div class="main-foods-title">
+                                    <span>🍜</span>
+                                    <span>主要食物:</span>
+                                </div>
+                                <div class="food-list">
+                                    咖啡豆10克;全脂牛奶125克
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 输入区域 -->
+            <div class="input-area">
+                <div class="input-actions">
+                    <button class="action-btn">🎤</button>
+                </div>
+                <input type="text" class="input-field" placeholder="@何文慧" value="@何文慧">
+                <button class="action-btn">😊</button>
+                <button class="action-btn">+</button>
+            </div>
+            
+            <!-- 底部导航条 -->
+            <div class="bottom-bar"></div>
+        </div>
+    </div>
+</body>
+</html>

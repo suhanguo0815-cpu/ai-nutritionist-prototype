@@ -13,7 +13,7 @@
   - 其他功能页面...
 
 - **原型设计/**: 产品展示页面
-  - `index-product.html`: 产品介绍和演示页面
+  - `index-product.html`: 产品介绍和演示页面（最新优化版本）
 
 ## 🚀 部署说明
 
@@ -22,8 +22,17 @@
 ### 访问地址
 
 部署后可通过以下地址访问：
-- 产品展示页面: `https://your-domain.vercel.app/`
-- 原型展示页面: `https://your-domain.vercel.app/AI营养师小程序_V3-1/`
+- **主页面（产品展示）**: `https://your-domain.vercel.app/`
+- **小程序演示**: `https://your-domain.vercel.app/demo`
+- **简化版本**: `https://your-domain.vercel.app/simple`
+
+### 最新更新
+
+- ✅ 优化了颜色系统，使用更柔和的绿色主题
+- ✅ 统一了字体和间距系统
+- ✅ 改进了响应式设计
+- ✅ 移除了底部导航栏，界面更简洁
+- ✅ 修复了所有布局和样式问题
 
 ## 🛠️ 技术栈
 

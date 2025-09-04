@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI营养师小程序 - 一级页面展示</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #F2F2F2;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+        }
+        
+        /* 小程序标准尺寸 - 375x667 (iPhone 6/7/8) */
+        .miniprogram-container {
+            width: 375px;
+            height: 667px;
+            background: #000;
+            border-radius: 25px;
+            padding: 4px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            position: relative;
+            margin: 20px auto;
+            overflow: hidden;
+        }
+        
+        .screen {
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            border-radius: 21px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        /* 移除状态栏，让iframe内容完整显示 */
+        
+        /* 主内容区域 */
+        .main-content {
+            height: 100%;
+            overflow: hidden;
+            background: #F2F2F2;
+            position: relative;
+        }
+        
+        /* 页面容器 */
+        .page-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+        
+        /* 隐藏页面 */
+        .page {
+            display: none;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        /* 移除重复的导航栏样式 */
+        
+        /* iframe样式优化 */
+        .page iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 430px) {
+            .miniprogram-container {
+                width: 100vw;
+                height: 100vh;
+                border-radius: 0;
+                padding: 0;
+                margin: 0;
+            }
+            
+            .screen {
+                border-radius: 0;
+            }
+        }
+        
+        /* 确保内容不被覆盖 */
+        .page-container {
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="miniprogram-container">
+        <div class="screen">
+            <!-- 主内容区域 -->
+            <div class="main-content">
+                <div class="page-container">
+                    <!-- 今日页面 -->
+                    <div id="home-page" class="page active">
+                        <iframe src="AI营养师小程序_V3-1/home.html" frameborder="0"></iframe>
+                    </div>
+                    
+                    <!-- 目标页面 -->
+                    <div id="progress-page" class="page">
+                        <iframe src="AI营养师小程序_V3-1/progress.html" frameborder="0"></iframe>
+                    </div>
+                    
+                    <!-- 我的页面 -->
+                    <div id="profile-page" class="page">
+                        <iframe src="AI营养师小程序_V3-1/profile.html" frameborder="0"></iframe>
+                    </div>
+                    
+                    <!-- 社区页面 -->
+                    <div id="community-page" class="page">
+                        <iframe src="AI营养师小程序_V3-1/community-simple.html" frameborder="0"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 页面加载完成后的初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('小程序一级页面展示已加载');
+            
+            // 默认显示首页
+            showPage('home-page');
+        });
+        
+        function showPage(pageId) {
+            // 隐藏所有页面
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.remove('active'));
+            
+            // 显示目标页面
+            document.getElementById(pageId).classList.add('active');
+        }
+        
+        // 监听来自iframe的导航事件
+        window.addEventListener('message', function(event) {
+            if (event.data && event.data.type === 'navigation') {
+                const targetPage = event.data.page;
+                switch(targetPage) {
+                    case 'home':
+                        showPage('home-page');
+                        break;
+                    case 'progress':
+                        showPage('progress-page');
+                        break;
+                    case 'profile':
+                        showPage('profile-page');
+                        break;
+                    case 'community':
+                        showPage('community-page');
+                        break;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
