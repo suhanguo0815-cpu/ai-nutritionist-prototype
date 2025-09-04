@@ -1,0 +1,3618 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI营养师文慧 - 90天科学减重，智能陪伴每一天</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            /* 主色调 */
+            --primary-color: #C3EB2E;
+            --primary-dark: #A8D42E;
+            --primary-light: #E8F5C8;
+            
+            /* 辅助色 */
+            --secondary-color: #181818;
+            --text-gray: #666666;
+            --text-light: #8E8E93;
+            --bg-light: #F8F9FA;
+            --bg-section: #FAFBFC;
+            --border-light: #E5E5E7;
+            
+            /* 阴影系统 */
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.06);
+            --shadow-lg: 0 8px 32px rgba(0,0,0,0.08);
+            --shadow-xl: 0 12px 48px rgba(0,0,0,0.12);
+            
+            /* 字体系统 */
+            --text-xs: 12px;
+            --text-sm: 14px;
+            --text-base: 16px;
+            --text-lg: 18px;
+            --text-xl: 20px;
+            --text-2xl: 24px;
+            --text-3xl: 32px;
+            --text-4xl: 40px;
+            --text-5xl: 48px;
+            
+            /* 间距系统 */
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 12px;
+            --spacing-lg: 16px;
+            --spacing-xl: 20px;
+            --spacing-2xl: 24px;
+            --spacing-3xl: 32px;
+            --spacing-4xl: 40px;
+            --spacing-5xl: 48px;
+            --spacing-6xl: 64px;
+            --spacing-8xl: 80px;
+            
+            /* 圆角系统 */
+            --radius-sm: 6px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+            --radius-2xl: 20px;
+            --radius-3xl: 24px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            line-height: 1.6;
+            color: var(--secondary-color);
+            overflow-x: hidden;
+        }
+
+        /* 顶部导航栏 */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-light);
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 72px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--secondary-color);
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--secondary-color);
+            font-size: 20px;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .nav-item {
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nav-item:hover {
+            background: var(--bg-light);
+            color: var(--primary-dark);
+        }
+
+        .cta-button {
+            background: var(--primary-color);
+            color: var(--secondary-color);
+            padding: 12px 24px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .cta-button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(195, 235, 46, 0.3);
+        }
+
+        /* 英雄区域 */
+        .hero-section {
+            padding: var(--spacing-8xl) 0 var(--spacing-6xl);
+            background: linear-gradient(135deg, var(--bg-section) 0%, #FFFFFF 50%, var(--bg-section) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(195, 235, 46, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(195, 235, 46, 0.08) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .hero-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-content {
+            max-width: 600px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            background: rgba(195, 235, 46, 0.1);
+            border: 1px solid rgba(195, 235, 46, 0.3);
+            padding: var(--spacing-sm) var(--spacing-lg);
+            border-radius: var(--radius-2xl);
+            font-size: var(--text-sm);
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .hero-title {
+            font-size: var(--text-5xl);
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: var(--spacing-2xl);
+            background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-dark) 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: var(--text-xl);
+            color: var(--text-gray);
+            margin-bottom: var(--spacing-3xl);
+            line-height: 1.6;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-4xl);
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: var(--secondary-color);
+            padding: var(--spacing-lg) var(--spacing-3xl);
+            border-radius: var(--radius-lg);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: var(--text-base);
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(195, 235, 46, 0.3);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--secondary-color);
+            padding: var(--spacing-lg) var(--spacing-3xl);
+            border-radius: var(--radius-lg);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: var(--text-base);
+            border: 2px solid var(--border-light);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 32px;
+        }
+
+        .stat-item {
+            text-align: left;
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--primary-dark);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--text-gray);
+            margin-top: 4px;
+        }
+
+        .hero-visual {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .phone-mockup {
+            width: 320px;
+            height: 640px;
+            background: #000;
+            border-radius: 40px;
+            padding: 8px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            position: relative;
+            transform: rotate(-5deg);
+            transition: transform 0.3s ease;
+        }
+
+        .phone-mockup:hover {
+            transform: rotate(0deg) scale(1.05);
+        }
+
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border-radius: 24px;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(226, 232, 240, 0.3);
+        }
+
+        .phone-notch {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 140px;
+            height: 28px;
+            background: #000;
+            border-bottom-left-radius: 14px;
+            border-bottom-right-radius: 14px;
+            z-index: 10;
+        }
+
+        .demo-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            padding-top: 28px;
+        }
+
+        /* 产品特色区域 */
+        .features-section {
+            padding: 100px 0;
+            background: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .section-badge {
+            display: inline-block;
+            background: rgba(195, 235, 46, 0.1);
+            border: 1px solid rgba(195, 235, 46, 0.3);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--secondary-color);
+        }
+
+        .section-description {
+            font-size: 18px;
+            color: var(--text-gray);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .features-demo-container {
+            margin-top: 80px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 32px;
+        }
+
+        /* 内嵌演示区域样式 */
+        .embedded-demo-section {
+            margin-top: 60px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(195, 235, 46, 0.2);
+            border-radius: var(--radius-2xl);
+            padding: var(--spacing-3xl);
+            backdrop-filter: blur(10px);
+            transition: all 0.5s ease;
+        }
+
+        .demo-header-inline {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-3xl);
+            flex-wrap: wrap;
+            gap: var(--spacing-lg);
+        }
+
+        .demo-title-area h3 {
+            font-size: var(--text-2xl);
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .demo-title-area p {
+            color: var(--text-gray);
+            font-size: var(--text-base);
+            margin: 0;
+        }
+
+        .demo-controls {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+
+        .demo-toggle-btn {
+            background: rgba(195, 235, 46, 0.1);
+            border: 1px solid rgba(195, 235, 46, 0.3);
+            color: var(--primary-color);
+            padding: var(--spacing-sm) var(--spacing-lg);
+            border-radius: var(--radius-lg);
+            font-size: var(--text-sm);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+
+        .demo-toggle-btn:hover,
+        .demo-toggle-btn.active {
+            background: var(--primary-color);
+            color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .demo-close-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: var(--spacing-sm);
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+        }
+
+        .demo-close-btn:hover {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: rgba(239, 68, 68, 0.5);
+            color: #EF4444;
+        }
+
+        .demo-phones-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .demo-phone-wrapper {
+            position: relative;
+        }
+
+        .demo-phone {
+            width: 280px;
+            height: 560px;
+            background: #000;
+            border-radius: 28px;
+            padding: 6px;
+            box-shadow: 
+                0 0 0 2px var(--primary-color),
+                0 15px 35px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .demo-phone:hover {
+            transform: translateY(-4px);
+            box-shadow: 
+                0 0 0 2px var(--primary-color),
+                0 20px 45px rgba(0, 0, 0, 0.4);
+        }
+
+        .demo-phone-screen {
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            border-radius: 22px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .demo-phone-screen::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 24px;
+            background: #000;
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+            z-index: 10;
+        }
+
+        .demo-phone iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            padding-top: 24px;
+        }
+
+        .demo-instructions {
+            text-align: center;
+            padding: var(--spacing-lg);
+            background: rgba(195, 235, 46, 0.05);
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(195, 235, 46, 0.1);
+        }
+
+        .demo-instructions p {
+            color: var(--text-gray);
+            font-size: var(--text-sm);
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        /* 交互式功能展示区域样式 */
+        .interactive-features-container {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr 1fr;
+            gap: var(--spacing-2xl);
+            margin-top: var(--spacing-6xl);
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border-radius: var(--radius-3xl);
+            padding: var(--spacing-4xl);
+            border: 1px solid rgba(226, 232, 240, 0.5);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+        }
+
+        /* 左侧和右侧功能菜单 */
+        .features-left,
+        .features-right {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-2xl);
+        }
+
+        .feature-category {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-2xl);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .feature-category:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(195, 235, 46, 0.2);
+        }
+
+        .category-title {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: var(--spacing-lg);
+            padding: var(--spacing-lg) var(--spacing-xl);
+            background: linear-gradient(135deg, rgba(195, 235, 46, 0.15) 0%, rgba(195, 235, 46, 0.08) 100%);
+            border-radius: var(--radius-xl);
+            border-left: 5px solid var(--primary-color);
+            box-shadow: 0 4px 12px rgba(195, 235, 46, 0.2);
+        }
+
+        .category-title i {
+            font-size: var(--text-xl);
+        }
+
+        .feature-items {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-md);
+            padding: var(--spacing-xl);
+            border-radius: var(--radius-xl);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(248, 250, 252, 0.8) 100%);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .feature-item:hover {
+            background: rgba(195, 235, 46, 0.1);
+            border-color: rgba(195, 235, 46, 0.3);
+            transform: translateX(4px);
+        }
+
+        .feature-item.active {
+            background: rgba(195, 235, 46, 0.15);
+            border-color: var(--primary-color);
+            transform: translateX(8px);
+        }
+
+        .feature-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--text-gray);
+            border-radius: 50%;
+            margin-top: 6px;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .feature-item:hover .feature-dot,
+        .feature-item.active .feature-dot {
+            background: var(--primary-color);
+            width: 12px;
+            height: 12px;
+            margin-top: 4px;
+        }
+
+        .feature-content {
+            flex: 1;
+        }
+
+        .feature-content strong {
+            color: #1e293b;
+            font-size: 1.1rem;
+            font-weight: 700;
+            display: block;
+            margin-bottom: var(--spacing-sm);
+            line-height: 1.3;
+        }
+
+        .feature-content p {
+            color: #64748b;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin: 0;
+            font-weight: 500;
+        }
+
+        /* 右侧演示区域 */
+        .demo-display-area {
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-2xl);
+            border: 1px solid rgba(203, 213, 225, 0.5);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .demo-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-2xl);
+            flex-wrap: wrap;
+            gap: var(--spacing-lg);
+        }
+
+        .demo-title-section h3 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: var(--spacing-sm);
+            line-height: 1.3;
+        }
+
+        .demo-title-section p {
+            color: #64748b;
+            font-size: 1rem;
+            margin: 0;
+            font-weight: 500;
+        }
+
+        .demo-type-switcher {
+            display: flex;
+            gap: var(--spacing-sm);
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xs);
+        }
+
+        .type-switch-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-gray);
+            padding: var(--spacing-sm) var(--spacing-lg);
+            border-radius: var(--radius-md);
+            font-size: var(--text-sm);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+
+        .type-switch-btn:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .type-switch-btn.active {
+            background: var(--primary-color);
+            color: var(--secondary-color);
+        }
+
+        .demo-viewport {
+            display: flex;
+            justify-content: center;
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        /* 单演示区域样式 */
+        .single-demo-viewport {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: var(--spacing-2xl);
+            padding: var(--spacing-3xl);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.95) 100%);
+            border-radius: var(--radius-2xl);
+            border: 1px solid rgba(226, 232, 240, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+            min-height: 500px;
+        }
+
+        /* 平台切换器样式 */
+        .platform-switcher {
+            display: flex;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: var(--radius-lg);
+            padding: 4px;
+            border: 1px solid rgba(226, 232, 240, 0.5);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .platform-btn {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            padding: var(--spacing-sm) var(--spacing-md);
+            border: none;
+            background: transparent;
+            border-radius: var(--radius-md);
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .platform-btn:hover {
+            background: rgba(99, 102, 241, 0.1);
+            color: #4f46e5;
+        }
+
+        .platform-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 2px 4px rgba(102, 126, 234, 0.3);
+        }
+
+        .platform-btn.active span {
+            font-weight: 600;
+        }
+
+        /* 推荐平台按钮特殊样式 */
+        .platform-btn.active.recommended {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            box-shadow: 0 4px 12px rgba(195, 235, 46, 0.4);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 4px 12px rgba(195, 235, 46, 0.4);
+            }
+            50% {
+                box-shadow: 0 6px 16px rgba(195, 235, 46, 0.6);
+            }
+            100% {
+                box-shadow: 0 4px 12px rgba(195, 235, 46, 0.4);
+            }
+        }
+
+        .platform-btn i {
+            font-size: 1rem;
+        }
+
+        .demo-platform {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .platform-header {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+            padding: var(--spacing-lg) var(--spacing-xl);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.9) 100%);
+            border-radius: var(--radius-xl);
+            border: 1px solid rgba(226, 232, 240, 0.6);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .platform-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--primary-color);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--secondary-color);
+            font-size: var(--text-lg);
+        }
+
+        .platform-info h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin: 0 0 4px 0;
+            line-height: 1.3;
+        }
+
+        .platform-info p {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin: 0;
+            font-weight: 500;
+        }
+
+        .phone-simulator {
+            position: relative;
+        }
+
+        .phone-frame {
+            width: 260px;
+            height: 520px;
+            background: linear-gradient(145deg, #2d3748 0%, #1a202c 100%);
+            border-radius: 28px;
+            padding: 8px;
+            box-shadow: 
+                0 0 0 1px rgba(195, 235, 46, 0.3),
+                0 12px 40px rgba(0, 0, 0, 0.15),
+                0 4px 16px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .phone-frame:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 
+                0 0 0 2px rgba(195, 235, 46, 0.5),
+                0 20px 60px rgba(0, 0, 0, 0.2),
+                0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .phone-notch {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 24px;
+            background: #000;
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+            z-index: 10;
+        }
+
+        .phone-status-bar {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            right: 8px;
+            height: 36px;
+            background: var(--secondary-color);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 var(--spacing-lg);
+            font-size: var(--text-sm);
+            font-weight: 600;
+            border-top-left-radius: 22px;
+            border-top-right-radius: 22px;
+            z-index: 5;
+        }
+
+        .status-indicators {
+            display: flex;
+            gap: var(--spacing-xs);
+        }
+
+        .phone-content {
+            position: absolute;
+            top: 44px;
+            left: 8px;
+            right: 8px;
+            bottom: 8px;
+            background: #fff;
+            border-bottom-left-radius: 22px;
+            border-bottom-right-radius: 22px;
+            overflow: hidden;
+        }
+
+        .phone-content iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .demo-context {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .context-info {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .context-info p {
+            color: var(--text-gray);
+            font-size: var(--text-base);
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* 智能平台选择提示样式 */
+        .smart-platform-hint {
+            margin-bottom: var(--spacing-lg);
+            animation: slideInDown 0.3s ease-out;
+        }
+
+        .smart-hint {
+            display: flex;
+            align-items: center;
+            padding: var(--spacing-md) var(--spacing-lg);
+            background: linear-gradient(135deg, rgba(195, 235, 46, 0.1) 0%, rgba(195, 235, 46, 0.05) 100%);
+            border: 1px solid rgba(195, 235, 46, 0.3);
+            border-radius: var(--radius-md);
+            position: relative;
+        }
+
+        .hint-icon {
+            font-size: var(--text-lg);
+            margin-right: var(--spacing-sm);
+        }
+
+        .hint-text {
+            flex: 1;
+            color: var(--secondary-color);
+            font-size: var(--text-sm);
+            font-weight: 500;
+        }
+
+        .hint-close {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            font-size: var(--text-lg);
+            cursor: pointer;
+            padding: 0;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+        }
+
+        .hint-close:hover {
+            background: rgba(0, 0, 0, 0.1);
+            color: var(--secondary-color);
+        }
+
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+
+
+
+
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+
+
+        /* 响应式设计 */
+        @media (max-width: 1024px) {
+            .interactive-features-container {
+                grid-template-columns: 1fr;
+                gap: var(--spacing-3xl);
+                padding: var(--spacing-3xl);
+            }
+
+            .features-left,
+            .features-right {
+                gap: var(--spacing-xl);
+            }
+
+            .demo-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .single-demo-viewport {
+                padding: var(--spacing-2xl);
+                min-height: 400px;
+            }
+
+            .platform-switcher {
+                width: 100%;
+                justify-content: center;
+                margin-top: var(--spacing-md);
+            }
+
+            .phone-frame {
+                width: 220px;
+                height: 440px;
+            }
+
+
+            .rewards-grid {
+                grid-template-columns: 1fr;
+                gap: var(--spacing-md);
+            }
+
+            .badges-row {
+                justify-content: center;
+                gap: var(--spacing-sm);
+            }
+
+            .badge-item {
+                min-width: 50px;
+            }
+
+            .badge-icon {
+                width: 28px;
+                height: 28px;
+                font-size: 0.8rem;
+            }
+
+
+            .health-metrics-grid {
+                grid-template-columns: 1fr;
+                gap: var(--spacing-sm);
+            }
+
+            .metric-item {
+                padding: var(--spacing-md);
+            }
+
+            .metric-icon {
+                width: 36px;
+                height: 36px;
+                font-size: 1rem;
+            }
+
+            .metric-value {
+                font-size: 1.3rem;
+            }
+
+        }
+
+        @media (max-width: 768px) {
+            .interactive-features-container {
+                padding: var(--spacing-lg);
+                margin-top: var(--spacing-3xl);
+            }
+
+            .feature-category {
+                padding: var(--spacing-lg);
+            }
+
+            .demo-display-area {
+                padding: var(--spacing-lg);
+            }
+
+            .phone-frame {
+                width: 220px;
+                height: 440px;
+            }
+
+        }
+
+        .feature-card {
+            background: white;
+            border: 1px solid var(--border-light);
+            border-radius: 20px;
+            padding: 32px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            border-color: var(--primary-color);
+        }
+
+        .feature-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            color: var(--secondary-color);
+            font-size: 28px;
+        }
+
+        .feature-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--secondary-color);
+        }
+
+        .feature-description {
+            color: var(--text-gray);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .feature-link {
+            color: var(--primary-dark);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .feature-link:hover {
+            gap: 8px;
+        }
+
+        /* 产品展示区域 */
+        .product-demo-section {
+            padding: 100px 0;
+            background: var(--bg-light);
+        }
+
+        .demo-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .demo-content h2 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            color: var(--secondary-color);
+        }
+
+        .demo-content p {
+            font-size: 18px;
+            color: var(--text-gray);
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+
+        .demo-features {
+            list-style: none;
+            margin-bottom: 32px;
+        }
+
+        .demo-features li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            font-size: 16px;
+            color: var(--secondary-color);
+        }
+
+        .demo-features .check-icon {
+            width: 20px;
+            height: 20px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--secondary-color);
+            font-size: 12px;
+        }
+
+        .demo-visual {
+            position: relative;
+        }
+
+        .demo-phones {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .demo-phone {
+            width: 240px;
+            height: 480px;
+            background: #000;
+            border-radius: 32px;
+            padding: 6px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .demo-phone:nth-child(2) {
+            transform: translateY(40px);
+        }
+
+        .demo-phone-screen {
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            border-radius: 26px;
+            overflow: hidden;
+        }
+
+        .demo-phone iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* 价格方案区域 */
+        .pricing-section {
+            padding: 100px 0;
+            background: white;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+            margin-top: 60px;
+        }
+
+        .pricing-card {
+            background: white;
+            border: 2px solid var(--border-light);
+            border-radius: 20px;
+            padding: 40px 32px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .pricing-card.featured {
+            border-color: var(--primary-color);
+            transform: scale(1.05);
+            box-shadow: 0 20px 40px rgba(195, 235, 46, 0.2);
+        }
+
+        .pricing-card.featured::before {
+            content: '推荐';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary-color);
+            color: var(--secondary-color);
+            padding: 6px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .plan-name {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--secondary-color);
+        }
+
+        .plan-price {
+            font-size: 48px;
+            font-weight: 800;
+            color: var(--primary-dark);
+            margin-bottom: 8px;
+        }
+
+        .plan-period {
+            color: var(--text-gray);
+            margin-bottom: 32px;
+        }
+
+        .plan-features {
+            list-style: none;
+            margin-bottom: 40px;
+            text-align: left;
+        }
+
+        .plan-features li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            color: var(--secondary-color);
+        }
+
+        .plan-features .check {
+            color: var(--primary-dark);
+            font-size: 16px;
+        }
+
+        /* 常见问题区域 */
+        .faq-section {
+            padding: 60px 0;
+            background: var(--bg-light);
+        }
+
+        .faq-list {
+            max-width: 800px;
+            margin: 40px auto 0;
+        }
+
+        .faq-item {
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .faq-question {
+            padding: 18px 24px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .faq-question:hover {
+            background: var(--bg-light);
+        }
+
+        .faq-question h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--secondary-color);
+            line-height: 1.4;
+        }
+
+        .faq-icon {
+            transition: transform 0.3s ease;
+            font-size: 14px;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            padding: 0 24px;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item.active .faq-answer {
+            padding: 0 24px 18px;
+            max-height: 150px;
+        }
+
+        .faq-answer p {
+            color: var(--text-gray);
+            line-height: 1.5;
+            font-size: 14px;
+        }
+
+
+        /* 用户旅程样式 - 水平时间轴 */
+        .user-journey-section {
+            padding: 60px 0;
+            background: linear-gradient(135deg, #f8fafc 0%, #f0f2ff 100%);
+            display: block !important;
+            visibility: visible !important;
+            width: 100%;
+        }
+
+        .horizontal-timeline {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 16px;
+            display: block !important;
+            visibility: visible !important;
+            width: 100%;
+        }
+
+        .timeline-container {
+            display: flex !important;
+            align-items: flex-start;
+            gap: 0;
+            position: relative;
+            padding: 20px 16px;
+            background: white;
+            border-radius: 8px;
+            min-height: 400px;
+            flex-direction: row !important;
+            width: 100%;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border: 2px solid #ddd;
+        }
+
+        .timeline-stage {
+            flex: 1 !important;
+            text-align: left;
+            position: relative;
+            padding: 16px 12px;
+            background: transparent;
+            margin: 0;
+            min-width: 0;
+            display: block !important;
+            border: 1px solid #f0f0f0;
+            margin-right: 1px;
+            box-sizing: border-box;
+        }
+
+        .timeline-stage:last-child {
+            margin-right: 0;
+        }
+
+        .timeline-stage.highlighted {
+            background: rgba(195, 235, 46, 0.1);
+            border-radius: 8px;
+            border: 1px solid rgba(195, 235, 46, 0.3);
+        }
+
+        .stage-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e5e7eb;
+            color: white;
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 2;
+            flex-shrink: 0;
+        }
+
+        .timeline-stage.highlighted .stage-number {
+            background: #C3EB2E;
+        }
+
+        .stage-header h3 {
+            color: #1f2937;
+            margin-bottom: 4px;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .stage-period {
+            display: inline-block;
+            color: #6b7280;
+            font-size: 0.85rem;
+            font-weight: 400;
+            margin-bottom: 12px;
+        }
+
+        .stage-content {
+            text-align: left;
+        }
+
+        .stage-tasks {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .stage-tasks li {
+            color: #6b7280;
+            font-size: 0.9rem;
+            font-weight: 400;
+            line-height: 1.6;
+            margin-bottom: 8px;
+            padding-left: 16px;
+            position: relative;
+        }
+
+        .stage-tasks li::before {
+            content: '•';
+            color: #9ca3af;
+            font-weight: normal;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .timeline-connector {
+            width: 20px;
+            height: 2px;
+            background: #e5e7eb;
+            margin-top: 20px;
+            position: relative;
+            z-index: 1;
+            flex-shrink: 0;
+            align-self: flex-start;
+            margin-left: -10px;
+            margin-right: -10px;
+            display: block !important;
+        }
+
+        .timeline-connector::after {
+            content: '→';
+            position: absolute;
+            right: -6px;
+            top: -6px;
+            color: #9ca3af;
+            font-size: 1rem;
+            font-weight: normal;
+        }
+
+        .service-highlights {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 60px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .highlight-item {
+            text-align: center;
+            flex: 1;
+            max-width: 150px;
+        }
+
+        .highlight-number {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #C3EB2E;
+            margin-bottom: 4px;
+        }
+
+        .highlight-label {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 4px;
+        }
+
+        .highlight-desc {
+            font-size: 0.85rem;
+            color: #6b7280;
+            line-height: 1.4;
+            font-weight: 400;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .timeline-container {
+                flex-direction: column;
+                gap: var(--spacing-lg);
+                min-height: auto;
+                padding: var(--spacing-lg);
+            }
+            
+            .timeline-connector {
+                width: 2px;
+                height: 20px;
+                margin: 0 auto;
+                margin-top: var(--spacing-md);
+                margin-bottom: var(--spacing-md);
+            }
+            
+            .timeline-connector::after {
+                content: '↓';
+                right: -4px;
+                top: 18px;
+                font-size: 0.9rem;
+            }
+            
+            .timeline-stage {
+                margin: 0;
+                padding: var(--spacing-md);
+            }
+            
+            .timeline-stage.highlighted {
+                transform: none;
+            }
+            
+            .stage-header h3 {
+                font-size: 1.1rem;
+                font-weight: 600;
+            }
+            
+            .stage-tasks li {
+                font-size: 0.85rem;
+                font-weight: 400;
+            }
+            
+            .service-highlights {
+                flex-direction: column;
+                gap: var(--spacing-lg);
+            }
+            
+            .highlight-number {
+                font-size: 1.8rem;
+            }
+        }
+
+        /* 产品对比样式 */
+        .comparison-section {
+            padding: var(--spacing-6xl) 0;
+            background: linear-gradient(135deg, #ffffff 0%, var(--bg-section) 100%);
+        }
+
+        .comparison-container {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: var(--spacing-3xl);
+            max-width: 1000px;
+            margin: 0 auto;
+            align-items: start;
+        }
+
+        .service-column {
+            background: white;
+            border-radius: var(--radius-2xl);
+            padding: var(--spacing-3xl);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-light);
+            transition: all 0.3s ease;
+        }
+
+        .service-column:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .ai-service {
+            border: 2px solid var(--primary-color);
+            background: linear-gradient(135deg, #ffffff 0%, rgba(195, 235, 46, 0.05) 100%);
+        }
+
+        .traditional-service {
+            border: 2px solid var(--border-light);
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+        }
+
+        .service-header {
+            text-align: center;
+            margin-bottom: var(--spacing-2xl);
+            padding-bottom: var(--spacing-lg);
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .service-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--text-3xl);
+            margin: 0 auto var(--spacing-lg);
+        }
+
+        .ai-service .service-icon {
+            background: var(--primary-color);
+            color: var(--secondary-color);
+        }
+
+        .traditional-service .service-icon {
+            background: var(--text-gray);
+            color: white;
+        }
+
+        .service-header h3 {
+            font-size: var(--text-2xl);
+            font-weight: bold;
+            color: var(--secondary-color);
+            margin: 0 0 var(--spacing-xs) 0;
+        }
+
+        .service-header p {
+            color: var(--text-gray);
+            font-size: var(--text-sm);
+            margin: 0;
+        }
+
+        .service-features {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-lg);
+        }
+
+        .feature-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-md);
+            background: rgba(0,0,0,0.02);
+            border-radius: var(--radius-lg);
+            transition: all 0.3s ease;
+        }
+
+        .ai-service .feature-item {
+            background: rgba(195, 235, 46, 0.1);
+        }
+
+        .ai-service .feature-item:hover {
+            background: rgba(195, 235, 46, 0.15);
+        }
+
+        .traditional-service .feature-item:hover {
+            background: rgba(0,0,0,0.05);
+        }
+
+        .feature-label {
+            font-weight: 600;
+            color: var(--secondary-color);
+            font-size: var(--text-sm);
+        }
+
+        .feature-value {
+            font-size: var(--text-sm);
+            color: var(--text-gray);
+            text-align: right;
+        }
+
+        .vs-divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            min-height: 200px;
+        }
+
+        .vs-circle {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--secondary-color);
+            font-weight: bold;
+            font-size: var(--text-lg);
+            box-shadow: var(--shadow-md);
+            animation: pulse 2s infinite;
+        }
+
+        .comparison-summary {
+            text-align: center;
+            margin-top: var(--spacing-5xl);
+            padding: var(--spacing-2xl);
+            background: rgba(195, 235, 46, 0.1);
+            border-radius: var(--radius-xl);
+            border: 1px solid rgba(195, 235, 46, 0.3);
+        }
+
+        .summary-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            background: var(--primary-color);
+            color: var(--secondary-color);
+            padding: var(--spacing-sm) var(--spacing-lg);
+            border-radius: var(--radius-xl);
+            font-weight: bold;
+            font-size: var(--text-base);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .comparison-summary p {
+            color: var(--text-gray);
+            margin: 0;
+            font-size: var(--text-base);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .comparison-container {
+                grid-template-columns: 1fr;
+                gap: var(--spacing-lg);
+            }
+            
+            .vs-divider {
+                order: 2;
+                min-height: 60px;
+            }
+            
+            .vs-circle {
+                width: 50px;
+                height: 50px;
+                font-size: var(--text-base);
+            }
+            
+            .ai-service {
+                order: 1;
+            }
+            
+            .traditional-service {
+                order: 3;
+            }
+            
+            .service-column {
+                padding: var(--spacing-lg);
+            }
+            
+            .service-icon {
+                width: 48px;
+                height: 48px;
+                font-size: var(--text-2xl);
+            }
+            
+            .service-header h3 {
+                font-size: var(--text-xl);
+            }
+            
+            .feature-item {
+                flex-direction: column;
+                gap: var(--spacing-xs);
+                text-align: center;
+            }
+            
+            .feature-value {
+                text-align: center;
+            }
+            
+            .comparison-summary {
+                padding: var(--spacing-lg);
+                margin-top: var(--spacing-2xl);
+            }
+        }
+
+        /* CTA区域 */
+        .cta-section {
+            padding: 100px 0;
+            background: linear-gradient(135deg, var(--secondary-color) 0%, #333333 100%);
+            text-align: center;
+            color: white;
+        }
+
+        .cta-section h2 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .cta-section p {
+            font-size: 18px;
+            opacity: 0.9;
+            margin-bottom: 40px;
+        }
+
+        /* 底部导航栏 */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--border-light);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 12px 0 20px;
+            z-index: 1000;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .nav-tab {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 12px;
+            font-weight: 500;
+            font-size: 12px;
+            letter-spacing: 0.3px;
+            text-decoration: none;
+            color: var(--text-light);
+            min-width: 60px;
+        }
+
+        .nav-tab:hover:not(.active) {
+            background: rgba(195, 235, 46, 0.1);
+            color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .nav-tab:active {
+            transform: scale(0.95);
+        }
+
+        .nav-tab.active {
+            color: var(--primary-dark);
+            font-weight: 600;
+            background: rgba(195, 235, 46, 0.15);
+            text-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-tab i {
+            font-size: 20px;
+            margin-bottom: 2px;
+        }
+
+        .nav-tab span {
+            font-size: 11px;
+            line-height: 1;
+        }
+
+        /* 页脚 */
+        .footer {
+            background: var(--secondary-color);
+            color: white;
+            padding: 60px 0 100px; /* 增加底部padding为导航栏留空间 */
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 60px;
+            margin-bottom: 40px;
+        }
+
+        .footer-brand h3 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .footer-brand p {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .footer-section h4 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 8px;
+        }
+
+        .footer-section ul li a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section ul li a:hover {
+            color: var(--primary-color);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 32px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+
+            .hero-container {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                text-align: center;
+            }
+
+            .hero-title {
+                font-size: 36px;
+            }
+
+            .demo-container {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .demo-phones {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .demo-phone:nth-child(2) {
+                transform: translateY(0);
+            }
+
+            /* 底部导航栏响应式 */
+            .bottom-nav {
+                height: 70px;
+                padding: 8px 0 16px;
+            }
+
+            .nav-tab {
+                padding: 6px 8px;
+                min-width: 50px;
+            }
+
+            .nav-tab i {
+                font-size: 18px;
+            }
+
+            .nav-tab span {
+                font-size: 10px;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            /* 内嵌演示区域响应式 */
+            .embedded-demo-section {
+                padding: var(--spacing-lg);
+                margin-top: var(--spacing-3xl);
+            }
+
+            .demo-header-inline {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: var(--spacing-lg);
+            }
+
+            .demo-controls {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .demo-phone {
+                width: 240px;
+                height: 480px;
+            }
+
+            .demo-toggle-btn {
+                flex: 1;
+                justify-content: center;
+                margin-right: var(--spacing-sm);
+            }
+
+            .demo-toggle-btn:last-of-type {
+                margin-right: 0;
+            }
+
+            .demo-instructions {
+                padding: var(--spacing-md);
+            }
+
+            .demo-instructions p {
+                font-size: var(--text-xs);
+            }
+        }
+
+        /* 动画效果 */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        /* 滚动条样式 */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <header class="header">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-leaf"></i>
+                </div>
+                AI营养师文慧
+            </a>
+            <nav class="nav-menu">
+                <a href="#features" class="nav-item">产品功能</a>
+                <a href="#pricing" class="nav-item">价格方案</a>
+                <a href="#faq" class="nav-item">常见问题</a>
+            </nav>
+            <button class="cta-button" onclick="startTrial()">
+                <i class="fas fa-play"></i>
+                立即体验
+            </button>
+        </div>
+    </header>
+
+    <!-- 英雄区域 -->
+    <section class="hero-section">
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <i class="fab fa-weixin"></i>
+                    微信直接使用 · 无需下载APP
+                </div>
+                <h1 class="hero-title">有个AI营养师朋友<br>减重不再孤单</h1>
+                <p class="hero-subtitle">
+                    就像身边有个专业又贴心的营养师朋友，<strong style="color: var(--primary-color);">直接在微信里聊天</strong>，无需下载任何APP。
+                    拍照识别食物，智能推荐运动，记录每天进步，让减重变得轻松有趣。
+                </p>
+                <div class="hero-buttons">
+                    <button class="btn-primary" onclick="startDemo()">
+                        <i class="fas fa-rocket"></i>
+                        开始体验
+                    </button>
+                    <button class="btn-secondary" onclick="watchVideo()">
+                        <i class="fas fa-play-circle"></i>
+                        观看演示
+                    </button>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number"><i class="fab fa-weixin"></i></span>
+                        <span class="stat-label">微信内直接使用</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">0</span>
+                        <span class="stat-label">下载APP</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">95%</span>
+                        <span class="stat-label">用户满意度</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="phone-mockup">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen">
+                        <iframe src="miniprogram-home.html" class="demo-iframe"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 产品特色 -->
+    <section id="features" class="features-section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">核心功能</div>
+                <h2 class="section-title">贴心陪伴减重全流程，让每一天都有进步</h2>
+                <p class="section-description">
+                    从日常陪伴到数据监控，从方案调整到异常预警，AI文慧覆盖减重全场景，让您的减重之路更科学、更安心
+                </p>
+            </div>
+            
+            <!-- 交互式功能展示区域 -->
+            <div class="interactive-features-container">
+                <!-- 左侧：功能分类 -->
+                <div class="features-left">
+                    <div class="feature-category">
+                        <h3 class="category-title">
+                        <i class="fab fa-weixin"></i>
+                            日常陪伴与咨询
+                        </h3>
+                        <div class="feature-items">
+                            <div class="feature-item active" onclick="showInteractiveDemo('daily-companion', this)">
+                                <span class="feature-dot"></span>
+                                <div class="feature-content">
+                                    <strong>24小时答疑解惑</strong>
+                                    <p>微信随问随答，饮食运动问题即时解决</p>
+                    </div>
+                    </div>
+                            <div class="feature-item" onclick="showInteractiveDemo('daily-checkin', this)">
+                                <span class="feature-dot"></span>
+                                <div class="feature-content">
+                                    <strong>饮食运动打卡</strong>
+                                    <p>拍照记录三餐，运动轨迹自动识别</p>
+                                </div>
+                            </div>
+                            <div class="feature-item" onclick="showInteractiveDemo('emotional-support', this)">
+                                <span class="feature-dot"></span>
+                                <div class="feature-content">
+                                    <strong>情绪关怀陪伴</strong>
+                                    <p>减重路上的心理支持，鼓励坚持不放弃</p>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+
+                    <div class="feature-category">
+                        <h3 class="category-title">
+                            <i class="fas fa-chart-pulse"></i>
+                            数据监控与分析
+                        </h3>
+                        <div class="feature-items">
+                            <div class="feature-item" onclick="showInteractiveDemo('health-monitoring', this)">
+                                <span class="feature-dot"></span>
+                                <div class="feature-content">
+                                    <strong>智能设备互联监测</strong>
+                                    <p>血糖、心率、体温等多设备实时数据同步</p>
+                    </div>
+                    </div>
+                            <div class="feature-item" onclick="showInteractiveDemo('risk-detection', this)">
+                                <span class="feature-dot"></span>
+                                <div class="feature-content">
+                                    <strong>健康风险预警</strong>
+                                    <p>AI分析血糖心率异常，提前预警干预</p>
+                                </div>
+                            </div>
+                            <div class="feature-item" onclick="showInteractiveDemo('progress-analysis', this)">
+                                <span class="feature-dot"></span>
+                                <div class="feature-content">
+                                    <strong>综合健康分析</strong>
+                                    <p>多维生理指标趋势分析，科学减重指导</p>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+
+                </div>
+
+                <!-- 中间：演示区域 -->
+                <div class="demo-display-area">
+                    <div class="demo-header">
+                        <div class="demo-title-section">
+                            <h3 id="interactive-demo-title">24小时答疑解惑</h3>
+                            <p id="interactive-demo-subtitle">智能AI减重助手演示</p>
+                </div>
+
+                        <!-- 平台切换按钮 -->
+                        <div class="platform-switcher">
+                            <button class="platform-btn active" onclick="switchPlatform('wechat')" data-platform="wechat">
+                                    <i class="fab fa-weixin"></i>
+                                <span>微信端</span>
+                            </button>
+                            <button class="platform-btn" onclick="switchPlatform('miniprogram')" data-platform="miniprogram">
+                                <i class="fas fa-mobile-alt"></i>
+                                <span>小程序</span>
+                            </button>
+                            </div>
+                </div>
+
+                    <div class="single-demo-viewport">
+                        <!-- 单一演示平台 -->
+                        <div class="demo-platform">
+                            <div class="phone-simulator">
+                                <div class="phone-frame">
+                                    <div class="phone-notch"></div>
+                                    <div class="phone-status-bar">
+                                        <span class="status-time">9:41</span>
+                                        <div class="status-indicators">
+                                            <i class="fas fa-signal"></i>
+                                            <i class="fas fa-wifi"></i>
+                                            <i class="fas fa-battery-three-quarters"></i>
+                                        </div>
+                                    </div>
+                                    <div class="phone-content">
+                                        <iframe src="wechat-ai-chat.html" id="demo-iframe" 
+                                                frameborder="0" scrolling="no"></iframe>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="demo-context">
+                        <!-- 智能平台选择提示 -->
+                        <div id="smart-platform-hint" class="smart-platform-hint" style="display: none;"></div>
+                        
+                        <div class="context-info">
+                            <p id="interactive-demo-context">
+                                减重路上遇到任何疑问，微信里直接问AI文慧。无论是饮食搭配、运动安排还是情绪波动，都能得到专业及时的回答。
+                                <br/><br/>
+                                <strong>点击左侧功能查看演示效果</strong> · 智能设备数据实时同步 · 双端协同工作
+                            </p>
+                    </div>
+
+                        
+
+
+                        
+                </div>
+                                        </div>
+
+                <!-- 右侧：功能分类 -->
+                <div class="features-right">
+                    <div class="feature-category">
+                        <h3 class="category-title">
+                            <i class="fas fa-magic"></i>
+                            智能干预与调整
+                        </h3>
+                        <div class="feature-items">
+                            <div class="feature-item" onclick="showInteractiveDemo('dynamic-adjustment', this)">
+                                <span class="feature-dot"></span>
+                                <div class="feature-content">
+                                    <strong>方案动态调整</strong>
+                                    <p>按日复盘，自动微调餐单运动计划</p>
+                                            </div>
+                                        </div>
+                            <div class="feature-item" onclick="showInteractiveDemo('early-warning', this)">
+                                <span class="feature-dot"></span>
+                                <div class="feature-content">
+                                    <strong>异常预警干预</strong>
+                                    <p>连续不打卡、体重停滞等主动提醒</p>
+                                    </div>
+                                </div>
+                            <div class="feature-item" onclick="showInteractiveDemo('personalized-guidance', this)">
+                                <span class="feature-dot"></span>
+                                <div class="feature-content">
+                                    <strong>个性化指导</strong>
+                                    <p>基于个人档案，定制专属减重方案</p>
+                                            </div>
+                                        </div>
+                                            </div>
+                                        </div>
+
+                    <div class="feature-category">
+                        <h3 class="category-title">
+                            <i class="fas fa-graduation-cap"></i>
+                            营养课程与激励
+                        </h3>
+                        <div class="feature-items">
+                            <div class="feature-item" onclick="showInteractiveDemo('nutrition-courses', this)">
+                                <span class="feature-dot"></span>
+                                <div class="feature-content">
+                                    <strong>系统化营养课程</strong>
+                                    <p>专业减重知识，分阶段深度学习</p>
+                                    </div>
+                                </div>
+                            <div class="feature-item" onclick="showInteractiveDemo('study-checkin', this)">
+                                <span class="feature-dot"></span>
+                                <div class="feature-content">
+                                    <strong>学习打卡激励</strong>
+                                    <p>每日学习打卡，获得荣誉徽章积分</p>
+                                            </div>
+                                        </div>
+                            <div class="feature-item" onclick="showInteractiveDemo('rewards-system', this)">
+                                <span class="feature-dot"></span>
+                                <div class="feature-content">
+                                    <strong>积分兑换商城</strong>
+                                    <p>积分兑换奖励，持续学习动力</p>
+                                            </div>
+                                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- 用户使用流程 -->
+    <section class="user-journey-section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">使用流程</div>
+                <h2 class="section-title">90天减重之旅，每一步都有文慧陪伴</h2>
+                <p class="section-description">
+                    从购买到成功减重，整个过程简单清晰，AI文慧全程贴心指导
+                </p>
+            </div>
+            
+            <!-- 90天减重时间轴 -->
+            <div style="background: #f8fafc; padding: 40px 20px; border-radius: 12px; margin: 20px 0;">
+                <div style="display: flex; align-items: flex-start; gap: 20px; max-width: 1200px; margin: 0 auto;">
+                    
+                    <!-- 阶段1 -->
+                    <div style="flex: 1; background: white; border-radius: 8px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
+                        <div style="width: 40px; height: 40px; background: #e5e7eb; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 18px; font-weight: bold; margin-bottom: 15px;">1</div>
+                        <h3 style="color: #1f2937; font-size: 16px; font-weight: 600; margin-bottom: 5px;">服务购买与入门</h3>
+                        <p style="color: #6b7280; font-size: 14px; margin-bottom: 15px;">(Day 0-1)</p>
+                        <ul style="list-style: none; padding: 0; margin: 0;">
+                            <li style="color: #6b7280; font-size: 14px; line-height: 1.6; margin-bottom: 8px; padding-left: 15px; position: relative;">
+                                <span style="position: absolute; left: 0; color: #9ca3af;">•</span>
+                                小程序购买：90天季卡购买，支付完成
+                            </li>
+                            <li style="color: #6b7280; font-size: 14px; line-height: 1.6; margin-bottom: 8px; padding-left: 15px; position: relative;">
+                                <span style="position: absolute; left: 0; color: #9ca3af;">•</span>
+                                欢迎引导：文慧自我介绍，服务说明
+                            </li>
+                            <li style="color: #6b7280; font-size: 14px; line-height: 1.6; margin-bottom: 8px; padding-left: 15px; position: relative;">
+                                <span style="position: absolute; left: 0; color: #9ca3af;">•</span>
+                                建立档案：详细健康档案录入，目标设定
+                            </li>
+                            <li style="color: #6b7280; font-size: 14px; line-height: 1.6; margin-bottom: 8px; padding-left: 15px; position: relative;">
+                                <span style="position: absolute; left: 0; color: #9ca3af;">•</span>
+                                硬件绑定：智能秤、手环等设备连接
+                            </li>
+                            <li style="color: #6b7280; font-size: 14px; line-height: 1.6; margin-bottom: 8px; padding-left: 15px; position: relative;">
+                                <span style="position: absolute; left: 0; color: #9ca3af;">•</span>
+                                基础评估：AI分析用户状态，生成基础报告
+                            </li>
+                        </ul>
+                        </div>
+
+                    <!-- 箭头1 -->
+                    <div style="display: flex; align-items: center; margin-top: 20px;">
+                        <div style="width: 0; height: 0; border-left: 15px solid #e5e7eb; border-top: 10px solid transparent; border-bottom: 10px solid transparent;"></div>
+                        </div>
+
+                    <!-- 阶段2 -->
+                    <div style="flex: 1; background: white; border-radius: 8px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
+                        <div style="width: 40px; height: 40px; background: #e5e7eb; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 18px; font-weight: bold; margin-bottom: 15px;">2</div>
+                        <h3 style="color: #1f2937; font-size: 16px; font-weight: 600; margin-bottom: 5px;">方案定制与启动</h3>
+                        <p style="color: #6b7280; font-size: 14px; margin-bottom: 15px;">(Day 2-3)</p>
+                        <ul style="list-style: none; padding: 0; margin: 0;">
+                            <li style="color: #6b7280; font-size: 14px; line-height: 1.6; margin-bottom: 8px; padding-left: 15px; position: relative;">
+                                <span style="position: absolute; left: 0; color: #9ca3af;">•</span>
+                                个性化方案生成：AI整合数据生成专属计划
+                            </li>
+                            <li style="color: #6b7280; font-size: 14px; line-height: 1.6; margin-bottom: 8px; padding-left: 15px; position: relative;">
+                                <span style="position: absolute; left: 0; color: #9ca3af;">•</span>
+                                方案解读：文慧详细解释方案内容和执行要点
+                            </li>
+                            <li style="color: #6b7280; font-size: 14px; line-height: 1.6; margin-bottom: 8px; padding-left: 15px; position: relative;">
+                                <span style="position: absolute; left: 0; color: #9ca3af;">•</span>
+                                首周计划：制定详细的第一周执行计划
+                            </li>
+                            <li style="color: #6b7280; font-size: 14px; line-height: 1.6; margin-bottom: 8px; padding-left: 15px; position: relative;">
+                                <span style="position: absolute; left: 0; color: #9ca3af;">•</span>
+                                习惯设定：确定要培养的核心健康习惯
+                            </li>
+                            <li style="color: #6b7280; font-size: 14px; line-height: 1.6; margin-bottom: 8px; padding-left: 15px; position: relative;">
+                                <span style="position: absolute; left: 0; color: #9ca3af;">•</span>
+                                baseline建立：记录初始状态各项数据
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- 箭头2 -->
+                    <div style="display: flex; align-items: center; margin-top: 20px;">
+                        <div style="width: 0; height: 0; border-left: 15px solid #e5e7eb; border-top: 10px solid transparent; border-bottom: 10px solid transparent;"></div>
+                        </div>
+
+                    <!-- 阶段3 - 高亮 -->
+                    <div style="flex: 1; background: rgba(195, 235, 46, 0.1); border-radius: 8px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #C3EB2E;">
+                        <div style="width: 40px; height: 40px; background: #C3EB2E; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 18px; font-weight: bold; margin-bottom: 15px;">3</div>
+                        <h3 style="color: #1f2937; font-size: 16px; font-weight: 600; margin-bottom: 5px;">日常执行与监督</h3>
+                        <p style="color: #6b7280; font-size: 14px; margin-bottom: 15px;">(Day 4-85)</p>
+                        <ul style="list-style: none; padding: 0; margin: 0;">
+                            <li style="color: #6b7280; font-size: 14px; line-height: 1.6; margin-bottom: 8px; padding-left: 15px; position: relative;">
+                                <span style="position: absolute; left: 0; color: #9ca3af;">•</span>
+                                每日打卡：饮食、运动、体重、睡眠等数据记录
+                            </li>
+                            <li style="color: #6b7280; font-size: 14px; line-height: 1.6; margin-bottom: 8px; padding-left: 15px; position: relative;">
+                                <span style="position: absolute; left: 0; color: #9ca3af;">•</span>
+                                实时指导：基于打卡内容提供即时建议
+                            </li>
+                            <li style="color: #6b7280; font-size: 14px; line-height: 1.6; margin-bottom: 8px; padding-left: 15px; position: relative;">
+                                <span style="position: absolute; left: 0; color: #9ca3af;">•</span>
+                                智能提醒：个性化的打卡提醒和健康建议
+                            </li>
+                            <li style="color: #6b7280; font-size: 14px; line-height: 1.6; margin-bottom: 8px; padding-left: 15px; position: relative;">
+                                <span style="position: absolute; left: 0; color: #9ca3af;">•</span>
+                                周期复盘：每周进行数据分析和方案调整
+                            </li>
+                            <li style="color: #6b7280; font-size: 14px; line-height: 1.6; margin-bottom: 8px; padding-left: 15px; position: relative;">
+                                <span style="position: absolute; left: 0; color: #9ca3af;">•</span>
+                                异常干预：发现问题及时介入指导
+                            </li>
+                        </ul>
+                        </div>
+
+                    <!-- 箭头3 -->
+                    <div style="display: flex; align-items: center; margin-top: 20px;">
+                        <div style="width: 0; height: 0; border-left: 15px solid #e5e7eb; border-top: 10px solid transparent; border-bottom: 10px solid transparent;"></div>
+                    </div>
+
+                    <!-- 阶段4 -->
+                    <div style="flex: 1; background: white; border-radius: 8px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
+                        <div style="width: 40px; height: 40px; background: #e5e7eb; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 18px; font-weight: bold; margin-bottom: 15px;">4</div>
+                        <h3 style="color: #1f2937; font-size: 16px; font-weight: 600; margin-bottom: 5px;">成果总结与巩固</h3>
+                        <p style="color: #6b7280; font-size: 14px; margin-bottom: 15px;">(Day 86-90)</p>
+                        <ul style="list-style: none; padding: 0; margin: 0;">
+                            <li style="color: #6b7280; font-size: 14px; line-height: 1.6; margin-bottom: 8px; padding-left: 15px; position: relative;">
+                                <span style="position: absolute; left: 0; color: #9ca3af;">•</span>
+                                成果评估：全面分析90天减重和健康改善效果
+                            </li>
+                            <li style="color: #6b7280; font-size: 14px; line-height: 1.6; margin-bottom: 8px; padding-left: 15px; position: relative;">
+                                <span style="position: absolute; left: 0; color: #9ca3af;">•</span>
+                                习惯巩固：强化已养成的健康习惯
+                            </li>
+                            <li style="color: #6b7280; font-size: 14px; line-height: 1.6; margin-bottom: 8px; padding-left: 15px; position: relative;">
+                                <span style="position: absolute; left: 0; color: #9ca3af;">•</span>
+                                后续规划：制定后续健康管理建议
+                            </li>
+                            <li style="color: #6b7280; font-size: 14px; line-height: 1.6; margin-bottom: 8px; padding-left: 15px; position: relative;">
+                                <span style="position: absolute; left: 0; color: #9ca3af;">•</span>
+                                经验总结：提取个人健康管理经验
+                            </li>
+                            <li style="color: #6b7280; font-size: 14px; line-height: 1.6; margin-bottom: 8px; padding-left: 15px; position: relative;">
+                                <span style="position: absolute; left: 0; color: #9ca3af;">•</span>
+                                服务反馈：收集用户体验反馈
+                            </li>
+                        </ul>
+                        </div>
+                        </div>
+                    </div>
+
+                <!-- 服务特色展示 -->
+                <div style="display: flex; justify-content: center; gap: 40px; margin-top: 60px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
+                    <div style="text-align: center; flex: 1; max-width: 150px;">
+                        <div style="font-size: 2rem; font-weight: 600; color: #C3EB2E; margin-bottom: 4px;">90</div>
+                        <div style="font-size: 1rem; font-weight: 600; color: #1f2937; margin-bottom: 4px;">服务天数</div>
+                        <div style="font-size: 0.85rem; color: #6b7280; line-height: 1.4; font-weight: 400;">完整的健康管理周期</div>
+                    </div>
+                    <div style="text-align: center; flex: 1; max-width: 150px;">
+                        <div style="font-size: 2rem; font-weight: 600; color: #C3EB2E; margin-bottom: 4px;">24/7</div>
+                        <div style="font-size: 1rem; font-weight: 600; color: #1f2937; margin-bottom: 4px;">智能陪伴</div>
+                        <div style="font-size: 0.85rem; color: #6b7280; line-height: 1.4; font-weight: 400;">全天候AI服务支持</div>
+                    </div>
+                    <div style="text-align: center; flex: 1; max-width: 150px;">
+                        <div style="font-size: 2rem; font-weight: 600; color: #C3EB2E; margin-bottom: 4px;">100%</div>
+                        <div style="font-size: 1rem; font-weight: 600; color: #1f2937; margin-bottom: 4px;">自动化交付</div>
+                        <div style="font-size: 0.85rem; color: #6b7280; line-height: 1.4; font-weight: 400;">无需人工干预的智能服务</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 产品优势对比 -->
+    <section class="comparison-section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">核心优势</div>
+                <h2 class="section-title">为什么选择AI营养师文慧？</h2>
+                <p class="section-description">
+                    AI技术 vs 传统服务，让数据说话
+                </p>
+            </div>
+            
+            <div class="comparison-container">
+                <!-- AI文慧服务 -->
+                <div class="service-column ai-service">
+                    <div class="service-header">
+                        <div class="service-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <h3>AI营养师文慧</h3>
+                        <p>智能科技驱动</p>
+                    </div>
+                    
+                    <div class="service-features">
+                        <div class="feature-item">
+                            <span class="feature-label">服务时间</span>
+                            <span class="feature-value">🤖 24小时在线</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-label">响应速度</span>
+                            <span class="feature-value">⚡ 秒级回复</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-label">个性化</span>
+                            <span class="feature-value">🎯 千人千面方案</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-label">使用便捷</span>
+                            <span class="feature-value">💬 微信内直接使用，无需下载</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-label">专业度</span>
+                            <span class="feature-value">🔬 循证营养学基础</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-label">服务成本</span>
+                            <span class="feature-value">💰 每天仅需6.6元</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VS 分隔符 -->
+                <div class="vs-divider">
+                    <div class="vs-circle">VS</div>
+                </div>
+
+                <!-- 传统服务 -->
+                <div class="service-column traditional-service">
+                    <div class="service-header">
+                        <div class="service-icon">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <h3>传统减重服务</h3>
+                        <p>人工服务模式</p>
+                    </div>
+                    
+                    <div class="service-features">
+                        <div class="feature-item">
+                            <span class="feature-label">服务时间</span>
+                            <span class="feature-value">📞 工作时间有限</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-label">响应速度</span>
+                            <span class="feature-value">⏳ 需要预约等待</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-label">个性化</span>
+                            <span class="feature-value">📋 标准化套餐</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-label">使用便捷</span>
+                            <span class="feature-value">📲 多个APP切换</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-label">专业度</span>
+                            <span class="feature-value">❓ 依赖个人经验</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-label">服务成本</span>
+                            <span class="feature-value">💸 费用高昂难负担</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="comparison-summary">
+                <div class="summary-badge">
+                    <i class="fas fa-trophy"></i>
+                    AI技术优势明显
+                </div>
+                <p>相同的专业效果，更智能的服务体验，更亲民的价格成本</p>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- 价格方案 -->
+    <section id="pricing" class="pricing-section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">价格方案</div>
+                <h2 class="section-title">选择适合您的健康方案</h2>
+                <p class="section-description">
+                    灵活的价格选择，专业的服务保障，让每个人都能享受AI营养师的贴心陪伴
+                </p>
+            </div>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <h3 class="plan-name">体验版</h3>
+                    <div class="plan-price">¥199</div>
+                    <div class="plan-period">30天体验</div>
+                    <ul class="plan-features">
+                        <li><span class="check"><i class="fas fa-check"></i></span> AI营养师基础咨询</li>
+                        <li><span class="check"><i class="fas fa-check"></i></span> 小程序数据记录</li>
+                        <li><span class="check"><i class="fas fa-check"></i></span> 基础健康方案</li>
+                        <li><span class="check"><i class="fas fa-check"></i></span> 7天内无理由退款</li>
+                    </ul>
+                    <button class="btn-secondary">选择体验版</button>
+                </div>
+
+                <div class="pricing-card featured">
+                    <h3 class="plan-name">90天季卡</h3>
+                    <div class="plan-price">¥599</div>
+                    <div class="plan-period">90天科学减重</div>
+                    <ul class="plan-features">
+                        <li><span class="check"><i class="fab fa-weixin"></i></span> <strong>微信内直接使用，无需下载APP</strong></li>
+                        <li><span class="check"><i class="fas fa-check"></i></span> AI文慧24小时陪伴聊天</li>
+                        <li><span class="check"><i class="fas fa-check"></i></span> 拍照识别食物营养热量</li>
+                        <li><span class="check"><i class="fas fa-check"></i></span> 个性化运动方案推荐</li>
+                        <li><span class="check"><i class="fas fa-check"></i></span> 进度数据可视化展示</li>
+                        <li><span class="check"><i class="fas fa-check"></i></span> 效果不满意全额退款</li>
+                    </ul>
+                    <button class="btn-primary">立即购买</button>
+                </div>
+
+                <div class="pricing-card">
+                    <h3 class="plan-name">年度会员</h3>
+                    <div class="plan-price">¥1599</div>
+                    <div class="plan-period">365天全年陪伴</div>
+                    <ul class="plan-features">
+                        <li><span class="check"><i class="fas fa-check"></i></span> 季卡所有功能</li>
+                        <li><span class="check"><i class="fas fa-check"></i></span> 高级健康报告</li>
+                        <li><span class="check"><i class="fas fa-check"></i></span> 专家一对一咨询</li>
+                        <li><span class="check"><i class="fas fa-check"></i></span> 优先客服支持</li>
+                        <li><span class="check"><i class="fas fa-check"></i></span> 免费功能更新</li>
+                    </ul>
+                    <button class="btn-secondary">选择年度</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 常见问题 -->
+    <section id="faq" class="faq-section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">常见问题</div>
+                <h2 class="section-title">您可能想了解的问题</h2>
+                <p class="section-description">
+                    精选用户最关心的问题，如有其他疑问欢迎联系我们
+                </p>
+            </div>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <h3>为什么选择在微信里使用，而不是独立APP？</h3>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p><strong style="color: var(--primary-color);">零门槛、零下载、零切换！</strong>13亿用户都会用，不占用存储空间，聊天就在微信里，自然融入日常生活。</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <h3>AI营养师文慧是如何工作的？</h3>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>基于先进AI技术和营养学专业知识，根据您的身体数据、健康目标和生活习惯，制定个性化减重方案，通过微信随时提供专业指导。</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <h3>90天真的能有效减重吗？</h3>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>90天是科学验证的有效减重周期，分为适应期、加速期和巩固期三个阶段。通过AI个性化指导，95%的用户都能达到预期目标。</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <h3>和AI聊天感觉会不会很奇怪？</h3>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>完全不会！AI文慧就像一个很懂营养的朋友，聊天很自然。可以问她"今天吃什么好"、"怎么运动不累"，都会给出实用建议。</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <h3>拍照识别食物准确吗？</h3>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>很准确！AI能识别上千种常见食物，包括中式菜品。即使拍得不清楚或混合菜品，也能分析营养成分。不确定时还可以和AI确认调整。</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <h3>如果效果不满意可以退款吗？</h3>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>体验版用户享有7天无理由退款保障。90天季卡用户30天内不满意可申请全额退款。我们致力于让每位用户获得满意的减重体验。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- CTA区域 -->
+    <section class="cta-section">
+        <div class="container">
+            <h2>打开微信，立即开始减重之旅</h2>
+            <p>加入已有数万用户选择的AI营养师文慧，13亿微信用户都会用的减重助手</p>
+            <button class="btn-primary" onclick="startTrial()" style="background: var(--primary-color); color: var(--secondary-color);">
+                <i class="fas fa-rocket"></i>
+                立即开始 90 天减重计划
+            </button>
+        </div>
+    </section>
+
+    <!-- 底部导航栏 -->
+    <nav class="bottom-nav">
+        <a href="#hero" class="nav-tab" data-section="hero">
+            <i class="fas fa-home"></i>
+            <span>首页</span>
+        </a>
+        <a href="#features" class="nav-tab" data-section="features">
+            <i class="fas fa-star"></i>
+            <span>功能</span>
+        </a>
+        <a href="#demo" class="nav-tab" data-section="demo">
+            <i class="fas fa-mobile-alt"></i>
+            <span>演示</span>
+        </a>
+        <a href="#pricing" class="nav-tab" data-section="pricing">
+            <i class="fas fa-tag"></i>
+            <span>价格</span>
+        </a>
+        <a href="#faq" class="nav-tab" data-section="faq">
+            <i class="fas fa-question-circle"></i>
+            <span>帮助</span>
+        </a>
+    </nav>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <h3>AI营养师文慧</h3>
+                    <p>致力于通过人工智能技术为用户提供专业、个性化的健康管理服务，让科学减重变得简单有效。</p>
+                    <div style="display: flex; gap: 16px;">
+                        <a href="#" style="color: var(--primary-color); font-size: 20px;"><i class="fab fa-weixin"></i></a>
+                        <a href="#" style="color: var(--primary-color); font-size: 20px;"><i class="fab fa-weibo"></i></a>
+                        <a href="#" style="color: var(--primary-color); font-size: 20px;"><i class="fab fa-qq"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>产品功能</h4>
+                    <ul>
+                        <li><a href="#features">AI智能方案</a></li>
+                        <li><a href="#features">体重管理</a></li>
+                        <li><a href="#features">饮食指导</a></li>
+                        <li><a href="#features">运动计划</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>服务支持</h4>
+                    <ul>
+                        <li><a href="#faq">常见问题</a></li>
+                        <li><a href="#">使用教程</a></li>
+                        <li><a href="#">联系客服</a></li>
+                        <li><a href="#">意见反馈</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>关于我们</h4>
+                    <ul>
+                        <li><a href="#">公司介绍</a></li>
+                        <li><a href="#">隐私政策</a></li>
+                        <li><a href="#">服务条款</a></li>
+                        <li><a href="#">加入我们</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 AI营养师文慧. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // 导航栏滚动效果
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('.header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(255, 255, 255, 0.98)';
+                header.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
+            } else {
+                header.style.background = 'rgba(255, 255, 255, 0.95)';
+                header.style.boxShadow = 'none';
+            }
+        });
+
+        // FAQ折叠功能
+        function toggleFaq(element) {
+            const faqItem = element.parentElement;
+            const isActive = faqItem.classList.contains('active');
+            
+            // 关闭所有FAQ
+            document.querySelectorAll('.faq-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // 如果当前不是激活状态，则激活
+            if (!isActive) {
+                faqItem.classList.add('active');
+            }
+        }
+
+        // 功能演示数据映射
+        const featureDemoMap = {
+            'wechat-chat': {
+                title: '微信直接聊天，贴心陪伴',
+                description: '体验与AI文慧的智能对话，24小时专业陪伴指导',
+                wechatSrc: 'wechat-health-plan.html',
+                miniprogramSrc: 'miniprogram-home.html',
+                instructions: '在微信里和AI文慧聊天，就像和朋友聊天一样自然。小程序端可以查看聊天记录和设置。'
+            },
+            'diet-photo': {
+                title: '拍照就知道营养',
+                description: 'AI智能识别食物，自动分析热量和营养成分',
+                wechatSrc: 'wechat-diet-management.html',
+                miniprogramSrc: 'miniprogram-records.html',
+                instructions: '微信里拍照发送给AI文慧，立即获得营养分析。小程序端查看详细的饮食记录和数据。'
+            },
+            'progress-tracking': {
+                title: '看得见的进步',
+                description: '全面的数据可视化，清楚展示减重进展',
+                wechatSrc: 'wechat-health-plan.html',
+                miniprogramSrc: 'miniprogram-progress.html',
+                instructions: '小程序端提供详细的进度图表和数据分析，微信端可以快速查看当前状态。'
+            },
+            'smart-adjust': {
+                title: '智能方案调整',
+                description: 'AI根据实际情况动态优化减重方案',
+                wechatSrc: 'wechat-weight-management.html',
+                miniprogramSrc: 'miniprogram-progress.html',
+                instructions: 'AI文慧会根据你的体重变化和生活情况，智能调整饮食和运动计划。'
+            },
+            'exercise-guide': {
+                title: '科学运动指导',
+                description: '个性化运动计划，确保安全高效',
+                wechatSrc: 'wechat-exercise-management.html',
+                miniprogramSrc: 'miniprogram-records.html',
+                instructions: '获得专业的运动指导和实时心率监控，让运动更科学更安全。'
+            },
+            'ai-care': {
+                title: '贴心提醒关怀',
+                description: '24小时智能关怀，主动提醒和鼓励',
+                wechatSrc: 'wechat-health-plan.html',
+                miniprogramSrc: 'miniprogram-home.html',
+                instructions: 'AI文慧会主动关心你的进展，提供个性化建议和温暖鼓励。'
+            }
+        };
+
+        let currentDemoType = 'wechat';
+
+        // 显示功能演示
+        function showFeatureDemo(featureKey, defaultSrc) {
+            currentFeature = featureKey;
+            const demoData = featureDemoMap[featureKey];
+            
+            if (!demoData) {
+                // 兼容原有调用方式
+                const heroPhone = document.querySelector('.phone-mockup iframe');
+                heroPhone.src = defaultSrc;
+            document.querySelector('.hero-section').scrollIntoView({ 
+                behavior: 'smooth' 
+            });
+                return;
+            }
+
+            // 显示内嵌演示区域
+            const demoSection = document.getElementById('embedded-demo');
+            demoSection.style.display = 'block';
+            
+            // 更新演示内容
+            document.getElementById('demo-title').textContent = demoData.title;
+            document.getElementById('demo-description').textContent = demoData.description;
+            document.getElementById('demo-instructions-text').textContent = demoData.instructions;
+            
+            // 设置默认为微信端
+            currentDemoType = 'wechat';
+            updateDemoButtons();
+            loadDemoContent();
+            
+            // 滚动到演示区域
+            setTimeout(() => {
+                demoSection.scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+            }, 100);
+        }
+
+        // 切换演示类型（微信端/小程序端）
+        function switchDemoType(type) {
+            currentDemoType = type;
+            updateDemoButtons();
+            loadDemoContent();
+        }
+
+        // 更新按钮状态
+        function updateDemoButtons() {
+            const wechatBtn = document.getElementById('wechat-btn');
+            const miniprogramBtn = document.getElementById('miniprogram-btn');
+            
+            wechatBtn.classList.toggle('active', currentDemoType === 'wechat');
+            miniprogramBtn.classList.toggle('active', currentDemoType === 'miniprogram');
+        }
+
+        // 加载演示内容
+        function loadDemoContent() {
+            if (!currentFeature) return;
+            
+            const demoData = featureDemoMap[currentFeature];
+            const iframe = document.getElementById('feature-demo-iframe');
+            
+            if (currentDemoType === 'wechat') {
+                iframe.src = demoData.wechatSrc;
+            } else {
+                iframe.src = demoData.miniprogramSrc;
+            }
+        }
+
+        // 关闭演示区域
+        function closeDemoSection() {
+            const demoSection = document.getElementById('embedded-demo');
+            demoSection.style.display = 'none';
+            currentFeature = null;
+        }
+
+        // 交互式演示数据映射 - 智能端选择
+        const interactiveDemoMap = {
+            'daily-companion': {
+                title: '24小时答疑解惑',
+                subtitle: '微信随问随答，即时解决问题',
+                context: '减重路上遇到任何疑问，微信里直接问AI文慧。无论是饮食搭配、运动安排还是情绪波动，都能得到专业及时的回答。<br/><br/><strong>点击左侧功能查看演示效果</strong> · 智能设备数据实时同步 · 双端协同工作',
+                wechatSrc: 'wechat-ai-chat.html',
+                miniprogramSrc: 'miniprogram-qa-center.html',
+                preferredPlatform: 'wechat', // 交互类功能优先显示微信端
+                category: 'interaction'
+            },
+            'daily-checkin': {
+                title: '饮食运动打卡',
+                subtitle: '轻松记录，自动识别',
+                context: '饮食三餐拍照打卡，AI自动识别营养成分；运动轨迹自动记录，无需手动输入。所有日常行为都在微信中完成，配合智能手环/手表自动追踪。',
+                wechatSrc: 'wechat-photo-checkin.html',
+                miniprogramSrc: 'miniprogram-records.html',
+                preferredPlatform: 'wechat', // 拍照打卡优先微信端
+                category: 'interaction'
+            },
+            'emotional-support': {
+                title: '情绪关怀陪伴',
+                subtitle: '减重路上的心理支持',
+                context: '减重过程中的挫折、焦虑、懈怠等情绪，AI文慧都能理解并给予专业的心理疏导。24小时陪伴，让你在减重路上不再孤单。',
+                wechatSrc: 'wechat-emotional-care.html',
+                miniprogramSrc: 'miniprogram-home.html',
+                preferredPlatform: 'wechat', // 情感交互优先微信端
+                category: 'interaction'
+            },
+            'health-monitoring': {
+                title: '智能设备互联监测',
+                subtitle: '血糖、心率、体温等多设备实时数据同步',
+                context: '全面对接多种智能健康设备：血糖仪实时监测血糖水平、心率监测仪24小时连续监测、智能体温计精准测量体温、智能体重秤进行体成分分析。所有数据自动同步到小程序，形成完整的健康档案。',
+                wechatSrc: 'wechat-health-monitoring.html',
+                miniprogramSrc: 'miniprogram-health-data.html',
+                preferredPlatform: 'miniprogram', // 数据展示优先小程序端
+                category: 'data'
+            },
+            'risk-detection': {
+                title: '健康风险预警',
+                subtitle: 'AI分析血糖心率异常，提前预警干预',
+                context: 'AI智能分析各项生理指标：血糖超出正常范围自动预警、心率异常波动实时提醒、体温异常升高立即通知、体重停滞或快速下降及时干预。结合个人健康档案，提供个性化健康风险预警服务。',
+                wechatSrc: 'wechat-health-monitoring.html',
+                miniprogramSrc: 'miniprogram-health-data.html',
+                preferredPlatform: 'wechat', // 预警通知优先微信端
+                category: 'interaction'
+            },
+            'progress-analysis': {
+                title: '综合健康分析',
+                subtitle: '多维生理指标趋势分析，科学减重指导',
+                context: '综合分析多维度健康数据：血糖水平变化趋势、心率变异系数、体温波动规律、体重体脂变化曲线等。AI根据这些数据生成个性化健康报告，为减重方案调整、饮食指导、运动安排提供科学依据。',
+                wechatSrc: 'wechat-health-plan.html',
+                miniprogramSrc: 'miniprogram-progress.html',
+                preferredPlatform: 'miniprogram', // 数据分析优先小程序端
+                category: 'data'
+            },
+            'dynamic-adjustment': {
+                title: '方案动态调整',
+                subtitle: '按日复盘，智能微调',
+                context: '每日根据打卡数据、身体反馈、进展情况，AI自动微调明日餐单、运动计划和生活习惯建议。方案始终适合当前身体状态，配合智能设备数据，让减重效果最大化。',
+                wechatSrc: 'wechat-health-plan.html',
+                miniprogramSrc: 'miniprogram-progress.html',
+                preferredPlatform: 'wechat', // 方案调整优先微信端
+                category: 'interaction'
+            },
+            'early-warning': {
+                title: '异常预警干预',
+                subtitle: '主动干预，避免掉队',
+                context: '连续未打卡、体重停滞、睡眠不足等异常情况触发自动预警。主动推送提醒和解决方案，避免早期掉队，保持减重节奏。',
+                wechatSrc: 'wechat-emotional-care.html',
+                miniprogramSrc: 'miniprogram-home.html',
+                preferredPlatform: 'wechat', // 预警提醒优先微信端
+                category: 'interaction'
+            },
+            'personalized-guidance': {
+                title: '个性化指导',
+                subtitle: '基于档案数据的专属方案',
+                context: '结合个人健康档案、硬件设备数据，AI生成专属的饮食搭配、运动安排、作息调整方案。系统化营养课程+结构化每日任务，科学推进减重进程。',
+                wechatSrc: 'wechat-health-plan.html',
+                miniprogramSrc: 'miniprogram-goal-setting.html',
+                preferredPlatform: 'wechat', // 个性化指导优先微信端
+                category: 'interaction'
+            },
+            'nutrition-courses': {
+                title: '系统化营养课程',
+                subtitle: '专业减重知识，分阶段深度学习',
+                context: '由专业营养师设计的系统化课程体系，从基础营养知识到高级减重技巧，分阶段渐进式学习。配合实践任务和知识测试，确保学以致用。',
+                wechatSrc: 'wechat-diet-management.html',
+                miniprogramSrc: 'miniprogram-learning.html',
+                preferredPlatform: 'miniprogram', // 课程学习优先小程序端
+                category: 'data'
+            },
+            'study-checkin': {
+                title: '学习打卡激励',
+                subtitle: '每日学习打卡，获得荣誉徽章积分',
+                context: '每日完成课程学习和打卡任务，获得对应积分奖励。连续打卡、课程完成度、知识测试成绩等都能获得不同等级的荣誉徽章，激励持续学习。',
+                wechatSrc: 'wechat-photo-checkin.html',
+                miniprogramSrc: 'miniprogram-badges.html',
+                preferredPlatform: 'miniprogram', // 积分系统优先小程序端
+                category: 'data'
+            },
+            'rewards-system': {
+                title: '积分兑换商城',
+                subtitle: '积分兑换奖励，持续学习动力',
+                context: '通过学习打卡、课程完成、减重达标等方式累积积分。积分可兑换健康食品、运动装备、课程升级包等实用奖励，让学习更有动力。',
+                wechatSrc: 'wechat-diet-management.html',
+                miniprogramSrc: 'miniprogram-badges.html',
+                preferredPlatform: 'miniprogram', // 商城系统优先小程序端
+                category: 'data'
+            },
+        };
+
+        let currentInteractiveFeature = 'daily-companion';
+
+        // 显示交互式演示 - 智能端选择
+        function showInteractiveDemo(featureKey, element) {
+            // 移除所有激活状态
+            document.querySelectorAll('.feature-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // 激活当前项
+            element.classList.add('active');
+            
+            currentInteractiveFeature = featureKey;
+            const demoData = interactiveDemoMap[featureKey];
+            
+            if (!demoData) return;
+            
+            // 智能选择优先平台
+            const preferredPlatform = demoData.preferredPlatform || 'wechat';
+            currentPlatform = preferredPlatform;
+            
+            // 添加切换动画效果
+            const demoArea = document.querySelector('.demo-display-area');
+            if (demoArea) {
+                demoArea.style.opacity = '0.7';
+                demoArea.style.transform = 'scale(0.98)';
+                
+                setTimeout(() => {
+                    demoArea.style.opacity = '1';
+                    demoArea.style.transform = 'scale(1)';
+                }, 200);
+            }
+            
+            // 手机框架闪烁效果  
+            const phoneFrames = document.querySelectorAll('.phone-frame');
+            phoneFrames.forEach(frame => {
+                frame.style.boxShadow = '0 0 0 3px rgba(195, 235, 46, 0.8), 0 20px 60px rgba(0, 0, 0, 0.2)';
+                setTimeout(() => {
+                    frame.style.boxShadow = ''; // 恢复原样式
+                }, 600);
+            });
+            
+            // 更新演示内容
+            document.getElementById('interactive-demo-title').textContent = demoData.title;
+            
+            // 根据功能类型显示不同的副标题
+            const categoryText = demoData.category === 'interaction' ? '交互功能演示' : '数据展示演示';
+            const platformText = preferredPlatform === 'wechat' ? '微信端' : '小程序端';
+            document.getElementById('interactive-demo-subtitle').textContent = `${categoryText} - 优先显示${platformText}`;
+            
+            document.getElementById('interactive-demo-context').innerHTML = demoData.context;
+            
+            // 自动切换到优先平台
+            switchPlatform(preferredPlatform);
+            
+            // 显示智能提示
+            showSmartPlatformHint(demoData);
+        }
+
+        // 显示智能平台选择提示
+        function showSmartPlatformHint(demoData) {
+            const hintContainer = document.getElementById('smart-platform-hint');
+            if (!hintContainer) return;
+            
+            const category = demoData.category;
+            const preferredPlatform = demoData.preferredPlatform;
+            
+            let hintText = '';
+            let hintIcon = '';
+            
+            if (category === 'interaction') {
+                hintIcon = '💬';
+                hintText = preferredPlatform === 'wechat' 
+                    ? '智能选择：交互类功能优先展示微信端，便于体验对话和操作流程'
+                    : '智能选择：交互类功能优先展示小程序端，便于体验操作流程';
+            } else if (category === 'data') {
+                hintIcon = '📊';
+                hintText = preferredPlatform === 'miniprogram'
+                    ? '智能选择：数据展示类功能优先展示小程序端，便于查看图表和分析结果'
+                    : '智能选择：数据展示类功能优先展示微信端，便于查看数据概览';
+            }
+            
+            hintContainer.innerHTML = `
+                <div class="smart-hint">
+                    <span class="hint-icon">${hintIcon}</span>
+                    <span class="hint-text">${hintText}</span>
+                    <button class="hint-close" onclick="hideSmartPlatformHint()">×</button>
+                </div>
+            `;
+            
+            hintContainer.style.display = 'block';
+            
+            // 3秒后自动隐藏
+            setTimeout(() => {
+                hideSmartPlatformHint();
+            }, 5000);
+        }
+
+        // 隐藏智能提示
+        function hideSmartPlatformHint() {
+            const hintContainer = document.getElementById('smart-platform-hint');
+            if (hintContainer) {
+                hintContainer.style.display = 'none';
+            }
+        }
+
+        // 同时加载双端演示内容
+        function loadDualDemoContent() {
+            const demoData = interactiveDemoMap[currentInteractiveFeature];
+            const wechatIframe = document.getElementById('wechat-demo-iframe');
+            const miniprogramIframe = document.getElementById('miniprogram-demo-iframe');
+            
+            if (wechatIframe && demoData.wechatSrc) {
+                wechatIframe.src = demoData.wechatSrc;
+            }
+            
+            if (miniprogramIframe && demoData.miniprogramSrc) {
+                miniprogramIframe.src = demoData.miniprogramSrc;
+            }
+        }
+
+
+        // 平台切换功能 - 智能端选择
+        let currentPlatform = 'wechat';
+        let currentFeature = 'daily-companion';
+
+        function switchPlatform(platform) {
+            currentPlatform = platform;
+            
+            // 更新按钮状态
+            document.querySelectorAll('.platform-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-platform="${platform}"]`).classList.add('active');
+            
+            // 切换iframe内容
+            updateDemoContent();
+            
+            // 添加切换动效
+            const iframe = document.getElementById('demo-iframe');
+            if (iframe) {
+                iframe.style.opacity = '0.7';
+                iframe.style.transform = 'scale(0.98)';
+                
+                setTimeout(() => {
+                    iframe.style.opacity = '1';
+                    iframe.style.transform = 'scale(1)';
+                }, 200);
+            }
+            
+            // 更新平台切换提示
+            updatePlatformSwitchHint(platform);
+        }
+
+        // 更新平台切换提示
+        function updatePlatformSwitchHint(platform) {
+            const demoData = interactiveDemoMap[currentInteractiveFeature];
+            if (!demoData) return;
+            
+            const isPreferred = platform === demoData.preferredPlatform;
+            const platformName = platform === 'wechat' ? '微信端' : '小程序端';
+            
+            // 移除所有推荐状态
+            document.querySelectorAll('.platform-btn').forEach(btn => {
+                btn.classList.remove('recommended');
+            });
+            
+            // 更新按钮文本，显示是否为推荐平台
+            const activeBtn = document.querySelector(`[data-platform="${platform}"]`);
+            if (activeBtn) {
+                const icon = platform === 'wechat' ? 'fab fa-weixin' : 'fas fa-mobile-alt';
+                const recommendText = isPreferred ? ' (推荐)' : '';
+                activeBtn.innerHTML = `<i class="${icon}"></i><span>${platformName}${recommendText}</span>`;
+                
+                // 添加推荐状态样式
+                if (isPreferred) {
+                    activeBtn.classList.add('recommended');
+                }
+            }
+            
+            // 更新非激活按钮
+            const inactiveBtn = document.querySelector(`[data-platform="${platform === 'wechat' ? 'miniprogram' : 'wechat'}"]`);
+            if (inactiveBtn) {
+                const icon = platform === 'wechat' ? 'fas fa-mobile-alt' : 'fab fa-weixin';
+                const otherPlatformName = platform === 'wechat' ? '小程序' : '微信端';
+                inactiveBtn.innerHTML = `<i class="${icon}"></i><span>${otherPlatformName}</span>`;
+            }
+        }
+
+        function updateDemoContent() {
+            const iframe = document.getElementById('demo-iframe');
+            if (!iframe) return;
+            
+            // 构建演示页面映射
+            const demoMap = {
+                'daily-companion': {
+                    wechat: 'wechat-ai-chat.html',
+                    miniprogram: 'miniprogram-qa-center.html'
+                },
+                'daily-checkin': {
+                    wechat: 'wechat-photo-checkin.html',
+                    miniprogram: 'demo-placeholder.html'
+                },
+                'emotional-support': {
+                    wechat: 'wechat-emotional-care.html',
+                    miniprogram: 'demo-placeholder.html'
+                },
+                'health-monitoring': {
+                    wechat: 'wechat-health-monitoring.html',
+                    miniprogram: 'miniprogram-health-data.html'
+                },
+                'nutrition-courses': {
+                    wechat: 'demo-placeholder.html',
+                    miniprogram: 'miniprogram-learning.html'
+                },
+                'study-checkin': {
+                    wechat: 'demo-placeholder.html',
+                    miniprogram: 'miniprogram-badges.html'
+                }
+            };
+            
+            const defaultDemo = {
+                wechat: 'wechat-ai-chat.html',
+                miniprogram: 'miniprogram-qa-center.html'
+            };
+            
+            const demoSrc = (demoMap[currentFeature] && demoMap[currentFeature][currentPlatform]) 
+                          || defaultDemo[currentPlatform] 
+                          || 'demo-placeholder.html';
+            
+            iframe.src = demoSrc;
+        }
+
+        // 功能演示切换
+        function showInteractiveDemo(featureKey, element) {
+            // 更新当前功能
+            currentFeature = featureKey;
+            
+            // 移除所有激活状态
+            document.querySelectorAll('.feature-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // 激活当前项
+            element.classList.add('active');
+            
+            // 更新演示内容
+            updateDemoContent();
+            
+            // 更新标题信息
+            const titleElement = document.getElementById('interactive-demo-title');
+            const subtitleElement = document.getElementById('interactive-demo-subtitle');
+            
+            const titleMap = {
+                'daily-companion': '24小时答疑解惑',
+                'daily-checkin': '饮食运动打卡',
+                'emotional-support': '情绪关怀陪伴',
+                'health-monitoring': '智能设备互联监测',
+                'risk-detection': '健康风险预警',
+                'progress-analysis': '综合健康分析',
+                'dynamic-adjustment': '方案动态调整',
+                'early-warning': '异常预警干预',
+                'personalized-guidance': '个性化指导',
+                'nutrition-courses': '系统化营养课程',
+                'study-checkin': '学习打卡激励',
+                'rewards-system': '积分兑换商城'
+            };
+            
+            if (titleElement) {
+                titleElement.textContent = titleMap[featureKey] || '功能演示';
+            }
+            if (subtitleElement) {
+                subtitleElement.textContent = `智能AI减重助手 - ${currentPlatform === 'wechat' ? '微信端' : '小程序'}演示`;
+            }
+            
+            // 添加切换动效
+            const iframe = document.getElementById('demo-iframe');
+            if (iframe) {
+                iframe.style.opacity = '0.7';
+                iframe.style.transform = 'scale(0.98)';
+                
+                setTimeout(() => {
+                    iframe.style.opacity = '1';
+                    iframe.style.transform = 'scale(1)';
+                }, 200);
+            }
+        }
+
+        // 演示区域双端切换（保留兼容性）
+        let currentDemo = 'wechat';
+        function switchDemo() {
+            switchPlatform(currentDemo === 'wechat' ? 'miniprogram' : 'wechat');
+        }
+
+        // 开始体验
+        function startTrial() {
+            alert('即将跳转到微信小程序注册页面...');
+        }
+
+        // 开始演示
+        function startDemo() {
+            document.querySelector('#demo').scrollIntoView({ 
+                behavior: 'smooth' 
+            });
+        }
+
+        // 观看视频
+        function watchVideo() {
+            alert('演示视频即将播放...');
+        }
+
+        // 底部导航栏功能
+        function initBottomNav() {
+            const navTabs = document.querySelectorAll('.nav-tab');
+            const sections = document.querySelectorAll('section[id]');
+            
+            // 平滑滚动到指定section
+            function scrollToSection(sectionId) {
+                const targetSection = document.getElementById(sectionId);
+                if (targetSection) {
+                    const offsetTop = targetSection.offsetTop - 80; // 考虑顶部导航栏高度
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            }
+            
+            // 更新活跃状态
+            function updateActiveNav() {
+                const scrollPos = window.scrollY + 100;
+                
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.offsetHeight;
+                    const sectionId = section.id;
+                    
+                    if (scrollPos >= sectionTop && scrollPos < sectionTop + sectionHeight) {
+                        // 移除所有活跃状态
+                        navTabs.forEach(tab => tab.classList.remove('active'));
+                        
+                        // 添加当前section的活跃状态
+                        const activeTab = document.querySelector(`.nav-tab[data-section="${sectionId}"]`);
+                        if (activeTab) {
+                            activeTab.classList.add('active');
+                        }
+                    }
+                });
+            }
+            
+            // 绑定点击事件
+            navTabs.forEach(tab => {
+                tab.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const sectionId = this.getAttribute('data-section');
+                    scrollToSection(sectionId);
+                });
+            });
+            
+            // 监听滚动事件
+            let scrollTimer;
+            window.addEventListener('scroll', function() {
+                if (scrollTimer) {
+                    clearTimeout(scrollTimer);
+                }
+                scrollTimer = setTimeout(updateActiveNav, 10);
+            });
+            
+            // 初始化活跃状态
+            updateActiveNav();
+        }
+
+        // 页面加载动画
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化双端演示
+            loadDualDemoContent();
+            
+            // 初始化底部导航栏
+            initBottomNav();
+            
+            // 添加观察器来触发动画
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('fade-in');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+
+            // 观察所有需要动画的元素
+            document.querySelectorAll('.feature-card, .pricing-card, .faq-item').forEach(el => {
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>

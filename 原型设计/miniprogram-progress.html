@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>进度分析 - 数据可视化</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f8fafc;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        /* 导航栏 */
+        .navbar {
+            background: white;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid #e5e7eb;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        .navbar-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+        
+        /* 时间选择器 */
+        .time-selector {
+            position: absolute;
+            right: 16px;
+            display: flex;
+            background: #f3f4f6;
+            border-radius: 8px;
+            padding: 2px;
+        }
+        
+        .time-btn {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            color: #6b7280;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .time-btn.active {
+            background: white;
+            color: #6366f1;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        /* 主内容区域 */
+        .main-content {
+            height: calc(100vh - 64px - 83px);
+            overflow-y: auto;
+            padding: 16px;
+        }
+        
+        /* 进度总览卡片 */
+        .progress-overview {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 16px;
+            padding: 20px;
+            color: white;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .progress-overview::before {
+            content: '';
+            position: absolute;
+            top: -30px;
+            right: -30px;
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+        
+        .progress-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 16px;
+        }
+        
+        .progress-item {
+            text-align: center;
+        }
+        
+        .progress-value {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+        
+        .progress-label {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+        
+        /* 图表卡片 */
+        .chart-card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border: 1px solid #f1f5f9;
+        }
+        
+        .chart-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 200px;
+            margin-bottom: 16px;
+        }
+        
+        /* 数据指标 */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .metric-item {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border: 1px solid #f1f5f9;
+        }
+        
+        .metric-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+        }
+        
+        .metric-value {
+            font-size: 20px;
+            font-weight: bold;
+            color: #1f2937;
+            margin-bottom: 4px;
+        }
+        
+        .metric-label {
+            font-size: 12px;
+            color: #6b7280;
+            margin-bottom: 4px;
+        }
+        
+        .metric-change {
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .metric-change.positive {
+            color: #10b981;
+        }
+        
+        .metric-change.negative {
+            color: #ef4444;
+        }
+        
+        /* 趋势分析 */
+        .trend-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        
+        .trend-item:last-child {
+            border-bottom: none;
+        }
+        
+        .trend-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+        }
+        
+        .trend-info {
+            flex: 1;
+        }
+        
+        .trend-title {
+            font-size: 14px;
+            color: #1f2937;
+            margin-bottom: 2px;
+        }
+        
+        .trend-desc {
+            font-size: 12px;
+            color: #6b7280;
+        }
+        
+        .trend-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: #6366f1;
+        }
+        
+        /* 里程碑卡片 */
+        .milestone-card {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+        
+        .milestone-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 24px;
+            background: rgba(255,255,255,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+            font-size: 20px;
+            color: #92400e;
+        }
+        
+        .milestone-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #92400e;
+            margin-bottom: 4px;
+        }
+        
+        .milestone-desc {
+            font-size: 12px;
+            color: #a16207;
+        }
+        
+        /* 底部Tab栏 */
+        .bottom-tabs {
+            height: 83px;
+            background: white;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            padding-bottom: 20px;
+        }
+        
+        .tab-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            padding: 8px;
+            transition: all 0.2s;
+        }
+        
+        .tab-icon {
+            font-size: 20px;
+            margin-bottom: 4px;
+            color: #6b7280;
+        }
+        
+        .tab-text {
+            font-size: 11px;
+            color: #6b7280;
+        }
+        
+        .tab-item.active .tab-icon {
+            color: #6366f1;
+        }
+        
+        .tab-item.active .tab-text {
+            color: #6366f1;
+        }
+        
+        /* 滚动条样式 */
+        .main-content::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+        
+        /* 动画效果 */
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animate-slide-up {
+            animation: slideUp 0.5s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <div class="navbar">
+        <div class="navbar-title">进度分析</div>
+        <div class="time-selector">
+            <div class="time-btn active" onclick="switchTimeRange('week')">周</div>
+            <div class="time-btn" onclick="switchTimeRange('month')">月</div>
+            <div class="time-btn" onclick="switchTimeRange('all')">全程</div>
+        </div>
+    </div>
+    
+    <!-- 主内容区域 -->
+    <div class="main-content">
+        <!-- 进度总览 -->
+        <div class="progress-overview animate-slide-up">
+            <div class="text-lg font-semibold mb-2">减重进度总览</div>
+            <div class="text-sm opacity-90 mb-4">第32天 / 共90天</div>
+            
+            <div class="progress-stats">
+                <div class="progress-item">
+                    <div class="progress-value">4.3kg</div>
+                    <div class="progress-label">已减重</div>
+                </div>
+                <div class="progress-item">
+                    <div class="progress-value">61%</div>
+                    <div class="progress-label">目标完成</div>
+                </div>
+                <div class="progress-item">
+                    <div class="progress-value">2.7kg</div>
+                    <div class="progress-label">剩余目标</div>
+                </div>
+                <div class="progress-item">
+                    <div class="progress-value">58天</div>
+                    <div class="progress-label">剩余时间</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 核心指标 -->
+        <div class="metrics-grid">
+            <div class="metric-item">
+                <div class="metric-icon bg-blue-100 text-blue-600">
+                    <i class="fas fa-weight"></i>
+                </div>
+                <div class="metric-value">62.3kg</div>
+                <div class="metric-label">当前体重</div>
+                <div class="metric-change negative">
+                    <i class="fas fa-arrow-down"></i>
+                    -0.5kg (本周)
+                </div>
+            </div>
+            
+            <div class="metric-item">
+                <div class="metric-icon bg-green-100 text-green-600">
+                    <i class="fas fa-percentage"></i>
+                </div>
+                <div class="metric-value">22.8%</div>
+                <div class="metric-label">体脂率</div>
+                <div class="metric-change negative">
+                    <i class="fas fa-arrow-down"></i>
+                    -1.2% (本月)
+                </div>
+            </div>
+            
+            <div class="metric-item">
+                <div class="metric-icon bg-purple-100 text-purple-600">
+                    <i class="fas fa-fire"></i>
+                </div>
+                <div class="metric-value">1,285</div>
+                <div class="metric-label">平均热量</div>
+                <div class="metric-change positive">
+                    <i class="fas fa-target"></i>
+                    目标范围内
+                </div>
+            </div>
+            
+            <div class="metric-item">
+                <div class="metric-icon bg-orange-100 text-orange-600">
+                    <i class="fas fa-running"></i>
+                </div>
+                <div class="metric-value">8,420</div>
+                <div class="metric-label">平均步数</div>
+                <div class="metric-change positive">
+                    <i class="fas fa-arrow-up"></i>
+                    +1,200 (本周)
+                </div>
+            </div>
+        </div>
+        
+        <!-- 体重变化曲线 -->
+        <div class="chart-card">
+            <div class="chart-title">
+                <i class="fas fa-chart-line text-blue-600"></i>
+                体重变化趋势
+            </div>
+            <div class="chart-container">
+                <canvas id="weightChart"></canvas>
+            </div>
+        </div>
+        
+        <!-- 热量对比图 -->
+        <div class="chart-card">
+            <div class="chart-title">
+                <i class="fas fa-chart-bar text-green-600"></i>
+                热量摄入 vs 消耗
+            </div>
+            <div class="chart-container">
+                <canvas id="calorieChart"></canvas>
+            </div>
+        </div>
+        
+        <!-- 运动分析 -->
+        <div class="chart-card">
+            <div class="chart-title">
+                <i class="fas fa-chart-pie text-purple-600"></i>
+                运动类型分析
+            </div>
+            <div class="chart-container">
+                <canvas id="exerciseChart"></canvas>
+            </div>
+        </div>
+        
+        <!-- 趋势分析 -->
+        <div class="chart-card">
+            <div class="chart-title">
+                <i class="fas fa-trending-up text-orange-600"></i>
+                健康指标趋势
+            </div>
+            
+            <div class="trend-item">
+                <div class="trend-icon bg-blue-100 text-blue-600">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <div class="trend-info">
+                    <div class="trend-title">平均心率</div>
+                    <div class="trend-desc">比上月降低5bpm，心肺功能改善</div>
+                </div>
+                <div class="trend-value">72 bpm</div>
+            </div>
+            
+            <div class="trend-item">
+                <div class="trend-icon bg-green-100 text-green-600">
+                    <i class="fas fa-moon"></i>
+                </div>
+                <div class="trend-info">
+                    <div class="trend-title">睡眠质量</div>
+                    <div class="trend-desc">深度睡眠时间增加30分钟</div>
+                </div>
+                <div class="trend-value">7.5h</div>
+            </div>
+            
+            <div class="trend-item">
+                <div class="trend-icon bg-purple-100 text-purple-600">
+                    <i class="fas fa-tint"></i>
+                </div>
+                <div class="trend-info">
+                    <div class="trend-title">水分摄入</div>
+                    <div class="trend-desc">连续7天达到目标饮水量</div>
+                </div>
+                <div class="trend-value">2.1L</div>
+            </div>
+        </div>
+        
+        <!-- 里程碑成就 -->
+        <div class="milestone-card">
+            <div class="milestone-icon">
+                <i class="fas fa-trophy"></i>
+            </div>
+            <div class="milestone-title">恭喜达成新里程碑！</div>
+            <div class="milestone-desc">连续30天完成健康打卡，获得"坚持达人"徽章</div>
+        </div>
+        
+        <!-- 数据对比 -->
+        <div class="chart-card">
+            <div class="chart-title">
+                <i class="fas fa-balance-scale text-indigo-600"></i>
+                与目标对比
+            </div>
+            
+            <div class="trend-item">
+                <div class="trend-icon bg-indigo-100 text-indigo-600">
+                    <i class="fas fa-bullseye"></i>
+                </div>
+                <div class="trend-info">
+                    <div class="trend-title">减重进度</div>
+                    <div class="trend-desc">超前于计划进度8天</div>
+                </div>
+                <div class="trend-value">114%</div>
+            </div>
+            
+            <div class="trend-item">
+                <div class="trend-icon bg-emerald-100 text-emerald-600">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="trend-info">
+                    <div class="trend-title">任务完成率</div>
+                    <div class="trend-desc">本月平均完成率优秀</div>
+                </div>
+                <div class="trend-value">89%</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 底部Tab栏 -->
+    <div class="bottom-tabs">
+        <div class="tab-item">
+            <div class="tab-icon">
+                <i class="fas fa-home"></i>
+            </div>
+            <div class="tab-text">首页</div>
+        </div>
+        
+        <div class="tab-item active">
+            <div class="tab-icon">
+                <i class="fas fa-chart-line"></i>
+            </div>
+            <div class="tab-text">进度</div>
+        </div>
+        
+        <div class="tab-item">
+            <div class="tab-icon">
+                <i class="fas fa-clipboard-list"></i>
+            </div>
+            <div class="tab-text">计划</div>
+        </div>
+        
+        <div class="tab-item">
+            <div class="tab-icon">
+                <i class="fas fa-mobile-alt"></i>
+            </div>
+            <div class="tab-text">设备</div>
+        </div>
+        
+        <div class="tab-item">
+            <div class="tab-icon">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="tab-text">我的</div>
+        </div>
+    </div>
+    
+    <script>
+        // 图表配置
+        Chart.defaults.font.family = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+        Chart.defaults.font.size = 12;
+        Chart.defaults.color = '#6b7280';
+        
+        // 体重变化曲线图
+        const weightCtx = document.getElementById('weightChart').getContext('2d');
+        const weightChart = new Chart(weightCtx, {
+            type: 'line',
+            data: {
+                labels: ['第1天', '第7天', '第14天', '第21天', '第28天', '第32天'],
+                datasets: [{
+                    label: '体重 (kg)',
+                    data: [65.5, 64.8, 64.2, 63.5, 62.8, 62.3],
+                    borderColor: '#6366f1',
+                    backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4,
+                    pointBackgroundColor: '#6366f1',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2,
+                    pointRadius: 6
+                }, {
+                    label: '目标线',
+                    data: [65.5, 64.0, 62.5, 61.0, 59.5, 58.0],
+                    borderColor: '#10b981',
+                    borderDash: [5, 5],
+                    borderWidth: 2,
+                    fill: false,
+                    pointRadius: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        min: 55,
+                        max: 70,
+                        grid: {
+                            color: '#f3f4f6'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            color: '#f3f4f6'
+                        }
+                    }
+                }
+            }
+        });
+        
+        // 热量对比图
+        const calorieCtx = document.getElementById('calorieChart').getContext('2d');
+        const calorieChart = new Chart(calorieCtx, {
+            type: 'bar',
+            data: {
+                labels: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+                datasets: [{
+                    label: '摄入',
+                    data: [1320, 1280, 1350, 1240, 1380, 1420, 1290],
+                    backgroundColor: '#ef4444',
+                    borderRadius: 4
+                }, {
+                    label: '消耗',
+                    data: [1580, 1620, 1540, 1690, 1520, 1480, 1650],
+                    backgroundColor: '#10b981',
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: '#f3f4f6'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+        
+        // 运动类型分析
+        const exerciseCtx = document.getElementById('exerciseChart').getContext('2d');
+        const exerciseChart = new Chart(exerciseCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['快走', '瑜伽', '跑步', '力量训练', '其他'],
+                datasets: [{
+                    data: [35, 25, 20, 15, 5],
+                    backgroundColor: [
+                        '#6366f1',
+                        '#10b981',
+                        '#f59e0b',
+                        '#ef4444',
+                        '#8b5cf6'
+                    ],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+        
+        // 时间范围切换
+        function switchTimeRange(range) {
+            // 移除所有active状态
+            document.querySelectorAll('.time-btn').forEach(btn => btn.classList.remove('active'));
+            // 添加当前active状态
+            event.target.classList.add('active');
+            
+            // 更新图表数据
+            updateChartData(range);
+            
+            // 显示提示
+            showToast(`已切换到${range === 'week' ? '周' : range === 'month' ? '月' : '全程'}视图`);
+        }
+        
+        // 更新图表数据
+        function updateChartData(range) {
+            if (range === 'week') {
+                weightChart.data.labels = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
+                weightChart.data.datasets[0].data = [62.8, 62.6, 62.4, 62.5, 62.3, 62.1, 62.3];
+            } else if (range === 'month') {
+                weightChart.data.labels = ['第1周', '第2周', '第3周', '第4周'];
+                weightChart.data.datasets[0].data = [64.8, 63.8, 63.0, 62.3];
+            } else {
+                weightChart.data.labels = ['第1月', '第2月', '第3月'];
+                weightChart.data.datasets[0].data = [65.5, 63.2, 62.3];
+            }
+            weightChart.update();
+        }
+        
+        // 显示提示消息
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'fixed top-20 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded-lg text-sm z-50';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => {
+                    document.body.removeChild(toast);
+                }, 300);
+            }, 2000);
+        }
+        
+        // Tab切换
+        document.querySelectorAll('.tab-item').forEach(tab => {
+            tab.addEventListener('click', function() {
+                // 移除所有active状态
+                document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+                // 添加当前active状态
+                this.classList.add('active');
+                
+                // 这里可以添加页面切换逻辑
+                const tabText = this.querySelector('.tab-text').textContent;
+                showToast(`切换到${tabText}页面`);
+            });
+        });
+        
+        // 页面加载完成后的动画
+        document.addEventListener('DOMContentLoaded', function() {
+            // 延迟显示各个元素
+            const elements = document.querySelectorAll('.chart-card, .metric-item, .milestone-card');
+            elements.forEach((el, index) => {
+                setTimeout(() => {
+                    el.classList.add('animate-slide-up');
+                }, index * 100);
+            });
+        });
+        
+        // 模拟数据更新
+        function updateProgressData() {
+            // 更新进度数值
+            const progressItems = document.querySelectorAll('.progress-value');
+            // 小幅度更新数据以显示动态效果
+        }
+        
+        // 每30秒更新一次数据
+        setInterval(updateProgressData, 30000);
+    </script>
+
+    <!-- 底部导航栏 -->
+    <div style="position: fixed; bottom: 0; left: 0; right: 0; height: 83px; background: rgba(255,255,255,0.95); backdrop-filter: blur(20px); border-top: 1px solid #e5e5e7; display: flex; justify-content: space-around; align-items: center; padding-bottom: 20px;">
+        <div data-link="miniprogram-home.html" style="display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; color: #8E8E93;">
+            <i class="fas fa-home text-xl"></i>
+            <span style="font-size: 12px;">今日</span>
+        </div>
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; color: #181818;">
+            <i class="fas fa-bullseye text-xl"></i>
+            <span style="font-size: 12px;">目标</span>
+        </div>
+        <div data-link="miniprogram-profile.html" style="display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; color: #8E8E93;">
+            <i class="fas fa-user text-xl"></i>
+            <span style="font-size: 12px;">我的</span>
+        </div>
+    </div>
+
+    <script src="common-nav.js"></script>
+</body>
+</html>

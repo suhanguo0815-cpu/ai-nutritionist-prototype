@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>拍照打卡 - AI营养识别</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #000;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .camera-container {
+            height: 100vh;
+            position: relative;
+            background: linear-gradient(45deg, #2d3748, #4a5568);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            padding: 20px 15px;
+            color: white;
+            text-align: center;
+            background: rgba(0,0,0,0.3);
+        }
+        
+        .header h1 {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .header p {
+            font-size: 14px;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+        
+        .camera-view {
+            flex: 1;
+            position: relative;
+            background: #1a1a1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 20px;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .camera-placeholder {
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><rect width="400" height="300" fill="%23f0f0f0"/><text x="200" y="150" text-anchor="middle" fill="%23999" font-size="16" font-family="Arial">拍照识别食物</text></svg>') center/cover;
+            position: relative;
+        }
+        
+        .scan-frame {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 200px;
+            border: 2px solid #10b981;
+            border-radius: 12px;
+            opacity: 0.8;
+        }
+        
+        .scan-frame::before,
+        .scan-frame::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border: 2px solid #10b981;
+            border-radius: 12px;
+            animation: pulse 2s infinite;
+        }
+        
+        .scan-frame::after {
+            animation-delay: 1s;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.05); }
+            100% { opacity: 0; transform: scale(1.1); }
+        }
+        
+        .scan-tips {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            text-align: center;
+            background: rgba(0,0,0,0.5);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+        
+        .controls {
+            padding: 30px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0,0,0,0.8);
+        }
+        
+        .control-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .control-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        .capture-btn {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            border: 4px solid white;
+            background: #10b981;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s;
+        }
+        
+        .capture-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .capture-btn::after {
+            content: '📷';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .result-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.9);
+            color: white;
+            padding: 20px;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .result-overlay.show {
+            transform: translateY(0);
+        }
+        
+        .result-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .result-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #10b981;
+            margin-bottom: 5px;
+        }
+        
+        .result-subtitle {
+            font-size: 14px;
+            color: #ccc;
+        }
+        
+        .nutrition-info {
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .nutrition-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .nutrition-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        
+        .nutrition-label {
+            color: #ccc;
+        }
+        
+        .nutrition-value {
+            color: #10b981;
+            font-weight: 600;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .action-btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .action-btn.primary {
+            background: #10b981;
+            color: white;
+        }
+        
+        .action-btn.secondary {
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+        
+        .quick-stats {
+            position: absolute;
+            top: 80px;
+            left: 20px;
+            right: 20px;
+            display: flex;
+            justify-content: space-between;
+            z-index: 10;
+        }
+        
+        .stat-card {
+            background: rgba(0,0,0,0.6);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+        
+        .stat-number {
+            font-size: 16px;
+            font-weight: 600;
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 11px;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="camera-container">
+        <div class="header">
+            <h1>AI营养识别</h1>
+            <p>拍照即可识别食物营养成分</p>
+        </div>
+        
+        <div class="quick-stats">
+            <div class="stat-card">
+                <span class="stat-number">7</span>
+                <div class="stat-label">今日打卡</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">1,248</span>
+                <div class="stat-label">总卡路里</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">89%</span>
+                <div class="stat-label">目标达成</div>
+            </div>
+        </div>
+        
+        <div class="camera-view">
+            <div class="camera-placeholder">
+                <div class="scan-frame"></div>
+                <div class="scan-tips">对准食物拍照，AI将自动识别营养成分</div>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <button class="control-btn">🖼️</button>
+            <button class="capture-btn" onclick="showResult()"></button>
+            <button class="control-btn">🔄</button>
+        </div>
+        
+        <div class="result-overlay" id="resultOverlay">
+            <div class="result-header">
+                <div class="result-title">识别成功</div>
+                <div class="result-subtitle">煎蛋吐司 + 牛奶</div>
+            </div>
+            
+            <div class="nutrition-info">
+                <div class="nutrition-item">
+                    <span class="nutrition-label">总热量</span>
+                    <span class="nutrition-value">386 kcal</span>
+                </div>
+                <div class="nutrition-item">
+                    <span class="nutrition-label">蛋白质</span>
+                    <span class="nutrition-value">18.5g</span>
+                </div>
+                <div class="nutrition-item">
+                    <span class="nutrition-label">碳水化合物</span>
+                    <span class="nutrition-value">32.8g</span>
+                </div>
+                <div class="nutrition-item">
+                    <span class="nutrition-label">脂肪</span>
+                    <span class="nutrition-value">19.2g</span>
+                </div>
+            </div>
+            
+            <div class="action-buttons">
+                <button class="action-btn secondary" onclick="hideResult()">重新拍照</button>
+                <button class="action-btn primary" onclick="checkinSuccess()">确认打卡</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function showResult() {
+            document.getElementById('resultOverlay').classList.add('show');
+        }
+        
+        function hideResult() {
+            document.getElementById('resultOverlay').classList.remove('show');
+        }
+        
+        function checkinSuccess() {
+            alert('打卡成功！已记录到今日饮食数据中');
+            hideResult();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>健康监测 - 实时数据</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .container {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: #f8fafc;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: white;
+            padding: 20px 15px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .sync-status {
+            background: rgba(255, 255, 255, 0.1);
+            margin: 10px 15px 0;
+            padding: 8px 12px;
+            border-radius: 20px;
+            text-align: center;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+        
+        .sync-icon {
+            animation: spin 2s linear infinite;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .content {
+            flex: 1;
+            padding: 20px 15px;
+            overflow-y: auto;
+        }
+        
+        .metrics-overview {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .metric-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            position: relative;
+        }
+        
+        .metric-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: white;
+        }
+        
+        .metric-card.blood .metric-icon {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+        
+        .metric-card.heart .metric-icon {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+        
+        .metric-card.temp .metric-icon {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+        }
+        
+        .metric-card.weight .metric-icon {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 5px;
+        }
+        
+        .metric-unit {
+            font-size: 12px;
+            color: #6b7280;
+            margin-left: 4px;
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #4b5563;
+            margin-bottom: 8px;
+        }
+        
+        .metric-status {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        
+        .status-normal {
+            background: rgba(34, 197, 94, 0.1);
+            color: #16a34a;
+        }
+        
+        .status-warning {
+            background: rgba(245, 158, 11, 0.1);
+            color: #d97706;
+        }
+        
+        .devices-section {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .device-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .device-item {
+            display: flex;
+            align-items: center;
+            justify-content: between;
+            padding: 12px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border-left: 4px solid #3b82f6;
+        }
+        
+        .device-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+        }
+        
+        .device-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #3b82f6;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+        
+        .device-details {
+            flex: 1;
+        }
+        
+        .device-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: #1f2937;
+            margin-bottom: 2px;
+        }
+        
+        .device-status {
+            font-size: 12px;
+            color: #10b981;
+        }
+        
+        .device-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: #3b82f6;
+        }
+        
+        .alerts-section {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        
+        .alert-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        
+        .alert-item:last-child {
+            border-bottom: none;
+        }
+        
+        .alert-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(34, 197, 94, 0.1);
+            color: #16a34a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+        
+        .alert-content {
+            flex: 1;
+        }
+        
+        .alert-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: #1f2937;
+            margin-bottom: 2px;
+        }
+        
+        .alert-time {
+            font-size: 12px;
+            color: #6b7280;
+        }
+        
+        .refresh-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: #3b82f6;
+            border-radius: 50%;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+            transition: all 0.2s;
+        }
+        
+        .refresh-btn:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>实时健康监测</h1>
+            <p>智能设备数据同步 · 24小时监测</p>
+            <div class="sync-status">
+                <span class="sync-icon">🔄</span>
+                设备数据实时同步中
+            </div>
+        </div>
+        
+        <div class="content">
+            <div class="metrics-overview">
+                <div class="metric-card blood">
+                    <div class="metric-icon">🩸</div>
+                    <div class="metric-value">5.8<span class="metric-unit">mmol/L</span></div>
+                    <div class="metric-label">血糖水平</div>
+                    <span class="metric-status status-normal">正常范围</span>
+                </div>
+                
+                <div class="metric-card heart">
+                    <div class="metric-icon">❤️</div>
+                    <div class="metric-value">72<span class="metric-unit">bpm</span></div>
+                    <div class="metric-label">心率</div>
+                    <span class="metric-status status-normal">正常</span>
+                </div>
+                
+                <div class="metric-card temp">
+                    <div class="metric-icon">🌡️</div>
+                    <div class="metric-value">36.5<span class="metric-unit">°C</span></div>
+                    <div class="metric-label">体温</div>
+                    <span class="metric-status status-normal">正常</span>
+                </div>
+                
+                <div class="metric-card weight">
+                    <div class="metric-icon">⚖️</div>
+                    <div class="metric-value">68.2<span class="metric-unit">kg</span></div>
+                    <div class="metric-label">体重</div>
+                    <span class="metric-status status-warning">较昨日-0.3kg</span>
+                </div>
+            </div>
+            
+            <div class="devices-section">
+                <div class="section-title">
+                    📱 连接设备状态
+                </div>
+                <div class="device-list">
+                    <div class="device-item">
+                        <div class="device-info">
+                            <div class="device-icon">🩸</div>
+                            <div class="device-details">
+                                <div class="device-name">血糖监测仪</div>
+                                <div class="device-status">实时连接 · 最新数据2分钟前</div>
+                            </div>
+                        </div>
+                        <div class="device-value">5.8 mmol/L</div>
+                    </div>
+                    
+                    <div class="device-item">
+                        <div class="device-info">
+                            <div class="device-icon">❤️</div>
+                            <div class="device-details">
+                                <div class="device-name">心率监测手环</div>
+                                <div class="device-status">实时连接 · 持续监测中</div>
+                            </div>
+                        </div>
+                        <div class="device-value">72 bpm</div>
+                    </div>
+                    
+                    <div class="device-item">
+                        <div class="device-info">
+                            <div class="device-icon">⚖️</div>
+                            <div class="device-details">
+                                <div class="device-name">智能体重秤</div>
+                                <div class="device-status">已连接 · 今日已测量</div>
+                            </div>
+                        </div>
+                        <div class="device-value">68.2 kg</div>
+                    </div>
+                    
+                    <div class="device-item">
+                        <div class="device-info">
+                            <div class="device-icon">🌡️</div>
+                            <div class="device-details">
+                                <div class="device-name">智能体温计</div>
+                                <div class="device-status">已连接 · 5分钟前测量</div>
+                            </div>
+                        </div>
+                        <div class="device-value">36.5 °C</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="alerts-section">
+                <div class="section-title">
+                    🔔 健康提醒
+                </div>
+                <div class="alert-item">
+                    <div class="alert-icon">✅</div>
+                    <div class="alert-content">
+                        <div class="alert-title">所有指标正常</div>
+                        <div class="alert-time">今日监测结果良好</div>
+                    </div>
+                </div>
+                
+                <div class="alert-item">
+                    <div class="alert-icon">💧</div>
+                    <div class="alert-content">
+                        <div class="alert-title">记得多喝水</div>
+                        <div class="alert-time">建议每日饮水1500-2000ml</div>
+                    </div>
+                </div>
+                
+                <div class="alert-item">
+                    <div class="alert-icon">🏃</div>
+                    <div class="alert-content">
+                        <div class="alert-title">今日运动目标</div>
+                        <div class="alert-time">还需步行3000步达成目标</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <button class="refresh-btn">🔄</button>
+    </div>
+</body>
+</html>

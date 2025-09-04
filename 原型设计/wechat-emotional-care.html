@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>情绪关怀 - AI心理支持</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .container {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: #f9fafb;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            padding: 20px 15px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .mood-check {
+            background: white;
+            margin: 20px 15px;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        
+        .mood-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .mood-options {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+        
+        .mood-option {
+            text-align: center;
+            padding: 10px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            min-width: 50px;
+        }
+        
+        .mood-option:hover {
+            background: #f3f4f6;
+        }
+        
+        .mood-option.selected {
+            background: rgba(245, 158, 11, 0.1);
+            border: 2px solid #f59e0b;
+        }
+        
+        .mood-emoji {
+            font-size: 32px;
+            margin-bottom: 5px;
+        }
+        
+        .mood-label {
+            font-size: 12px;
+            color: #6b7280;
+            font-weight: 500;
+        }
+        
+        .content {
+            flex: 1;
+            padding: 0 15px 20px;
+            overflow-y: auto;
+        }
+        
+        .support-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        
+        .support-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+        
+        .support-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+        
+        .support-info h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 4px;
+        }
+        
+        .support-info p {
+            font-size: 14px;
+            color: #6b7280;
+        }
+        
+        .support-content {
+            background: #fef3c7;
+            padding: 15px;
+            border-radius: 12px;
+            border-left: 4px solid #f59e0b;
+            line-height: 1.5;
+            color: #92400e;
+        }
+        
+        .tips-section {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        
+        .tips-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .tip-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        
+        .tip-item:last-child {
+            border-bottom: none;
+        }
+        
+        .tip-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #fef3c7;
+            color: #d97706;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            margin-top: 2px;
+        }
+        
+        .tip-content {
+            flex: 1;
+            font-size: 14px;
+            line-height: 1.4;
+            color: #374151;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            padding: 15px;
+        }
+        
+        .action-btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .action-btn.primary {
+            background: #f59e0b;
+            color: white;
+        }
+        
+        .action-btn.secondary {
+            background: #f3f4f6;
+            color: #374151;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-1px);
+        }
+        
+        .emergency-support {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            border-radius: 16px;
+            padding: 15px;
+            margin: 0 15px 15px;
+            text-align: center;
+        }
+        
+        .emergency-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .emergency-text {
+            font-size: 12px;
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+        
+        .emergency-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>情绪关怀中心</h1>
+            <p>AI陪伴 · 心理支持 · 情绪疏导</p>
+        </div>
+        
+        <div class="mood-check">
+            <div class="mood-title">今天的心情怎么样？</div>
+            <div class="mood-options">
+                <div class="mood-option">
+                    <div class="mood-emoji">😊</div>
+                    <div class="mood-label">开心</div>
+                </div>
+                <div class="mood-option selected">
+                    <div class="mood-emoji">😐</div>
+                    <div class="mood-label">一般</div>
+                </div>
+                <div class="mood-option">
+                    <div class="mood-emoji">😔</div>
+                    <div class="mood-label">沮丧</div>
+                </div>
+                <div class="mood-option">
+                    <div class="mood-emoji">😰</div>
+                    <div class="mood-label">焦虑</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content">
+            <div class="support-card">
+                <div class="support-header">
+                    <div class="support-icon">🤗</div>
+                    <div class="support-info">
+                        <h3>AI文慧的温馨提醒</h3>
+                        <p>基于你的心情状态个性化建议</p>
+                    </div>
+                </div>
+                <div class="support-content">
+                    我注意到你今天的心情不太好。减重路上有起伏是很正常的，不要给自己太大压力。记住，每一个小进步都值得庆祝，你已经做得很棒了！
+                    <br/><br/>
+                    💡 <strong>建议：</strong>今天可以选择一些轻松的活动，比如散步或听音乐，让心情放松一下。
+                </div>
+            </div>
+            
+            <div class="tips-section">
+                <div class="tips-title">
+                    💪 情绪调节小贴士
+                </div>
+                <div class="tip-item">
+                    <div class="tip-icon">1</div>
+                    <div class="tip-content">
+                        <strong>深呼吸练习</strong><br/>
+                        当感到焦虑时，进行4-7-8呼吸法：吸气4秒，憋气7秒，呼气8秒
+                    </div>
+                </div>
+                <div class="tip-item">
+                    <div class="tip-icon">2</div>
+                    <div class="tip-content">
+                        <strong>正念冥想</strong><br/>
+                        每天花5-10分钟专注当下，观察自己的思绪和感受，不做判断
+                    </div>
+                </div>
+                <div class="tip-item">
+                    <div class="tip-icon">3</div>
+                    <div class="tip-content">
+                        <strong>运动释放</strong><br/>
+                        适度运动能促进内啡肽分泌，有效改善情绪，哪怕是简单的伸展也有帮助
+                    </div>
+                </div>
+                <div class="tip-item">
+                    <div class="tip-icon">4</div>
+                    <div class="tip-content">
+                        <strong>记录感恩</strong><br/>
+                        每天记录3件值得感恩的事情，培养积极心态，提升幸福感
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tips-section">
+                <div class="tips-title">
+                    📞 专业支持资源
+                </div>
+                <div class="tip-item">
+                    <div class="tip-icon">👨‍⚕️</div>
+                    <div class="tip-content">
+                        <strong>心理咨询师预约</strong><br/>
+                        如需专业心理咨询，可预约平台合作的专业咨询师
+                    </div>
+                </div>
+                <div class="tip-item">
+                    <div class="tip-icon">👥</div>
+                    <div class="tip-content">
+                        <strong>同伴支持小组</strong><br/>
+                        加入减重伙伴群，与有相同目标的朋友互相鼓励支持
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="emergency-support">
+            <div class="emergency-title">紧急心理支持</div>
+            <div class="emergency-text">如果情绪严重困扰，请及时寻求专业帮助</div>
+            <button class="emergency-btn">联系心理热线</button>
+        </div>
+        
+        <div class="action-buttons">
+            <button class="action-btn secondary">情绪记录</button>
+            <button class="action-btn primary">与AI对话</button>
+        </div>
+    </div>
+</body>
+</html>

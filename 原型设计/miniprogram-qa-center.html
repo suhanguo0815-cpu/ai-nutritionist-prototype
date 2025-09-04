@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>问答中心 - AI文慧减重助手</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f7f7f7;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .container {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 15px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .stats-bar {
+            background: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-around;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 24px;
+            font-weight: 700;
+            color: #667eea;
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+            margin-top: 4px;
+        }
+        
+        .content {
+            flex: 1;
+            padding: 20px 15px;
+            overflow-y: auto;
+        }
+        
+        .section {
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .section-header {
+            background: #f8f9fa;
+            padding: 15px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .section-content {
+            padding: 15px;
+        }
+        
+        .qa-item {
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+        }
+        
+        .qa-item:last-child {
+            border-bottom: none;
+        }
+        
+        .qa-question {
+            font-size: 15px;
+            color: #333;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        
+        .qa-preview {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.4;
+        }
+        
+        .qa-meta {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-top: 8px;
+            font-size: 12px;
+            color: #999;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+        
+        .badge.hot {
+            background: #ffe4e6;
+            color: #dc2626;
+        }
+        
+        .badge.new {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+        
+        .quick-ask {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+            transition: transform 0.2s;
+        }
+        
+        .quick-ask:hover {
+            transform: scale(1.05);
+        }
+        
+        .category-tabs {
+            display: flex;
+            padding: 15px;
+            gap: 10px;
+            overflow-x: auto;
+        }
+        
+        .category-tab {
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: #f0f0f0;
+            color: #666;
+            font-size: 14px;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .category-tab.active {
+            background: #667eea;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>AI问答中心</h1>
+            <p>24小时智能解答 · 专业营养指导</p>
+        </div>
+        
+        <div class="stats-bar">
+            <div class="stat-item">
+                <span class="stat-number">1,248</span>
+                <div class="stat-label">累计解答</div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">98%</span>
+                <div class="stat-label">满意度</div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">24h</span>
+                <div class="stat-label">响应时间</div>
+            </div>
+        </div>
+        
+        <div class="category-tabs">
+            <div class="category-tab active">全部</div>
+            <div class="category-tab">减重计划</div>
+            <div class="category-tab">营养搭配</div>
+            <div class="category-tab">运动指导</div>
+            <div class="category-tab">心理支持</div>
+        </div>
+        
+        <div class="content">
+            <div class="section">
+                <div class="section-header">
+                    <div class="section-title">
+                        🔥 热门问答
+                    </div>
+                </div>
+                <div class="section-content">
+                    <div class="qa-item">
+                        <div class="qa-question">减重遇到平台期怎么办？</div>
+                        <div class="qa-preview">平台期是减重过程中的正常现象，可以通过调整运动强度、改变饮食结构来突破...</div>
+                        <div class="qa-meta">
+                            <span class="badge hot">热门</span>
+                            <span style="margin-left: auto;">568人看过</span>
+                        </div>
+                    </div>
+                    
+                    <div class="qa-item">
+                        <div class="qa-question">每天应该吃多少蛋白质？</div>
+                        <div class="qa-preview">成人每日蛋白质需求量一般为体重×0.8-1.2g，减重期间建议适当增加...</div>
+                        <div class="qa-meta">
+                            <span class="badge hot">热门</span>
+                            <span style="margin-left: auto;">432人看过</span>
+                        </div>
+                    </div>
+                    
+                    <div class="qa-item">
+                        <div class="qa-question">晚上几点后不能吃东西？</div>
+                        <div class="qa-preview">没有绝对的时间限制，关键在于总热量控制和食物选择...</div>
+                        <div class="qa-meta">
+                            <span class="badge new">最新</span>
+                            <span style="margin-left: auto;">289人看过</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-header">
+                    <div class="section-title">
+                        💡 今日推荐
+                    </div>
+                </div>
+                <div class="section-content">
+                    <div class="qa-item">
+                        <div class="qa-question">如何制定个人专属减重计划？</div>
+                        <div class="qa-preview">根据个人身体状况、生活习惯和目标制定科学合理的减重方案...</div>
+                        <div class="qa-meta">
+                            <span class="badge new">推荐</span>
+                            <span style="margin-left: auto;">156人看过</span>
+                        </div>
+                    </div>
+                    
+                    <div class="qa-item">
+                        <div class="qa-question">减重期间可以吃零食吗？</div>
+                        <div class="qa-preview">选择合适的零食不仅不会影响减重，还能帮助控制饥饿感...</div>
+                        <div class="qa-meta">
+                            <span class="badge new">推荐</span>
+                            <span style="margin-left: auto;">203人看过</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <button class="quick-ask">+</button>
+    </div>
+</body>
+</html>

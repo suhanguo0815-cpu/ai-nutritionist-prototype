@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>运动管理 - AI营养师文慧</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f7f7f7;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        /* 微信导航栏 */
+        .wechat-header {
+            background: #393a3f;
+            color: white;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        /* 对话区域 */
+        .chat-container {
+            height: calc(100vh - 64px - 80px);
+            overflow-y: auto;
+            padding: 16px;
+            background: #f7f7f7;
+        }
+        
+        /* 消息气泡 */
+        .message {
+            margin-bottom: 16px;
+            display: flex;
+            align-items: flex-end;
+        }
+        
+        .message.ai {
+            justify-content: flex-start;
+        }
+        
+        .message.user {
+            justify-content: flex-end;
+        }
+        
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 6px;
+            background: #07c160;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin: 0 8px;
+            flex-shrink: 0;
+        }
+        
+        .avatar.ai {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .message-bubble {
+            max-width: 280px;
+            padding: 12px 16px;
+            border-radius: 18px;
+            font-size: 16px;
+            line-height: 1.4;
+            position: relative;
+        }
+        
+        .message-bubble.ai {
+            background: white;
+            border-top-left-radius: 6px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .message-bubble.user {
+            background: #07c160;
+            color: white;
+            border-top-right-radius: 6px;
+        }
+        
+        /* 输入区域 */
+        .input-area {
+            height: 80px;
+            background: white;
+            border-top: 1px solid #e5e5e5;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            gap: 12px;
+        }
+        
+        .input-actions {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .action-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 6px;
+            background: #f5f5f5;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .action-btn:hover {
+            background: #e5e5e5;
+        }
+        
+        .input-field {
+            flex: 1;
+            height: 36px;
+            border: 1px solid #e5e5e5;
+            border-radius: 18px;
+            padding: 0 16px;
+            font-size: 16px;
+            outline: none;
+        }
+        
+        .send-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 18px;
+            background: #07c160;
+            border: none;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        
+        .send-btn:hover {
+            background: #06ad56;
+        }
+        
+        /* 运动计划卡片 */
+        .exercise-plan-card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border: 2px solid #ff6b35;
+        }
+        
+        .plan-title {
+            color: #ff6b35;
+            font-weight: bold;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .exercise-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .exercise-item:last-child {
+            border-bottom: none;
+        }
+        
+        .exercise-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-size: 16px;
+        }
+        
+        .exercise-icon.cardio {
+            background: rgba(255, 107, 53, 0.1);
+            color: #ff6b35;
+        }
+        
+        .exercise-icon.strength {
+            background: rgba(74, 144, 226, 0.1);
+            color: #4a90e2;
+        }
+        
+        .exercise-icon.stretch {
+            background: rgba(138, 43, 226, 0.1);
+            color: #8a2be2;
+        }
+        
+        .exercise-info {
+            flex: 1;
+        }
+        
+        .exercise-name {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 4px;
+        }
+        
+        .exercise-details {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .exercise-stats {
+            text-align: right;
+            font-size: 12px;
+            color: #999;
+        }
+        
+        .exercise-value {
+            font-weight: bold;
+            color: #333;
+            font-size: 14px;
+        }
+        
+        /* 运动记录卡片 */
+        .workout-record-card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border: 2px solid #4a90e2;
+        }
+        
+        .record-title {
+            color: #4a90e2;
+            font-weight: bold;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .workout-summary {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .summary-item {
+            text-align: center;
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 12px 8px;
+        }
+        
+        .summary-value {
+            font-size: 20px;
+            font-weight: bold;
+            color: #4a90e2;
+            margin-bottom: 4px;
+        }
+        
+        .summary-label {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        /* 运动建议卡片 */
+        .advice-card {
+            background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 12px;
+            border: 1px solid #ffc107;
+        }
+        
+        .advice-title {
+            color: #f57c00;
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .advice-content {
+            color: #f57c00;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        
+        /* 运动强度指示器 */
+        .intensity-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 12px 0;
+        }
+        
+        .intensity-label {
+            font-size: 14px;
+            color: #666;
+            min-width: 60px;
+        }
+        
+        .intensity-bar {
+            flex: 1;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .intensity-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.8s ease;
+        }
+        
+        .intensity-fill.low {
+            background: #4caf50;
+            width: 30%;
+        }
+        
+        .intensity-fill.medium {
+            background: #ff9800;
+            width: 60%;
+        }
+        
+        .intensity-fill.high {
+            background: #f44336;
+            width: 90%;
+        }
+        
+        /* 心率区间卡片 */
+        .heart-rate-card {
+            background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 8px;
+            border: 2px solid #e91e63;
+        }
+        
+        .heart-rate-title {
+            color: #c2185b;
+            font-weight: bold;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .heart-rate-zones {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        
+        .zone-item {
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+        }
+        
+        .zone-name {
+            font-size: 12px;
+            color: #c2185b;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+        
+        .zone-range {
+            font-size: 16px;
+            font-weight: bold;
+            color: #c2185b;
+            margin-bottom: 2px;
+        }
+        
+        .zone-purpose {
+            font-size: 10px;
+            color: #c2185b;
+        }
+        
+        /* 快速操作按钮 */
+        .quick-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .quick-btn {
+            background: #f0f9ff;
+            border: 1px solid #3b82f6;
+            color: #1e40af;
+            border-radius: 16px;
+            padding: 6px 12px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .quick-btn:hover {
+            background: #3b82f6;
+            color: white;
+        }
+        
+        .quick-btn.orange {
+            background: #fff7ed;
+            border-color: #ff6b35;
+            color: #ea580c;
+        }
+        
+        .quick-btn.orange:hover {
+            background: #ff6b35;
+            color: white;
+        }
+        
+        /* 运动启动按钮 */
+        .start-workout-btn {
+            background: linear-gradient(135deg, #ff6b35 0%, #f5515f 100%);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            padding: 16px 32px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 16px;
+            box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+        }
+        
+        .start-workout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+        }
+        
+        .start-workout-btn:active {
+            transform: translateY(0);
+        }
+        
+        /* 打字动画 */
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: #999;
+            font-size: 14px;
+        }
+        
+        .typing-dots {
+            display: flex;
+            gap: 2px;
+        }
+        
+        .typing-dot {
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: #999;
+            animation: typing 1.4s infinite;
+        }
+        
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes typing {
+            0%, 60%, 100% { opacity: 0.3; }
+            30% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 微信导航栏 -->
+    <div class="wechat-header">
+        <div class="flex items-center">
+            <i class="fas fa-arrow-left text-lg mr-4"></i>
+            <div class="flex items-center">
+                <div class="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center mr-3">
+                    <i class="fas fa-robot text-white text-sm"></i>
+                </div>
+                <div>
+                    <div class="font-semibold">AI营养师文慧</div>
+                    <div class="text-xs text-gray-300">运动健身教练</div>
+                </div>
+            </div>
+        </div>
+        <i class="fas fa-ellipsis-h text-lg"></i>
+    </div>
+    
+    <!-- 对话区域 -->
+    <div class="chat-container" id="chatContainer">
+        <!-- AI问候消息 -->
+        <div class="message ai">
+            <div class="avatar ai">
+                <i class="fas fa-robot"></i>
+            </div>
+            <div class="message-bubble ai">
+                嗨！准备好今天的运动了吗？💪<br><br>
+                我是你的专属健身教练文慧，今天我为你准备了个性化的运动计划！
+                
+                <div class="quick-actions">
+                    <div class="quick-btn orange" onclick="showTodayPlan()">📅 今日计划</div>
+                    <div class="quick-btn orange" onclick="startWorkout()">🏃 开始运动</div>
+                    <div class="quick-btn orange" onclick="checkProgress()">📊 查看进度</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 用户消息 -->
+        <div class="message user">
+            <div class="message-bubble user">
+                今天应该做什么运动？
+            </div>
+            <div class="avatar">
+                <i class="fas fa-user"></i>
+            </div>
+        </div>
+        
+        <!-- AI回复 - 今日运动计划 -->
+        <div class="message ai">
+            <div class="avatar ai">
+                <i class="fas fa-robot"></i>
+            </div>
+            <div class="message-bubble ai">
+                根据你的减重目标和体能状况，我为你量身定制了今日运动计划：
+                
+                <div class="exercise-plan-card">
+                    <div class="plan-title">
+                        <i class="fas fa-calendar-day"></i>
+                        今日运动计划 - 第25天
+                    </div>
+                    
+                    <div class="exercise-item">
+                        <div class="exercise-icon cardio">
+                            <i class="fas fa-running"></i>
+                        </div>
+                        <div class="exercise-info">
+                            <div class="exercise-name">有氧热身</div>
+                            <div class="exercise-details">快走 + 动态拉伸</div>
+                        </div>
+                        <div class="exercise-stats">
+                            <div class="exercise-value">10分钟</div>
+                            <div>热身准备</div>
+                        </div>
+                    </div>
+                    
+                    <div class="exercise-item">
+                        <div class="exercise-icon cardio">
+                            <i class="fas fa-heartbeat"></i>
+                        </div>
+                        <div class="exercise-info">
+                            <div class="exercise-name">中强度有氧</div>
+                            <div class="exercise-details">慢跑 + 间歇走</div>
+                        </div>
+                        <div class="exercise-stats">
+                            <div class="exercise-value">25分钟</div>
+                            <div>燃脂主力</div>
+                        </div>
+                    </div>
+                    
+                    <div class="exercise-item">
+                        <div class="exercise-icon strength">
+                            <i class="fas fa-dumbbell"></i>
+                        </div>
+                        <div class="exercise-info">
+                            <div class="exercise-name">力量训练</div>
+                            <div class="exercise-details">深蹲 + 俯卧撑 + 卷腹</div>
+                        </div>
+                        <div class="exercise-stats">
+                            <div class="exercise-value">15分钟</div>
+                            <div>肌肉塑形</div>
+                        </div>
+                    </div>
+                    
+                    <div class="exercise-item">
+                        <div class="exercise-icon stretch">
+                            <i class="fas fa-spa"></i>
+                        </div>
+                        <div class="exercise-info">
+                            <div class="exercise-name">放松拉伸</div>
+                            <div class="exercise-details">全身拉伸 + 呼吸调节</div>
+                        </div>
+                        <div class="exercise-stats">
+                            <div class="exercise-value">10分钟</div>
+                            <div>恢复放松</div>
+                        </div>
+                    </div>
+                    
+                    <div style="background: #fff3e0; border-radius: 8px; padding: 12px; margin-top: 12px;">
+                        <div style="color: #ff6b35; font-weight: bold; margin-bottom: 8px;">🎯 今日目标</div>
+                        <div style="color: #ff6b35; font-size: 14px;">
+                            • 总时长：60分钟<br>
+                            • 消耗热量：约380大卡<br>
+                            • 目标心率：130-150 bpm<br>
+                            • 运动强度：中等偏上
+                        </div>
+                    </div>
+                    
+                    <button class="start-workout-btn" onclick="startWorkoutMode()">
+                        <i class="fas fa-play mr-2"></i>
+                        开始今日运动
+                    </button>
+                </div>
+                
+                <div class="quick-actions">
+                    <div class="quick-btn orange" onclick="adjustIntensity()">⚖️ 调整强度</div>
+                    <div class="quick-btn orange" onclick="replaceExercise()">🔄 更换项目</div>
+                    <div class="quick-btn orange" onclick="exerciseGuide()">📹 动作指导</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 用户消息 -->
+        <div class="message user">
+            <div class="message-bubble user">
+                我的心率应该控制在什么范围？
+            </div>
+            <div class="avatar">
+                <i class="fas fa-user"></i>
+            </div>
+        </div>
+        
+        <!-- AI回复 - 心率指导 -->
+        <div class="message ai">
+            <div class="avatar ai">
+                <i class="fas fa-robot"></i>
+            </div>
+            <div class="message-bubble ai">
+                很好的问题！心率管理是高效燃脂的关键。根据你的年龄和目标，我来为你详细分析：
+                
+                <div class="heart-rate-card">
+                    <div class="heart-rate-title">
+                        <i class="fas fa-heart"></i>
+                        个性化心率区间（32岁）
+                    </div>
+                    
+                    <div style="text-align: center; margin-bottom: 16px;">
+                        <div style="font-size: 14px; color: #c2185b; margin-bottom: 8px;">最大心率：188 bpm</div>
+                        <div style="font-size: 12px; color: #c2185b;">(公式：220 - 32岁 = 188)</div>
+                    </div>
+                    
+                    <div class="heart-rate-zones">
+                        <div class="zone-item">
+                            <div class="zone-name">脂肪燃烧区</div>
+                            <div class="zone-range">113-131</div>
+                            <div class="zone-purpose">最佳减脂心率</div>
+                        </div>
+                        <div class="zone-item">
+                            <div class="zone-name">有氧训练区</div>
+                            <div class="zone-range">131-150</div>
+                            <div class="zone-purpose">提升心肺功能</div>
+                        </div>
+                        <div class="zone-item">
+                            <div class="zone-name">热身恢复区</div>
+                            <div class="zone-range">94-113</div>
+                            <div class="zone-purpose">热身和恢复</div>
+                        </div>
+                        <div class="zone-item">
+                            <div class="zone-name">高强度区</div>
+                            <div class="zone-range">150-169</div>
+                            <div class="zone-purpose">间歇训练</div>
+                        </div>
+                    </div>
+                    
+                    <div style="background: rgba(255, 255, 255, 0.7); border-radius: 8px; padding: 12px; margin-top: 12px;">
+                        <div style="color: #c2185b; font-weight: bold; margin-bottom: 4px;">🎯 今日推荐心率</div>
+                        <div style="color: #c2185b; font-size: 14px;">
+                            主要保持在 <strong>113-131 bpm</strong> 脂肪燃烧区，间歇可达 <strong>131-150 bpm</strong>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="advice-card">
+                    <div class="advice-title">
+                        <i class="fas fa-lightbulb"></i>
+                        心率监测建议
+                    </div>
+                    <div class="advice-content">
+                        💡 <strong>监测方法：</strong><br>
+                        • 使用智能手环或运动手表<br>
+                        • 传统方法：10秒脉搏×6<br>
+                        • 感觉判断：能说话但略喘<br><br>
+                        
+                        ⚠️ <strong>注意事项：</strong><br>
+                        • 心率过高时立即减速<br>
+                        • 感到不适马上停止<br>
+                        • 运动后监测恢复心率
+                    </div>
+                </div>
+                
+                <div class="quick-actions">
+                    <div class="quick-btn" onclick="connectDevice()">📱 连接设备</div>
+                    <div class="quick-btn" onclick="heartRateMonitor()">❤️ 实时监测</div>
+                    <div class="quick-btn" onclick="safetyTips()">⚠️ 安全提醒</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 用户消息 -->
+        <div class="message user">
+            <div class="message-bubble user">
+                运动强度感觉有点高，能调整一下吗？
+            </div>
+            <div class="avatar">
+                <i class="fas fa-user"></i>
+            </div>
+        </div>
+        
+        <!-- AI回复 - 运动强度调整 -->
+        <div class="message ai">
+            <div class="avatar ai">
+                <i class="fas fa-robot"></i>
+            </div>
+            <div class="message-bubble ai">
+                当然可以！倾听身体感受是最重要的。我来为你调整到更合适的强度：
+                
+                <div class="exercise-plan-card">
+                    <div class="plan-title">
+                        <i class="fas fa-sliders-h"></i>
+                        调整后的运动计划
+                    </div>
+                    
+                    <div class="intensity-indicator">
+                        <div class="intensity-label">原强度</div>
+                        <div class="intensity-bar">
+                            <div class="intensity-fill high"></div>
+                        </div>
+                        <div style="font-size: 12px; color: #f44336;">高强度</div>
+                    </div>
+                    
+                    <div class="intensity-indicator">
+                        <div class="intensity-label">新强度</div>
+                        <div class="intensity-bar">
+                            <div class="intensity-fill medium"></div>
+                        </div>
+                        <div style="font-size: 12px; color: #ff9800;">中等强度</div>
+                    </div>
+                    
+                    <div style="margin-top: 16px;">
+                        <div style="font-weight: bold; margin-bottom: 8px; color: #ff6b35;">📋 调整内容</div>
+                        
+                        <div class="exercise-item">
+                            <div class="exercise-icon cardio">
+                                <i class="fas fa-walking"></i>
+                            </div>
+                            <div class="exercise-info">
+                                <div class="exercise-name">轻松快走</div>
+                                <div class="exercise-details">代替慢跑，降低冲击</div>
+                            </div>
+                            <div class="exercise-stats">
+                                <div class="exercise-value">30分钟</div>
+                                <div>燃脂有效</div>
+                            </div>
+                        </div>
+                        
+                        <div class="exercise-item">
+                            <div class="exercise-icon strength">
+                                <i class="fas fa-user-friends"></i>
+                            </div>
+                            <div class="exercise-info">
+                                <div class="exercise-name">轻量力量</div>
+                                <div class="exercise-details">减少组数，延长休息</div>
+                            </div>
+                            <div class="exercise-stats">
+                                <div class="exercise-value">10分钟</div>
+                                <div>适度刺激</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="background: #e8f5e8; border-radius: 8px; padding: 12px; margin-top: 12px;">
+                        <div style="color: #4caf50; font-weight: bold; margin-bottom: 8px;">✨ 调整效果</div>
+                        <div style="color: #4caf50; font-size: 14px;">
+                            • 运动时长：50分钟（减少10分钟）<br>
+                            • 消耗热量：约280大卡<br>
+                            • 目标心率：105-125 bpm<br>
+                            • 疲劳程度：轻到中等
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="advice-card">
+                    <div class="advice-title">
+                        <i class="fas fa-heart"></i>
+                        贴心提醒
+                    </div>
+                    <div class="advice-content">
+                        循序渐进是最安全有效的方法！当你适应了这个强度后，我们再逐步提升。记住：
+                        <br><br>
+                        🌟 <strong>质量比强度更重要</strong><br>
+                        🌟 <strong>坚持比冲刺更关键</strong><br>
+                        🌟 <strong>你的感受最重要</strong>
+                    </div>
+                </div>
+                
+                <div class="quick-actions">
+                    <div class="quick-btn orange" onclick="acceptAdjustment()">✅ 接受调整</div>
+                    <div class="quick-btn orange" onclick="furtherReduce()">⬇️ 再降一点</div>
+                    <div class="quick-btn orange" onclick="customizeIntensity()">🎛️ 自定义</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 用户消息 -->
+        <div class="message user">
+            <div class="message-bubble user">
+                好的，开始运动吧！
+            </div>
+            <div class="avatar">
+                <i class="fas fa-user"></i>
+            </div>
+        </div>
+        
+        <!-- AI回复 - 运动指导 -->
+        <div class="message ai">
+            <div class="avatar ai">
+                <i class="fas fa-robot"></i>
+            </div>
+            <div class="message-bubble ai">
+                太棒了！让我们开始这段美好的运动时光！🎉
+                
+                <div class="workout-record-card">
+                    <div class="record-title">
+                        <i class="fas fa-play-circle"></i>
+                        运动实时指导
+                    </div>
+                    
+                    <div style="text-align: center; margin-bottom: 16px;">
+                        <div style="font-size: 24px; font-weight: bold; color: #4a90e2; margin-bottom: 8px;">
+                            阶段一：热身准备
+                        </div>
+                        <div style="font-size: 14px; color: #666;">
+                            接下来10分钟，我们从轻松快走开始
+                        </div>
+                    </div>
+                    
+                    <div style="background: #f0f8ff; border-radius: 8px; padding: 16px; margin-bottom: 16px;">
+                        <div style="color: #4a90e2; font-weight: bold; margin-bottom: 8px;">🎯 当前动作：轻松快走</div>
+                        <div style="color: #4a90e2; font-size: 14px; margin-bottom: 12px;">
+                            • 保持自然步态，手臂自然摆动<br>
+                            • 呼吸平稳，感觉身体逐渐暖和<br>
+                            • 心率目标：95-110 bpm
+                        </div>
+                        
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div style="font-size: 18px; font-weight: bold; color: #4a90e2;">
+                                ⏱️ 08:30 <span style="font-size: 14px; color: #666;">/ 10:00</span>
+                            </div>
+                            <div style="font-size: 16px; color: #4a90e2;">
+                                ❤️ 102 bpm
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="background: #fffbf0; border-radius: 8px; padding: 12px; margin-bottom: 16px;">
+                        <div style="color: #f57c00; font-weight: bold; margin-bottom: 8px;">💬 运动提醒</div>
+                        <div style="color: #f57c00; font-size: 14px;">
+                            做得很棒！心率控制得很好，继续保持这个节奏。感到轻微出汗是正常的，说明身体正在进入状态！
+                        </div>
+                    </div>
+                    
+                    <button class="start-workout-btn" style="background: linear-gradient(135deg, #4caf50 0%, #45a049 100%); box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);" onclick="nextPhase()">
+                        <i class="fas fa-forward mr-2"></i>
+                        进入下一阶段
+                    </button>
+                </div>
+                
+                <div class="quick-actions">
+                    <div class="quick-btn" onclick="pauseWorkout()">⏸️ 暂停</div>
+                    <div class="quick-btn" onclick="adjustPace()">🏃 调节配速</div>
+                    <div class="quick-btn" onclick="emergencyStop()">🛑 紧急停止</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 输入区域 -->
+    <div class="input-area">
+        <div class="input-actions">
+            <button class="action-btn" onclick="simulateVoiceInput()">
+                <i class="fas fa-microphone"></i>
+            </button>
+            <button class="action-btn" onclick="simulatePhotoInput()">
+                <i class="fas fa-camera"></i>
+            </button>
+            <button class="action-btn">
+                <i class="fas fa-plus"></i>
+            </button>
+        </div>
+        <input type="text" class="input-field" placeholder="运动中遇到问题随时告诉我..." id="messageInput" onkeypress="handleKeyPress(event)">
+        <button class="send-btn" onclick="sendMessage()">
+            <i class="fas fa-paper-plane"></i>
+        </button>
+    </div>
+    
+    <script>
+        let isTyping = false;
+        let workoutTimer = null;
+        
+        // 快速操作功能
+        function showTodayPlan() {
+            addUserMessage('给我看看今天的运动计划');
+            setTimeout(() => {
+                simulateAIResponse('运动计划');
+            }, 1000);
+        }
+        
+        function startWorkout() {
+            addUserMessage('我准备开始运动了');
+            setTimeout(() => {
+                simulateAIResponse('开始运动');
+            }, 1000);
+        }
+        
+        function checkProgress() {
+            addUserMessage('我想查看运动进度');
+            setTimeout(() => {
+                simulateAIResponse('运动进度');
+            }, 1000);
+        }
+        
+        // 处理键盘事件
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+        
+        // 发送消息
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            
+            if (message && !isTyping) {
+                addUserMessage(message);
+                input.value = '';
+                
+                setTimeout(() => {
+                    simulateAIResponse(message);
+                }, 1000);
+            }
+        }
+        
+        // 添加用户消息
+        function addUserMessage(message) {
+            const chatContainer = document.getElementById('chatContainer');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message user';
+            messageDiv.innerHTML = `
+                <div class="message-bubble user">
+                    ${message}
+                </div>
+                <div class="avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+            `;
+            chatContainer.appendChild(messageDiv);
+            scrollToBottom();
+        }
+        
+        // 添加AI消息
+        function addAIMessage(message) {
+            const chatContainer = document.getElementById('chatContainer');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message ai';
+            messageDiv.innerHTML = `
+                <div class="avatar ai">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="message-bubble ai">
+                    ${message}
+                </div>
+            `;
+            chatContainer.appendChild(messageDiv);
+            scrollToBottom();
+        }
+        
+        // 模拟AI回复
+        function simulateAIResponse(userMessage) {
+            isTyping = true;
+            showTypingIndicator();
+            
+            setTimeout(() => {
+                hideTypingIndicator();
+                
+                let response = getAIResponse(userMessage);
+                addAIMessage(response);
+                isTyping = false;
+            }, 2000);
+        }
+        
+        // 获取AI回复内容
+        function getAIResponse(message) {
+            const responses = {
+                '进度': `
+                    让我为你展示运动进度数据：
+                    
+                    <div class="workout-record-card">
+                        <div class="record-title">
+                            <i class="fas fa-chart-line"></i>
+                            本周运动统计
+                        </div>
+                        
+                        <div class="workout-summary">
+                            <div class="summary-item">
+                                <div class="summary-value">5</div>
+                                <div class="summary-label">运动天数</div>
+                            </div>
+                            <div class="summary-item">
+                                <div class="summary-value">280</div>
+                                <div class="summary-label">总分钟数</div>
+                            </div>
+                            <div class="summary-item">
+                                <div class="summary-value">1,450</div>
+                                <div class="summary-label">消耗热量</div>
+                            </div>
+                        </div>
+                        
+                        <div style="background: #f0f8ff; border-radius: 8px; padding: 12px;">
+                            <div style="color: #4a90e2; font-weight: bold; margin-bottom: 8px;">📈 进步表现</div>
+                            <div style="color: #4a90e2; font-size: 14px;">
+                                相比上周，你的运动时长增加了15%，坚持度提升明显！继续加油！
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="quick-actions">
+                        <div class="quick-btn">📊 详细报告</div>
+                        <div class="quick-btn">🏆 成就徽章</div>
+                        <div class="quick-btn">📱 分享进展</div>
+                    </div>
+                `,
+                '计划': `
+                    根据你的减重目标，我为你制定了科学的运动计划：
+                    
+                    <div class="advice-card">
+                        <div class="advice-title">
+                            <i class="fas fa-calendar-week"></i>
+                            本周运动安排
+                        </div>
+                        <div class="advice-content">
+                            <strong>周一、三、五：</strong>有氧运动为主<br>
+                            <strong>周二、四：</strong>力量训练<br>
+                            <strong>周六：</strong>长时间低强度运动<br>
+                            <strong>周日：</strong>休息或轻松拉伸<br><br>
+                            
+                            每次运动45-60分钟，强度循序渐进提升
+                        </div>
+                    </div>
+                    
+                    <div class="quick-actions">
+                        <div class="quick-btn orange">🎯 今日执行</div>
+                        <div class="quick-btn orange">⚖️ 调整计划</div>
+                        <div class="quick-btn orange">📅 设置提醒</div>
+                    </div>
+                `,
+                default: `
+                    我会持续为你提供专业的运动指导，陪伴你的健身之路！
+                    
+                    <div style="background: #fff7ed; border-radius: 8px; padding: 12px; margin-top: 8px;">
+                        <div style="color: #ea580c; font-weight: bold; margin-bottom: 8px;">💪 运动小贴士</div>
+                        <div style="color: #ea580c; font-size: 14px;">
+                            运动是最好的药物，坚持就是胜利！每一滴汗水都是向目标迈进的步伐。
+                        </div>
+                    </div>
+                    
+                    <div class="quick-actions">
+                        <div class="quick-btn orange">🏃 开始运动</div>
+                        <div class="quick-btn orange">📊 查看数据</div>
+                        <div class="quick-btn orange">💡 获取建议</div>
+                    </div>
+                `
+            };
+            
+            if (message.includes('进度') || message.includes('数据') || message.includes('统计')) {
+                return responses['进度'];
+            } else if (message.includes('计划') || message.includes('安排') || message.includes('今天')) {
+                return responses['计划'];
+            } else {
+                return responses['default'];
+            }
+        }
+        
+        // 显示打字指示器
+        function showTypingIndicator() {
+            const chatContainer = document.getElementById('chatContainer');
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message ai';
+            typingDiv.id = 'typingMessage';
+            typingDiv.innerHTML = `
+                <div class="avatar ai">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="message-bubble ai">
+                    <div class="typing-indicator">
+                        文慧正在制定计划
+                        <div class="typing-dots">
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            chatContainer.appendChild(typingDiv);
+            scrollToBottom();
+        }
+        
+        // 隐藏打字指示器
+        function hideTypingIndicator() {
+            const typingMessage = document.getElementById('typingMessage');
+            if (typingMessage) {
+                typingMessage.remove();
+            }
+        }
+        
+        // 滚动到底部
+        function scrollToBottom() {
+            const chatContainer = document.getElementById('chatContainer');
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+        
+        // 页面加载完成后自动滚动到底部
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(scrollToBottom, 100);
+        });
+    </script>
+</body>
+</html>

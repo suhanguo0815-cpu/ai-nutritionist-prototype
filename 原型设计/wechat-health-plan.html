@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>健康方案指导 - AI营养师文慧</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f7f7f7;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        /* 微信导航栏 */
+        .wechat-header {
+            background: #393a3f;
+            color: white;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        /* 对话区域 */
+        .chat-container {
+            height: calc(100vh - 64px - 80px);
+            overflow-y: auto;
+            padding: 16px;
+            background: #f7f7f7;
+        }
+        
+        /* 消息气泡 */
+        .message {
+            margin-bottom: 16px;
+            display: flex;
+            align-items: flex-end;
+        }
+        
+        .message.ai {
+            justify-content: flex-start;
+        }
+        
+        .message.user {
+            justify-content: flex-end;
+        }
+        
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 6px;
+            background: #07c160;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin: 0 8px;
+            flex-shrink: 0;
+        }
+        
+        .avatar.ai {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .message-bubble {
+            max-width: 280px;
+            padding: 12px 16px;
+            border-radius: 18px;
+            font-size: 16px;
+            line-height: 1.4;
+            position: relative;
+        }
+        
+        .message-bubble.ai {
+            background: white;
+            border-top-left-radius: 6px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .message-bubble.user {
+            background: #07c160;
+            color: white;
+            border-top-right-radius: 6px;
+        }
+        
+        /* 输入区域 */
+        .input-area {
+            height: 80px;
+            background: white;
+            border-top: 1px solid #e5e5e5;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            gap: 12px;
+        }
+        
+        .input-actions {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .action-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 6px;
+            background: #f5f5f5;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .action-btn:hover {
+            background: #e5e5e5;
+        }
+        
+        .input-field {
+            flex: 1;
+            height: 36px;
+            border: 1px solid #e5e5e5;
+            border-radius: 18px;
+            padding: 0 16px;
+            font-size: 16px;
+            outline: none;
+        }
+        
+        .send-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 18px;
+            background: #07c160;
+            border: none;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        
+        .send-btn:hover {
+            background: #06ad56;
+        }
+        
+        /* 方案卡片 */
+        .plan-card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border: 2px solid #667eea;
+        }
+        
+        .plan-title {
+            color: #667eea;
+            font-weight: bold;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .plan-section {
+            margin-bottom: 16px;
+        }
+        
+        .plan-section:last-child {
+            margin-bottom: 0;
+        }
+        
+        .section-title {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .plan-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .plan-item:last-child {
+            border-bottom: none;
+        }
+        
+        .plan-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 12px;
+            background: #f0f9ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            color: #667eea;
+            font-size: 12px;
+        }
+        
+        .plan-content {
+            flex: 1;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .plan-value {
+            color: #333;
+            font-weight: 500;
+        }
+        
+        /* 快速操作按钮 */
+        .quick-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .quick-btn {
+            background: #f0f9ff;
+            border: 1px solid #667eea;
+            color: #667eea;
+            border-radius: 16px;
+            padding: 6px 12px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .quick-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+        
+        /* 阶段性建议卡片 */
+        .stage-card {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 8px;
+            border: none;
+        }
+        
+        .stage-title {
+            color: #92400e;
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .stage-progress {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            height: 8px;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+        
+        .stage-progress-fill {
+            background: #92400e;
+            height: 100%;
+            border-radius: 8px;
+            transition: width 0.8s ease;
+        }
+        
+        .stage-desc {
+            color: #92400e;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        
+        /* 打字动画 */
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: #999;
+            font-size: 14px;
+        }
+        
+        .typing-dots {
+            display: flex;
+            gap: 2px;
+        }
+        
+        .typing-dot {
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: #999;
+            animation: typing 1.4s infinite;
+        }
+        
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes typing {
+            0%, 60%, 100% { opacity: 0.3; }
+            30% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 微信导航栏 -->
+    <div class="wechat-header">
+        <div class="flex items-center">
+            <i class="fas fa-arrow-left text-lg mr-4"></i>
+            <div class="flex items-center">
+                <div class="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center mr-3">
+                    <i class="fas fa-robot text-white text-sm"></i>
+                </div>
+                <div>
+                    <div class="font-semibold">AI营养师文慧</div>
+                    <div class="text-xs text-gray-300">健康方案指导中</div>
+                </div>
+            </div>
+        </div>
+        <i class="fas fa-ellipsis-h text-lg"></i>
+    </div>
+    
+    <!-- 对话区域 -->
+    <div class="chat-container" id="chatContainer">
+        <!-- AI欢迎消息 -->
+        <div class="message ai">
+            <div class="avatar ai">
+                <i class="fas fa-robot"></i>
+            </div>
+            <div class="message-bubble ai">
+                你好！我是你的专属AI营养师文慧 🌟<br><br>
+                恭喜你开启90天健康减重之旅！我已经根据你的个人情况制定了专属的健康方案。
+                <div class="quick-actions">
+                    <div class="quick-btn" onclick="showPlan()">📋 查看我的方案</div>
+                    <div class="quick-btn" onclick="adjustPlan()">⚙️ 调整方案</div>
+                    <div class="quick-btn" onclick="askQuestion()">❓ 我有疑问</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 用户消息 -->
+        <div class="message user">
+            <div class="message-bubble user">
+                我想详细了解一下我的健康方案
+            </div>
+            <div class="avatar">
+                <i class="fas fa-user"></i>
+            </div>
+        </div>
+        
+        <!-- AI回复 - 个性化方案 -->
+        <div class="message ai">
+            <div class="avatar ai">
+                <i class="fas fa-robot"></i>
+            </div>
+            <div class="message-bubble ai">
+                太好了！根据你的档案信息（32岁，当前65kg，目标58kg），我为你量身定制了这份健康方案：
+                
+                <div class="plan-card">
+                    <div class="plan-title">
+                        <i class="fas fa-heart"></i>
+                        个性化健康减重方案
+                    </div>
+                    
+                    <div class="plan-section">
+                        <div class="section-title">🎯 总体目标</div>
+                        <div class="plan-item">
+                            <div class="plan-icon"><i class="fas fa-bullseye"></i></div>
+                            <div class="plan-content">
+                                90天减重：<span class="plan-value">7kg (65kg → 58kg)</span>
+                            </div>
+                        </div>
+                        <div class="plan-item">
+                            <div class="plan-icon"><i class="fas fa-calendar"></i></div>
+                            <div class="plan-content">
+                                每周减重：<span class="plan-value">0.5-0.8kg</span>
+                            </div>
+                        </div>
+                        <div class="plan-item">
+                            <div class="plan-icon"><i class="fas fa-chart-line"></i></div>
+                            <div class="plan-content">
+                                预期达成率：<span class="plan-value">95%</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="plan-section">
+                        <div class="section-title">🍽️ 饮食计划</div>
+                        <div class="plan-item">
+                            <div class="plan-icon"><i class="fas fa-fire"></i></div>
+                            <div class="plan-content">
+                                每日热量：<span class="plan-value">1,350大卡</span>
+                            </div>
+                        </div>
+                        <div class="plan-item">
+                            <div class="plan-icon"><i class="fas fa-carrot"></i></div>
+                            <div class="plan-content">
+                                211饮食结构：<span class="plan-value">蔬菜50% + 主食25% + 蛋白25%</span>
+                            </div>
+                        </div>
+                        <div class="plan-item">
+                            <div class="plan-icon"><i class="fas fa-clock"></i></div>
+                            <div class="plan-content">
+                                用餐时间：<span class="plan-value">7:00 / 12:00 / 18:00</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="plan-section">
+                        <div class="section-title">🏃 运动计划</div>
+                        <div class="plan-item">
+                            <div class="plan-icon"><i class="fas fa-running"></i></div>
+                            <div class="plan-content">
+                                有氧运动：<span class="plan-value">每周4次，每次30-45分钟</span>
+                            </div>
+                        </div>
+                        <div class="plan-item">
+                            <div class="plan-icon"><i class="fas fa-dumbbell"></i></div>
+                            <div class="plan-content">
+                                力量训练：<span class="plan-value">每周2次，每次20-30分钟</span>
+                            </div>
+                        </div>
+                        <div class="plan-item">
+                            <div class="plan-icon"><i class="fas fa-heart"></i></div>
+                            <div class="plan-content">
+                                目标心率：<span class="plan-value">130-150 bpm</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="plan-section">
+                        <div class="section-title">💤 生活习惯</div>
+                        <div class="plan-item">
+                            <div class="plan-icon"><i class="fas fa-moon"></i></div>
+                            <div class="plan-content">
+                                睡眠时间：<span class="plan-value">每晚7-8小时</span>
+                            </div>
+                        </div>
+                        <div class="plan-item">
+                            <div class="plan-icon"><i class="fas fa-tint"></i></div>
+                            <div class="plan-content">
+                                饮水量：<span class="plan-value">每天2000ml</span>
+                            </div>
+                        </div>
+                        <div class="plan-item">
+                            <div class="plan-icon"><i class="fas fa-spa"></i></div>
+                            <div class="plan-content">
+                                压力管理：<span class="plan-value">每日10分钟冥想</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="quick-actions">
+                    <div class="quick-btn" onclick="showDailyPlan()">📅 今日计划</div>
+                    <div class="quick-btn" onclick="showNutrition()">🥗 营养详情</div>
+                    <div class="quick-btn" onclick="showExercise()">🏃 运动指导</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 用户消息 -->
+        <div class="message user">
+            <div class="message-bubble user">
+                这个方案感觉很专业！能告诉我现在处于什么阶段吗？
+            </div>
+            <div class="avatar">
+                <i class="fas fa-user"></i>
+            </div>
+        </div>
+        
+        <!-- AI回复 - 阶段性指导 -->
+        <div class="message ai">
+            <div class="avatar ai">
+                <i class="fas fa-robot"></i>
+            </div>
+            <div class="message-bubble ai">
+                很好的问题！根据你目前的进度，我们来看看你的阶段性情况：
+                
+                <div class="stage-card">
+                    <div class="stage-title">
+                        <i class="fas fa-rocket"></i>
+                        第一阶段：适应期 (第1-14天)
+                    </div>
+                    <div class="stage-progress">
+                        <div class="stage-progress-fill" style="width: 85%"></div>
+                    </div>
+                    <div class="stage-desc">
+                        你已经完成了85%的适应期！这个阶段主要是让身体适应新的饮食和运动节奏。你做得很棒，继续保持！<br><br>
+                        
+                        <strong>下一阶段预告：</strong><br>
+                        即将进入"加速减重期"，我会为你调整运动强度，预计减重效果会更明显。
+                    </div>
+                </div>
+                
+                <div class="quick-actions">
+                    <div class="quick-btn" onclick="showProgress()">📈 查看详细进度</div>
+                    <div class="quick-btn" onclick="nextStage()">🚀 了解下阶段</div>
+                    <div class="quick-btn" onclick="adjustDifficulty()">⚖️ 调整难度</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 用户消息 -->
+        <div class="message user">
+            <div class="message-bubble user">
+                太棒了！我想了解一下今天具体应该怎么做？
+            </div>
+            <div class="avatar">
+                <i class="fas fa-user"></i>
+            </div>
+        </div>
+        
+        <!-- AI回复 - 今日指导 -->
+        <div class="message ai">
+            <div class="avatar ai">
+                <i class="fas fa-robot"></i>
+            </div>
+            <div class="message-bubble ai">
+                今天是个美好的开始！让我为你安排今日的健康计划：
+                
+                <div class="plan-card">
+                    <div class="plan-title">
+                        <i class="fas fa-sun"></i>
+                        今日健康计划 - 12月15日
+                    </div>
+                    
+                    <div class="plan-section">
+                        <div class="section-title">🌅 上午 (7:00-12:00)</div>
+                        <div class="plan-item">
+                            <div class="plan-icon"><i class="fas fa-utensils"></i></div>
+                            <div class="plan-content">
+                                <strong>早餐</strong>：燕麦粥(50g) + 鸡蛋(1个) + 蓝莓(100g)<br>
+                                <span style="color: #667eea;">约300大卡，蛋白质18g</span>
+                            </div>
+                        </div>
+                        <div class="plan-item">
+                            <div class="plan-icon"><i class="fas fa-running"></i></div>
+                            <div class="plan-content">
+                                <strong>晨练</strong>：快走30分钟 + 拉伸10分钟<br>
+                                <span style="color: #667eea;">预计消耗200大卡</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="plan-section">
+                        <div class="section-title">☀️ 中午 (12:00-18:00)</div>
+                        <div class="plan-item">
+                            <div class="plan-icon"><i class="fas fa-utensils"></i></div>
+                            <div class="plan-content">
+                                <strong>午餐</strong>：糙米饭(80g) + 鸡胸肉(100g) + 时蔬(200g)<br>
+                                <span style="color: #667eea;">约450大卡，蛋白质35g</span>
+                            </div>
+                        </div>
+                        <div class="plan-item">
+                            <div class="plan-icon"><i class="fas fa-apple-alt"></i></div>
+                            <div class="plan-content">
+                                <strong>下午茶</strong>：苹果1个 + 无糖酸奶100ml<br>
+                                <span style="color: #667eea;">约120大卡，补充维C</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="plan-section">
+                        <div class="section-title">🌙 晚上 (18:00-22:00)</div>
+                        <div class="plan-item">
+                            <div class="plan-icon"><i class="fas fa-utensils"></i></div>
+                            <div class="plan-content">
+                                <strong>晚餐</strong>：蒸蛋羹 + 清炒菠菜 + 紫薯(100g)<br>
+                                <span style="color: #667eea;">约280大卡，富含纤维</span>
+                            </div>
+                        </div>
+                        <div class="plan-item">
+                            <div class="plan-icon"><i class="fas fa-spa"></i></div>
+                            <div class="plan-content">
+                                <strong>放松</strong>：瑜伽拉伸15分钟 + 冥想10分钟<br>
+                                <span style="color: #667eea;">帮助消化，改善睡眠</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="background: #f0f9ff; border-radius: 8px; padding: 12px; margin-top: 12px; border: 1px solid #667eea;">
+                    <div style="color: #667eea; font-weight: bold; margin-bottom: 4px;">💡 今日重点提醒</div>
+                    <div style="color: #333; font-size: 14px;">
+                        • 记得在每餐前30分钟喝200ml温水<br>
+                        • 运动后1小时内避免大量进食<br>
+                        • 晚上9点后尽量不再进食<br>
+                        • 有任何不适随时告诉我
+                    </div>
+                </div>
+                
+                <div class="quick-actions">
+                    <div class="quick-btn" onclick="startDay()">🎯 开始今日计划</div>
+                    <div class="quick-btn" onclick="modifyPlan()">✏️ 调整计划</div>
+                    <div class="quick-btn" onclick="askTips()">💡 获取小贴士</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 输入区域 -->
+    <div class="input-area">
+        <div class="input-actions">
+            <button class="action-btn" onclick="simulateVoiceInput()">
+                <i class="fas fa-microphone"></i>
+            </button>
+            <button class="action-btn" onclick="simulatePhotoInput()">
+                <i class="fas fa-camera"></i>
+            </button>
+            <button class="action-btn">
+                <i class="fas fa-plus"></i>
+            </button>
+        </div>
+        <input type="text" class="input-field" placeholder="向文慧提问或分享你的想法..." id="messageInput" onkeypress="handleKeyPress(event)">
+        <button class="send-btn" onclick="sendMessage()">
+            <i class="fas fa-paper-plane"></i>
+        </button>
+    </div>
+    
+    <script>
+        let isTyping = false;
+        
+        // 处理键盘事件
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+        
+        // 发送消息
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            
+            if (message && !isTyping) {
+                addUserMessage(message);
+                input.value = '';
+                
+                // 模拟AI回复
+                setTimeout(() => {
+                    simulateAIResponse(message);
+                }, 1000);
+            }
+        }
+        
+        // 添加用户消息
+        function addUserMessage(message) {
+            const chatContainer = document.getElementById('chatContainer');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message user';
+            messageDiv.innerHTML = `
+                <div class="message-bubble user">
+                    ${message}
+                </div>
+                <div class="avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+            `;
+            chatContainer.appendChild(messageDiv);
+            scrollToBottom();
+        }
+        
+        // 添加AI消息
+        function addAIMessage(message) {
+            const chatContainer = document.getElementById('chatContainer');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message ai';
+            messageDiv.innerHTML = `
+                <div class="avatar ai">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="message-bubble ai">
+                    ${message}
+                </div>
+            `;
+            chatContainer.appendChild(messageDiv);
+            scrollToBottom();
+        }
+        
+        // 模拟AI回复
+        function simulateAIResponse(userMessage) {
+            isTyping = true;
+            showTypingIndicator();
+            
+            setTimeout(() => {
+                hideTypingIndicator();
+                
+                let response = getAIResponse(userMessage);
+                addAIMessage(response);
+                isTyping = false;
+            }, 2000);
+        }
+        
+        // 获取AI回复内容
+        function getAIResponse(message) {
+            const responses = {
+                '调整': `
+                    当然可以！我可以根据你的需求调整方案：
+                    
+                    <div style="background: #f0f9ff; border-radius: 8px; padding: 12px; margin-top: 8px;">
+                        <div style="color: #667eea; font-weight: bold; margin-bottom: 8px;">可调整项目：</div>
+                        <div style="color: #333; font-size: 14px;">
+                            🍽️ 饮食偏好（素食、低糖、无麸质等）<br>
+                            🏃 运动强度（轻度、中度、高强度）<br>
+                            ⏰ 作息时间（早起型、夜猫型）<br>
+                            🎯 减重速度（稳健型、快速型）
+                        </div>
+                    </div>
+                    
+                    <div class="quick-actions">
+                        <div class="quick-btn">🍃 偏好素食</div>
+                        <div class="quick-btn">💪 增强运动</div>
+                        <div class="quick-btn">🐌 放慢节奏</div>
+                    </div>
+                `,
+                '运动': `
+                    很棒的问题！运动是减重的重要部分，让我为你详细规划：
+                    
+                    <div class="plan-card">
+                        <div class="plan-title">
+                            <i class="fas fa-dumbbell"></i>
+                            个性化运动方案
+                        </div>
+                        
+                        <div style="margin-bottom: 16px;">
+                            <div style="font-weight: bold; margin-bottom: 8px;">🎯 本周运动目标</div>
+                            <div style="font-size: 14px; color: #666;">
+                                • 有氧运动4次 × 35分钟 = 140分钟<br>
+                                • 力量训练2次 × 25分钟 = 50分钟<br>
+                                • 总消耗目标：1200大卡
+                            </div>
+                        </div>
+                        
+                        <div style="margin-bottom: 16px;">
+                            <div style="font-weight: bold; margin-bottom: 8px;">📅 本周安排</div>
+                            <div style="font-size: 14px; color: #666;">
+                                周一：快走40分钟<br>
+                                周二：力量训练30分钟<br>
+                                周三：休息+拉伸<br>
+                                周四：慢跑35分钟<br>
+                                周五：力量训练25分钟<br>
+                                周六：瑜伽60分钟<br>
+                                周日：户外活动
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="quick-actions">
+                        <div class="quick-btn">📱 启动运动模式</div>
+                        <div class="quick-btn">🎵 推荐音乐</div>
+                        <div class="quick-btn">📹 视频教程</div>
+                    </div>
+                `,
+                default: `
+                    我理解你的想法！作为你的专属营养师，我会根据你的具体情况给出最适合的建议。
+                    
+                    <div style="background: #f0f9ff; border-radius: 8px; padding: 12px; margin-top: 8px;">
+                        <div style="color: #667eea; font-weight: bold; margin-bottom: 8px;">💡 个性化建议</div>
+                        <div style="color: #333; font-size: 14px;">
+                            每个人的身体情况都不同，我会持续根据你的反馈和数据来优化方案。有任何疑问或不适，请随时告诉我！
+                        </div>
+                    </div>
+                    
+                    <div class="quick-actions">
+                        <div class="quick-btn">📋 查看方案</div>
+                        <div class="quick-btn">📞 紧急咨询</div>
+                        <div class="quick-btn">📝 记录问题</div>
+                    </div>
+                `
+            };
+            
+            // 简单的关键词匹配
+            if (message.includes('调整') || message.includes('修改') || message.includes('改变')) {
+                return responses['调整'];
+            } else if (message.includes('运动') || message.includes('锻炼') || message.includes('健身')) {
+                return responses['运动'];
+            } else {
+                return responses['default'];
+            }
+        }
+        
+        // 显示打字指示器
+        function showTypingIndicator() {
+            const chatContainer = document.getElementById('chatContainer');
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message ai';
+            typingDiv.id = 'typingMessage';
+            typingDiv.innerHTML = `
+                <div class="avatar ai">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="message-bubble ai">
+                    <div class="typing-indicator">
+                        文慧正在思考中
+                        <div class="typing-dots">
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            chatContainer.appendChild(typingDiv);
+            scrollToBottom();
+        }
+        
+        // 隐藏打字指示器
+        function hideTypingIndicator() {
+            const typingMessage = document.getElementById('typingMessage');
+            if (typingMessage) {
+                typingMessage.remove();
+            }
+        }
+        
+        // 滚动到底部
+        function scrollToBottom() {
+            const chatContainer = document.getElementById('chatContainer');
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+        
+        // 快速操作按钮功能
+        function showPlan() {
+            addUserMessage('我想查看我的完整健康方案');
+            setTimeout(() => {
+                simulateAIResponse('查看方案');
+            }, 1000);
+        }
+        
+        function adjustPlan() {
+            addUserMessage('我想调整一下我的方案');
+            setTimeout(() => {
+                simulateAIResponse('调整方案');
+            }, 1000);
+        }
+        
+        function askQuestion() {
+            addUserMessage('我对方案有一些疑问');
+            setTimeout(() => {
+                simulateAIResponse('疑问解答');
+            }, 1000);
+        }
+        
+        function showDailyPlan() {
+            addUserMessage('能给我看看今天的详细计划吗？');
+            setTimeout(() => {
+                simulateAIResponse('今日计划');
+            }, 1000);
+        }
+        
+        function showNutrition() {
+            addUserMessage('我想了解更多营养搭配的知识');
+            setTimeout(() => {
+                simulateAIResponse('营养知识');
+            }, 1000);
+        }
+        
+        function showExercise() {
+            addUserMessage('能详细介绍一下运动计划吗？');
+            setTimeout(() => {
+                simulateAIResponse('运动计划');
+            }, 1000);
+        }
+        
+        // 页面加载完成后自动滚动到底部
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(scrollToBottom, 100);
+        });
+    </script>
+</body>
+</html>

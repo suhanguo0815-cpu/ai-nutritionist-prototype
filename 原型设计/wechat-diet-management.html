@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>饮食管理 - AI营养师文慧</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f7f7f7;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        /* 微信导航栏 */
+        .wechat-header {
+            background: #393a3f;
+            color: white;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        /* 对话区域 */
+        .chat-container {
+            height: calc(100vh - 64px - 80px);
+            overflow-y: auto;
+            padding: 16px;
+            background: #f7f7f7;
+        }
+        
+        /* 消息气泡 */
+        .message {
+            margin-bottom: 16px;
+            display: flex;
+            align-items: flex-end;
+        }
+        
+        .message.ai {
+            justify-content: flex-start;
+        }
+        
+        .message.user {
+            justify-content: flex-end;
+        }
+        
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 6px;
+            background: #07c160;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin: 0 8px;
+            flex-shrink: 0;
+        }
+        
+        .avatar.ai {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .message-bubble {
+            max-width: 280px;
+            padding: 12px 16px;
+            border-radius: 18px;
+            font-size: 16px;
+            line-height: 1.4;
+            position: relative;
+        }
+        
+        .message-bubble.ai {
+            background: white;
+            border-top-left-radius: 6px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .message-bubble.user {
+            background: #07c160;
+            color: white;
+            border-top-right-radius: 6px;
+        }
+        
+        /* 输入区域 */
+        .input-area {
+            height: 80px;
+            background: white;
+            border-top: 1px solid #e5e5e5;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            gap: 12px;
+        }
+        
+        .input-actions {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .action-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 6px;
+            background: #f5f5f5;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .action-btn:hover {
+            background: #e5e5e5;
+        }
+        
+        .action-btn.camera {
+            background: #ff6b6b;
+            color: white;
+        }
+        
+        .action-btn.camera:hover {
+            background: #ff5252;
+        }
+        
+        .input-field {
+            flex: 1;
+            height: 36px;
+            border: 1px solid #e5e5e5;
+            border-radius: 18px;
+            padding: 0 16px;
+            font-size: 16px;
+            outline: none;
+        }
+        
+        .send-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 18px;
+            background: #07c160;
+            border: none;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        
+        .send-btn:hover {
+            background: #06ad56;
+        }
+        
+        /* 食物识别卡片 */
+        .food-recognition-card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border: 2px solid #ff6b6b;
+        }
+        
+        .food-image {
+            width: 100%;
+            height: 150px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            background-image: url('https://images.unsplash.com/photo-1546554137-f86b9593a222?w=300&h=150&fit=crop&crop=center');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .recognition-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: #ff6b6b;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .food-title {
+            color: #ff6b6b;
+            font-weight: bold;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        /* 营养信息卡片 */
+        .nutrition-info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 12px;
+        }
+        
+        .nutrition-item {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+        }
+        
+        .nutrition-value {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 4px;
+        }
+        
+        .nutrition-label {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .nutrition-item.calories {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+        }
+        
+        .nutrition-item.calories .nutrition-value {
+            color: #d63384;
+        }
+        
+        /* 211饮食结构卡片 */
+        .diet-structure-card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border: 2px solid #28a745;
+        }
+        
+        .structure-title {
+            color: #28a745;
+            font-weight: bold;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .plate-visual {
+            background: white;
+            border: 3px solid #28a745;
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 16px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .plate-section {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .section-vegetables {
+            background: linear-gradient(0deg, #28a745 0%, #28a745 50%, transparent 50%);
+        }
+        
+        .section-protein {
+            background: linear-gradient(90deg, transparent 50%, #ff6b6b 50%);
+            clip-path: polygon(50% 0%, 100% 0%, 100% 100%, 50% 100%);
+        }
+        
+        .section-carbs {
+            background: linear-gradient(180deg, transparent 50%, #ffc107 50%);
+            clip-path: polygon(0% 50%, 50% 50%, 50% 100%, 0% 100%);
+        }
+        
+        .structure-breakdown {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-top: 12px;
+        }
+        
+        .structure-item {
+            text-align: center;
+            padding: 8px;
+            border-radius: 8px;
+            font-size: 12px;
+        }
+        
+        .structure-item.vegetables {
+            background: rgba(40, 167, 69, 0.1);
+            color: #28a745;
+        }
+        
+        .structure-item.protein {
+            background: rgba(255, 107, 107, 0.1);
+            color: #ff6b6b;
+        }
+        
+        .structure-item.carbs {
+            background: rgba(255, 193, 7, 0.1);
+            color: #ffc107;
+        }
+        
+        /* 建议卡片 */
+        .suggestion-card {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 12px;
+            border: 1px solid #2196f3;
+        }
+        
+        .suggestion-title {
+            color: #1976d2;
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .suggestion-content {
+            color: #1976d2;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        
+        /* 快速操作按钮 */
+        .quick-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .quick-btn {
+            background: #f0f9ff;
+            border: 1px solid #3b82f6;
+            color: #1e40af;
+            border-radius: 16px;
+            padding: 6px 12px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .quick-btn:hover {
+            background: #3b82f6;
+            color: white;
+        }
+        
+        /* 每日总结卡片 */
+        .daily-summary-card {
+            background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 8px;
+            border: 2px solid #9c27b0;
+        }
+        
+        .summary-title {
+            color: #7b1fa2;
+            font-weight: bold;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .summary-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        
+        .summary-stat {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            padding: 8px;
+        }
+        
+        .stat-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #7b1fa2;
+            margin-bottom: 2px;
+        }
+        
+        .stat-label {
+            font-size: 10px;
+            color: #7b1fa2;
+        }
+        
+        .progress-bar {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            height: 8px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+        
+        .progress-fill {
+            background: #7b1fa2;
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.8s ease;
+        }
+        
+        /* 图片上传区域 */
+        .upload-area {
+            border: 2px dashed #ff6b6b;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            margin-top: 8px;
+            background: #fff5f5;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .upload-area:hover {
+            background: #ffe5e5;
+            border-color: #ff5252;
+        }
+        
+        .upload-icon {
+            font-size: 24px;
+            color: #ff6b6b;
+            margin-bottom: 8px;
+        }
+        
+        .upload-text {
+            color: #ff6b6b;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+        
+        .upload-hint {
+            color: #999;
+            font-size: 12px;
+        }
+        
+        /* 打字动画 */
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: #999;
+            font-size: 14px;
+        }
+        
+        .typing-dots {
+            display: flex;
+            gap: 2px;
+        }
+        
+        .typing-dot {
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: #999;
+            animation: typing 1.4s infinite;
+        }
+        
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes typing {
+            0%, 60%, 100% { opacity: 0.3; }
+            30% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 微信导航栏 -->
+    <div class="wechat-header">
+        <div class="flex items-center">
+            <i class="fas fa-arrow-left text-lg mr-4"></i>
+            <div class="flex items-center">
+                <div class="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center mr-3">
+                    <i class="fas fa-robot text-white text-sm"></i>
+                </div>
+                <div>
+                    <div class="font-semibold">AI营养师文慧</div>
+                    <div class="text-xs text-gray-300">饮食管理专家</div>
+                </div>
+            </div>
+        </div>
+        <i class="fas fa-ellipsis-h text-lg"></i>
+    </div>
+    
+    <!-- 对话区域 -->
+    <div class="chat-container" id="chatContainer">
+        <!-- AI欢迎消息 -->
+        <div class="message ai">
+            <div class="avatar ai">
+                <i class="fas fa-robot"></i>
+            </div>
+            <div class="message-bubble ai">
+                Hi！我是你的专属饮食管家文慧 🍽️<br><br>
+                准备好开始今天的营养之旅了吗？我可以帮你：
+                
+                <div class="quick-actions">
+                    <div class="quick-btn" onclick="takePhoto()">📸 拍照识别</div>
+                    <div class="quick-btn" onclick="recordMeal()">🍽️ 记录饮食</div>
+                    <div class="quick-btn" onclick="getNutritionTips()">💡 营养建议</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 用户消息 -->
+        <div class="message user">
+            <div class="message-bubble user">
+                我想拍照识别一下这顿午餐
+            </div>
+            <div class="avatar">
+                <i class="fas fa-user"></i>
+            </div>
+        </div>
+        
+        <!-- AI回复 - 拍照指导 -->
+        <div class="message ai">
+            <div class="avatar ai">
+                <i class="fas fa-robot"></i>
+            </div>
+            <div class="message-bubble ai">
+                太好了！请拍一张清晰的食物照片，我来为你分析：
+                
+                <div class="upload-area" onclick="simulatePhotoUpload()">
+                    <div class="upload-icon">
+                        <i class="fas fa-camera"></i>
+                    </div>
+                    <div class="upload-text">点击拍照或选择照片</div>
+                    <div class="upload-hint">支持 JPG、PNG 格式</div>
+                </div>
+                
+                <div style="background: #fff5f5; border-radius: 8px; padding: 12px; margin-top: 12px; font-size: 14px; color: #d63384;">
+                    📸 <strong>拍照小贴士：</strong><br>
+                    • 确保光线充足，食物清晰可见<br>
+                    • 尽量拍摄整体，包含所有食物<br>
+                    • 避免遮挡，让我能看清每一样食材
+                </div>
+            </div>
+        </div>
+        
+        <!-- 模拟用户上传照片后的AI分析 -->
+        <div class="message user" id="photoMessage" style="display: none;">
+            <div class="message-bubble user">
+                [图片] 这是我的午餐
+            </div>
+            <div class="avatar">
+                <i class="fas fa-user"></i>
+            </div>
+        </div>
+        
+        <!-- AI回复 - 食物识别分析 -->
+        <div class="message ai" id="recognitionMessage" style="display: none;">
+            <div class="avatar ai">
+                <i class="fas fa-robot"></i>
+            </div>
+            <div class="message-bubble ai">
+                太棒了！我识别出了你的午餐，让我来详细分析：
+                
+                <div class="food-recognition-card">
+                    <div class="food-image">
+                        <div class="recognition-badge">AI识别</div>
+                    </div>
+                    
+                    <div class="food-title">
+                        <i class="fas fa-utensils"></i>
+                        识别结果：健康午餐
+                    </div>
+                    
+                    <div style="margin-bottom: 12px;">
+                        <div style="font-weight: bold; margin-bottom: 8px;">🍽️ 食物清单</div>
+                        <div style="font-size: 14px; color: #666;">
+                            • 糙米饭 (约80g)<br>
+                            • 煎鸡胸肉 (约100g)<br>
+                            • 清炒西兰花 (约150g)<br>
+                            • 胡萝卜丝 (约50g)<br>
+                            • 紫菜蛋花汤 (1碗)
+                        </div>
+                    </div>
+                    
+                    <div class="nutrition-info">
+                        <div class="nutrition-item calories">
+                            <div class="nutrition-value">485</div>
+                            <div class="nutrition-label">总热量(大卡)</div>
+                        </div>
+                        <div class="nutrition-item">
+                            <div class="nutrition-value">35g</div>
+                            <div class="nutrition-label">蛋白质</div>
+                        </div>
+                        <div class="nutrition-item">
+                            <div class="nutrition-value">18g</div>
+                            <div class="nutrition-label">碳水化合物</div>
+                        </div>
+                        <div class="nutrition-item">
+                            <div class="nutrition-value">8g</div>
+                            <div class="nutrition-label">脂肪</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="diet-structure-card">
+                    <div class="structure-title">
+                        <i class="fas fa-chart-pie"></i>
+                        211饮食结构分析
+                    </div>
+                    
+                    <div class="plate-visual">
+                        <div class="plate-section section-vegetables"></div>
+                        <div class="plate-section section-protein"></div>
+                        <div class="plate-section section-carbs"></div>
+                    </div>
+                    
+                    <div class="structure-breakdown">
+                        <div class="structure-item vegetables">
+                            <div style="font-weight: bold;">55%</div>
+                            <div>蔬菜</div>
+                        </div>
+                        <div class="structure-item protein">
+                            <div style="font-weight: bold;">25%</div>
+                            <div>蛋白质</div>
+                        </div>
+                        <div class="structure-item carbs">
+                            <div style="font-weight: bold;">20%</div>
+                            <div>主食</div>
+                        </div>
+                    </div>
+                    
+                    <div style="background: rgba(40, 167, 69, 0.1); border-radius: 8px; padding: 12px; margin-top: 12px;">
+                        <div style="color: #28a745; font-weight: bold; margin-bottom: 4px;">✅ 结构评价：优秀</div>
+                        <div style="color: #28a745; font-size: 14px;">
+                            你的午餐完美符合211健康饮食结构！蔬菜丰富，蛋白质充足，主食适量，营养搭配很均衡。
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="suggestion-card">
+                    <div class="suggestion-title">
+                        <i class="fas fa-lightbulb"></i>
+                        个性化建议
+                    </div>
+                    <div class="suggestion-content">
+                        🌟 <strong>这顿午餐很棒！</strong><br>
+                        • 蛋白质含量丰富，有助于肌肉维护<br>
+                        • 蔬菜种类多样，维生素充足<br>
+                        • 烹饪方式健康，油脂控制得当<br><br>
+                        
+                        💡 <strong>小优化建议：</strong><br>
+                        可以添加一点坚果或牛油果，补充优质脂肪酸
+                    </div>
+                </div>
+                
+                <div class="quick-actions">
+                    <div class="quick-btn" onclick="saveRecord()">💾 保存记录</div>
+                    <div class="quick-btn" onclick="adjustPortion()">⚖️ 调整份量</div>
+                    <div class="quick-btn" onclick="similarMeals()">🔍 相似搭配</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 用户询问每日总结 -->
+        <div class="message user">
+            <div class="message-bubble user">
+                能给我看看今天的饮食总结吗？
+            </div>
+            <div class="avatar">
+                <i class="fas fa-user"></i>
+            </div>
+        </div>
+        
+        <!-- AI回复 - 每日饮食总结 -->
+        <div class="message ai">
+            <div class="avatar ai">
+                <i class="fas fa-robot"></i>
+            </div>
+            <div class="message-bubble ai">
+                当然！让我为你总结今天的饮食情况：
+                
+                <div class="daily-summary-card">
+                    <div class="summary-title">
+                        <i class="fas fa-calendar-day"></i>
+                        今日饮食总结 - 12月15日
+                    </div>
+                    
+                    <div class="summary-stats">
+                        <div class="summary-stat">
+                            <div class="stat-value">1,245</div>
+                            <div class="stat-label">总热量(大卡)</div>
+                        </div>
+                        <div class="summary-stat">
+                            <div class="stat-value">92g</div>
+                            <div class="stat-label">蛋白质</div>
+                        </div>
+                        <div class="summary-stat">
+                            <div class="stat-value">28g</div>
+                            <div class="stat-label">脂肪</div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 12px;">
+                        <div style="font-weight: bold; margin-bottom: 8px; color: #7b1fa2;">📊 目标完成度</div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 4px; font-size: 14px; color: #7b1fa2;">
+                            <span>每日热量目标</span>
+                            <span>92% (1245/1350大卡)</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 92%"></div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 12px;">
+                        <div style="font-weight: bold; margin-bottom: 8px; color: #7b1fa2;">🍽️ 用餐记录</div>
+                        <div style="font-size: 14px; color: #7b1fa2;">
+                            ✅ 早餐：燕麦粥+鸡蛋+蓝莓 (300大卡)<br>
+                            ✅ 午餐：糙米饭+鸡胸肉+蔬菜 (485大卡)<br>
+                            ✅ 晚餐：蒸蛋羹+时蔬+紫薯 (320大卡)<br>
+                            ✅ 加餐：苹果+酸奶 (140大卡)
+                        </div>
+                    </div>
+                    
+                    <div style="background: rgba(255, 255, 255, 0.3); border-radius: 8px; padding: 12px;">
+                        <div style="color: #7b1fa2; font-weight: bold; margin-bottom: 4px;">🏆 今日评价：优秀</div>
+                        <div style="color: #7b1fa2; font-size: 14px;">
+                            饮食结构均衡，热量控制合理，营养搭配科学。继续保持！
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="quick-actions">
+                    <div class="quick-btn" onclick="viewWeeklyReport()">📅 周报告</div>
+                    <div class="quick-btn" onclick="tomorrowPlan()">🌅 明日计划</div>
+                    <div class="quick-btn" onclick="shareProgress()">📱 分享进展</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 用户询问营养建议 -->
+        <div class="message user">
+            <div class="message-bubble user">
+                明天的早餐有什么推荐吗？
+            </div>
+            <div class="avatar">
+                <i class="fas fa-user"></i>
+            </div>
+        </div>
+        
+        <!-- AI回复 - 营养建议 -->
+        <div class="message ai">
+            <div class="avatar ai">
+                <i class="fas fa-robot"></i>
+            </div>
+            <div class="message-bubble ai">
+                根据你的饮食偏好和营养需求，我为明天推荐几个健康早餐：
+                
+                <div style="background: white; border-radius: 12px; padding: 16px; margin-top: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                    <div style="color: #28a745; font-weight: bold; margin-bottom: 12px;">
+                        <i class="fas fa-sun"></i>
+                        明日早餐推荐
+                    </div>
+                    
+                    <div style="margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid #f0f0f0;">
+                        <div style="font-weight: bold; margin-bottom: 8px;">🥣 方案一：蛋白燕麦粥</div>
+                        <div style="font-size: 14px; color: #666; margin-bottom: 8px;">
+                            燕麦片(40g) + 牛奶(200ml) + 鸡蛋(1个) + 蓝莓(50g) + 坚果(10g)
+                        </div>
+                        <div style="font-size: 12px; color: #28a745;">
+                            热量：320大卡 | 蛋白质：18g | 纤维：6g
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid #f0f0f0;">
+                        <div style="font-weight: bold; margin-bottom: 8px;">🍳 方案二：蔬菜鸡蛋饼</div>
+                        <div style="font-size: 14px; color: #666; margin-bottom: 8px;">
+                            鸡蛋(2个) + 菠菜(100g) + 胡萝卜丝(50g) + 全麦面粉(30g)
+                        </div>
+                        <div style="font-size: 12px; color: #28a745;">
+                            热量：285大卡 | 蛋白质：20g | 维A丰富
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div style="font-weight: bold; margin-bottom: 8px;">🥑 方案三：牛油果吐司</div>
+                        <div style="font-size: 14px; color: #666; margin-bottom: 8px;">
+                            全麦面包(2片) + 牛油果(半个) + 水煮蛋(1个) + 番茄片
+                        </div>
+                        <div style="font-size: 12px; color: #28a745;">
+                            热量：350大卡 | 蛋白质：16g | 好脂肪丰富
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="background: #e8f5e8; border-radius: 8px; padding: 12px; margin-top: 12px;">
+                    <div style="color: #28a745; font-weight: bold; margin-bottom: 8px;">💡 选择建议</div>
+                    <div style="color: #28a745; font-size: 14px;">
+                        根据你的运动计划，如果明天有晨练，推荐方案一；如果是工作日，方案二更便捷；周末可以尝试方案三。
+                    </div>
+                </div>
+                
+                <div class="quick-actions">
+                    <div class="quick-btn" onclick="setBreakfastReminder()">⏰ 设置提醒</div>
+                    <div class="quick-btn" onclick="addToShoppingList()">🛒 加入购物清单</div>
+                    <div class="quick-btn" onclick="cookingTips()">👩‍🍳 制作教程</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 输入区域 -->
+    <div class="input-area">
+        <div class="input-actions">
+            <button class="action-btn" onclick="simulateVoiceInput()">
+                <i class="fas fa-microphone"></i>
+            </button>
+            <button class="action-btn camera" onclick="simulatePhotoInput()">
+                <i class="fas fa-camera"></i>
+            </button>
+            <button class="action-btn">
+                <i class="fas fa-plus"></i>
+            </button>
+        </div>
+        <input type="text" class="input-field" placeholder="拍照识别食物或询问营养问题..." id="messageInput" onkeypress="handleKeyPress(event)">
+        <button class="send-btn" onclick="sendMessage()">
+            <i class="fas fa-paper-plane"></i>
+        </button>
+    </div>
+    
+    <script>
+        let isTyping = false;
+        
+        // 模拟拍照上传
+        function simulatePhotoUpload() {
+            // 显示用户上传照片的消息
+            document.getElementById('photoMessage').style.display = 'flex';
+            
+            // 延迟显示AI识别结果
+            setTimeout(() => {
+                document.getElementById('recognitionMessage').style.display = 'flex';
+                scrollToBottom();
+            }, 2000);
+            
+            scrollToBottom();
+        }
+        
+        // 快速操作功能
+        function takePhoto() {
+            addUserMessage('我想拍照识别食物');
+            setTimeout(() => {
+                simulateAIResponse('拍照识别');
+            }, 1000);
+        }
+        
+        function recordMeal() {
+            addUserMessage('帮我记录这顿饭的营养信息');
+            setTimeout(() => {
+                simulateAIResponse('记录饮食');
+            }, 1000);
+        }
+        
+        function getNutritionTips() {
+            addUserMessage('给我一些营养搭配的建议');
+            setTimeout(() => {
+                simulateAIResponse('营养建议');
+            }, 1000);
+        }
+        
+        // 处理键盘事件
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+        
+        // 发送消息
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            
+            if (message && !isTyping) {
+                addUserMessage(message);
+                input.value = '';
+                
+                setTimeout(() => {
+                    simulateAIResponse(message);
+                }, 1000);
+            }
+        }
+        
+        // 添加用户消息
+        function addUserMessage(message) {
+            const chatContainer = document.getElementById('chatContainer');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message user';
+            messageDiv.innerHTML = `
+                <div class="message-bubble user">
+                    ${message}
+                </div>
+                <div class="avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+            `;
+            chatContainer.appendChild(messageDiv);
+            scrollToBottom();
+        }
+        
+        // 添加AI消息
+        function addAIMessage(message) {
+            const chatContainer = document.getElementById('chatContainer');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message ai';
+            messageDiv.innerHTML = `
+                <div class="avatar ai">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="message-bubble ai">
+                    ${message}
+                </div>
+            `;
+            chatContainer.appendChild(messageDiv);
+            scrollToBottom();
+        }
+        
+        // 模拟AI回复
+        function simulateAIResponse(userMessage) {
+            isTyping = true;
+            showTypingIndicator();
+            
+            setTimeout(() => {
+                hideTypingIndicator();
+                
+                let response = getAIResponse(userMessage);
+                addAIMessage(response);
+                isTyping = false;
+            }, 2000);
+        }
+        
+        // 获取AI回复内容
+        function getAIResponse(message) {
+            const responses = {
+                '识别': `
+                    我来帮你识别这张照片！请确保照片清晰，我会分析其中的食物和营养成分。
+                    
+                    <div class="upload-area" onclick="simulatePhotoUpload()">
+                        <div class="upload-icon">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                        <div class="upload-text">点击上传照片</div>
+                        <div class="upload-hint">AI即时识别，精准分析</div>
+                    </div>
+                    
+                    <div class="quick-actions">
+                        <div class="quick-btn">📱 相册选择</div>
+                        <div class="quick-btn">📸 立即拍照</div>
+                    </div>
+                `,
+                '营养': `
+                    很好的问题！健康饮食的关键在于营养均衡。让我给你一些专业建议：
+                    
+                    <div class="suggestion-card">
+                        <div class="suggestion-title">
+                            <i class="fas fa-heart"></i>
+                            营养搭配原则
+                        </div>
+                        <div class="suggestion-content">
+                            <strong>1. 211饮食结构</strong><br>
+                            蔬菜50% + 蛋白质25% + 主食25%<br><br>
+                            
+                            <strong>2. 多样化摄入</strong><br>
+                            每天至少5种颜色的蔬果<br><br>
+                            
+                            <strong>3. 适量优质蛋白</strong><br>
+                            鱼肉、鸡肉、蛋类、豆制品轮换
+                        </div>
+                    </div>
+                    
+                    <div class="quick-actions">
+                        <div class="quick-btn">🍽️ 制定菜谱</div>
+                        <div class="quick-btn">🥗 食材推荐</div>
+                        <div class="quick-btn">📚 营养知识</div>
+                    </div>
+                `,
+                default: `
+                    我随时为你提供专业的饮食指导和营养分析！
+                    
+                    <div style="background: #f0f9ff; border-radius: 8px; padding: 12px; margin-top: 8px;">
+                        <div style="color: #1e40af; font-weight: bold; margin-bottom: 8px;">💡 饮食小贴士</div>
+                        <div style="color: #1e40af; font-size: 14px;">
+                            记住：健康饮食不是限制，而是让你感受到更好的自己。我会一直陪伴你的健康之路！
+                        </div>
+                    </div>
+                    
+                    <div class="quick-actions">
+                        <div class="quick-btn">📸 拍照识别</div>
+                        <div class="quick-btn">🍽️ 记录饮食</div>
+                        <div class="quick-btn">💡 获取建议</div>
+                    </div>
+                `
+            };
+            
+            if (message.includes('拍照') || message.includes('识别') || message.includes('照片')) {
+                return responses['识别'];
+            } else if (message.includes('营养') || message.includes('搭配') || message.includes('建议')) {
+                return responses['营养'];
+            } else {
+                return responses['default'];
+            }
+        }
+        
+        // 显示打字指示器
+        function showTypingIndicator() {
+            const chatContainer = document.getElementById('chatContainer');
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message ai';
+            typingDiv.id = 'typingMessage';
+            typingDiv.innerHTML = `
+                <div class="avatar ai">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="message-bubble ai">
+                    <div class="typing-indicator">
+                        文慧正在分析中
+                        <div class="typing-dots">
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            chatContainer.appendChild(typingDiv);
+            scrollToBottom();
+        }
+        
+        // 隐藏打字指示器
+        function hideTypingIndicator() {
+            const typingMessage = document.getElementById('typingMessage');
+            if (typingMessage) {
+                typingMessage.remove();
+            }
+        }
+        
+        // 滚动到底部
+        function scrollToBottom() {
+            const chatContainer = document.getElementById('chatContainer');
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+        
+        // 页面加载完成后自动滚动到底部
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(scrollToBottom, 100);
+        });
+    </script>
+</body>
+</html>

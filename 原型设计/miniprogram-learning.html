@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>营养课程学习</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f7fa;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .container {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 15px;
+        }
+        
+        .course-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .course-thumbnail {
+            width: 60px;
+            height: 60px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        
+        .course-details h1 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .course-details p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .progress-bar {
+            margin-top: 15px;
+            background: rgba(255,255,255,0.2);
+            height: 6px;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: #10b981;
+            width: 65%;
+            transition: width 0.3s ease;
+        }
+        
+        .progress-text {
+            text-align: center;
+            margin-top: 8px;
+            font-size: 12px;
+            opacity: 0.9;
+        }
+        
+        .content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .video-section {
+            background: #000;
+            position: relative;
+            height: 200px;
+        }
+        
+        .video-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #1a1a1a, #2d2d2d);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+        }
+        
+        .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background: rgba(16, 185, 129, 0.9);
+            border-radius: 50%;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .play-button:hover {
+            background: #10b981;
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+        
+        .video-controls {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.7));
+            padding: 15px;
+            color: white;
+        }
+        
+        .video-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .video-duration {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+        
+        .lesson-content {
+            flex: 1;
+            padding: 20px 15px;
+            overflow-y: auto;
+        }
+        
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #e5e7eb;
+            margin-bottom: 20px;
+        }
+        
+        .tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 500;
+            color: #6b7280;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+        
+        .tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .chapter-list {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .chapter-item {
+            padding: 15px;
+            border-bottom: 1px solid #f3f4f6;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .chapter-item:hover {
+            background: #f9fafb;
+        }
+        
+        .chapter-item:last-child {
+            border-bottom: none;
+        }
+        
+        .chapter-item.completed {
+            background: rgba(16, 185, 129, 0.05);
+        }
+        
+        .chapter-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: white;
+        }
+        
+        .chapter-item.completed .chapter-icon {
+            background: #10b981;
+        }
+        
+        .chapter-item .chapter-icon {
+            background: #d1d5db;
+        }
+        
+        .chapter-info {
+            flex: 1;
+        }
+        
+        .chapter-title {
+            font-size: 15px;
+            font-weight: 500;
+            color: #1f2937;
+            margin-bottom: 4px;
+        }
+        
+        .chapter-meta {
+            font-size: 12px;
+            color: #6b7280;
+        }
+        
+        .notes-section {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .notes-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 15px;
+        }
+        
+        .note-item {
+            padding: 12px;
+            background: #f8fafc;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-size: 14px;
+            line-height: 1.5;
+            color: #374151;
+        }
+        
+        .bottom-actions {
+            padding: 15px;
+            background: white;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .action-btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .action-btn.primary {
+            background: #667eea;
+            color: white;
+        }
+        
+        .action-btn.secondary {
+            background: #f3f4f6;
+            color: #374151;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-1px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="course-info">
+                <div class="course-thumbnail">🎓</div>
+                <div class="course-details">
+                    <h1>基础营养学课程</h1>
+                    <p>第3章：蛋白质的作用与摄入</p>
+                </div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+            <div class="progress-text">学习进度 65% (13/20 课时)</div>
+        </div>
+        
+        <div class="content">
+            <div class="video-section">
+                <div class="video-placeholder">
+                    📹 课程视频加载中...
+                </div>
+                <button class="play-button">▶</button>
+                <div class="video-controls">
+                    <div class="video-title">蛋白质在减重中的重要作用</div>
+                    <div class="video-duration">08:32 / 15:20</div>
+                </div>
+            </div>
+            
+            <div class="lesson-content">
+                <div class="tabs">
+                    <div class="tab active" onclick="switchTab('chapters')">课程目录</div>
+                    <div class="tab" onclick="switchTab('notes')">学习笔记</div>
+                    <div class="tab" onclick="switchTab('quiz')">课后测试</div>
+                </div>
+                
+                <div class="tab-content active" id="chapters">
+                    <div class="chapter-list">
+                        <div class="chapter-item completed">
+                            <div class="chapter-icon">✓</div>
+                            <div class="chapter-info">
+                                <div class="chapter-title">1. 蛋白质基础知识</div>
+                                <div class="chapter-meta">已完成 · 12分钟</div>
+                            </div>
+                        </div>
+                        
+                        <div class="chapter-item completed">
+                            <div class="chapter-icon">✓</div>
+                            <div class="chapter-info">
+                                <div class="chapter-title">2. 蛋白质的分类</div>
+                                <div class="chapter-meta">已完成 · 15分钟</div>
+                            </div>
+                        </div>
+                        
+                        <div class="chapter-item" style="background: rgba(102, 126, 234, 0.05);">
+                            <div class="chapter-icon" style="background: #667eea;">▶</div>
+                            <div class="chapter-info">
+                                <div class="chapter-title">3. 蛋白质与减重的关系</div>
+                                <div class="chapter-meta">进行中 · 18分钟</div>
+                            </div>
+                        </div>
+                        
+                        <div class="chapter-item">
+                            <div class="chapter-icon">4</div>
+                            <div class="chapter-info">
+                                <div class="chapter-title">4. 优质蛋白质食物推荐</div>
+                                <div class="chapter-meta">未开始 · 20分钟</div>
+                            </div>
+                        </div>
+                        
+                        <div class="chapter-item">
+                            <div class="chapter-icon">5</div>
+                            <div class="chapter-info">
+                                <div class="chapter-title">5. 蛋白质摄入计算方法</div>
+                                <div class="chapter-meta">未开始 · 16分钟</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="notes">
+                    <div class="notes-section">
+                        <div class="notes-title">📝 我的学习笔记</div>
+                        <div class="note-item">
+                            <strong>重点：</strong>成人每日蛋白质需求量为体重×1.2-1.6g，减重期间应适当增加到1.6-2.0g/kg体重。
+                        </div>
+                        <div class="note-item">
+                            <strong>记忆：</strong>优质蛋白质食物包括鸡蛋、鸡胸肉、鱼类、豆腐等，应该均衡摄入。
+                        </div>
+                        <div class="note-item">
+                            <strong>疑问：</strong>植物蛋白和动物蛋白的区别是什么？哪种更适合减重？
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="quiz">
+                    <div class="notes-section">
+                        <div class="notes-title">📋 课后测试</div>
+                        <div class="note-item">
+                            <strong>题目1：</strong>一个60kg的成年女性，减重期间每日应摄入多少蛋白质？<br>
+                            A. 60-72g  B. 72-96g  C. 96-120g  D. 120-150g
+                        </div>
+                        <div class="note-item">
+                            <strong>题目2：</strong>以下哪种食物的蛋白质含量最高？<br>
+                            A. 鸡蛋  B. 牛奶  C. 鸡胸肉  D. 豆腐
+                        </div>
+                        <div class="note-item" style="background: rgba(16, 185, 129, 0.1); border-left: 4px solid #10b981;">
+                            <strong>提示：</strong>完成当前课程学习后即可参与测试，测试通过可获得学习积分！
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bottom-actions">
+            <button class="action-btn secondary">暂停学习</button>
+            <button class="action-btn primary">下一课时</button>
+        </div>
+    </div>
+    
+    <script>
+        function switchTab(tabName) {
+            // 移除所有active类
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            // 添加active类到当前tab
+            event.target.classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+        }
+    </script>
+</body>
+</html>
