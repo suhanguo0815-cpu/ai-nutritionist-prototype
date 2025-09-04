@@ -6,18 +6,10 @@
       "use": "@vercel/static"
     }
   ],
-  "routes": [
+  "rewrites": [
     {
-      "src": "/AI营养师小程序_V3-1/(.*)",
-      "dest": "/AI营养师小程序_V3-1/$1"
-    },
-    {
-      "src": "/原型设计/(.*)",
-      "dest": "/原型设计/$1"
-    },
-    {
-      "src": "/",
-      "dest": "/原型设计/index-product.html"
+      "source": "/",
+      "destination": "/原型设计/index-product.html"
     }
   ],
   "headers": [
