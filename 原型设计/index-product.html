@@ -5,8 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="AI营养师文慧">
     <meta name="format-detection" content="telephone=no">
+    <meta name="theme-color" content="#C3EB2E">
+    <meta name="msapplication-TileColor" content="#C3EB2E">
+    <meta name="msapplication-navbutton-color" content="#C3EB2E">
     <title>AI营养师文慧 - 90天科学减重，智能陪伴每一天</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -30,29 +34,29 @@
             --shadow-lg: 0 8px 32px rgba(0,0,0,0.08);
             --shadow-xl: 0 12px 48px rgba(0,0,0,0.12);
             
-            /* 字体系统 */
+            /* 字体系统 - 移动端优化 */
             --text-xs: 12px;
             --text-sm: 14px;
             --text-base: 16px;
             --text-lg: 18px;
             --text-xl: 20px;
             --text-2xl: 24px;
-            --text-3xl: 32px;
-            --text-4xl: 40px;
-            --text-5xl: 48px;
+            --text-3xl: 28px;
+            --text-4xl: 32px;
+            --text-5xl: 40px;
             
-            /* 间距系统 */
+            /* 间距系统 - 移动端优化 */
             --spacing-xs: 4px;
             --spacing-sm: 8px;
             --spacing-md: 12px;
             --spacing-lg: 16px;
             --spacing-xl: 20px;
             --spacing-2xl: 24px;
-            --spacing-3xl: 32px;
-            --spacing-4xl: 40px;
-            --spacing-5xl: 48px;
-            --spacing-6xl: 64px;
-            --spacing-8xl: 80px;
+            --spacing-3xl: 28px;
+            --spacing-4xl: 32px;
+            --spacing-5xl: 40px;
+            --spacing-6xl: 48px;
+            --spacing-8xl: 60px;
             
             /* 圆角系统 */
             --radius-sm: 6px;
@@ -61,6 +65,12 @@
             --radius-xl: 16px;
             --radius-2xl: 20px;
             --radius-3xl: 24px;
+            
+            /* 移动端专用变量 */
+            --safe-area-inset-top: env(safe-area-inset-top);
+            --safe-area-inset-bottom: env(safe-area-inset-bottom);
+            --safe-area-inset-left: env(safe-area-inset-left);
+            --safe-area-inset-right: env(safe-area-inset-right);
         }
 
         * {
@@ -83,6 +93,17 @@
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none;
+            /* iPhone 15 优化 */
+            padding-top: var(--safe-area-inset-top);
+            padding-bottom: var(--safe-area-inset-bottom);
+            padding-left: var(--safe-area-inset-left);
+            padding-right: var(--safe-area-inset-right);
+            min-height: 100vh;
+            min-height: -webkit-fill-available;
+        }
+        
+        html {
+            height: -webkit-fill-available;
         }
 
         /* 顶部导航栏 */
@@ -93,9 +114,14 @@
             right: 0;
             z-index: 100;
             background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border-light);
             transition: all 0.3s ease;
+            /* iPhone 15 刘海屏适配 */
+            padding-top: var(--safe-area-inset-top);
+            padding-left: var(--safe-area-inset-left);
+            padding-right: var(--safe-area-inset-right);
         }
 
         .nav-container {
@@ -1945,6 +1971,7 @@
             height: 80px;
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border-top: 1px solid var(--border-light);
             display: flex;
             justify-content: space-around;
@@ -1952,6 +1979,10 @@
             padding: 12px 0 20px;
             z-index: 1000;
             box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+            /* iPhone 15 Home Indicator 适配 */
+            padding-bottom: calc(20px + var(--safe-area-inset-bottom));
+            padding-left: var(--safe-area-inset-left);
+            padding-right: var(--safe-area-inset-right);
         }
 
         .nav-tab {
@@ -2055,6 +2086,90 @@
             color: rgba(255, 255, 255, 0.5);
         }
 
+        /* iPhone 15 专用优化 */
+        @media (max-width: 430px) and (max-height: 932px) {
+            .hero-title {
+                font-size: 28px;
+                line-height: 1.2;
+            }
+            
+            .hero-subtitle {
+                font-size: 16px;
+            }
+            
+            .section-title {
+                font-size: 24px;
+            }
+            
+            .feature-card {
+                padding: 20px;
+            }
+            
+            .feature-icon {
+                width: 48px;
+                height: 48px;
+                font-size: 20px;
+            }
+            
+            .feature-title {
+                font-size: 16px;
+            }
+            
+            .feature-description {
+                font-size: 14px;
+            }
+            
+            .bottom-nav {
+                height: 65px;
+                padding: 6px 0 12px;
+            }
+            
+            .nav-tab {
+                padding: 4px 6px;
+                min-width: 45px;
+            }
+            
+            .nav-tab i {
+                font-size: 16px;
+            }
+            
+            .nav-tab span {
+                font-size: 9px;
+            }
+        }
+
+        /* iPhone 15 特殊样式 */
+        .iphone-15 .hero-container {
+            padding-top: 20px;
+        }
+        
+        .iphone-15 .section {
+            padding: 40px 16px;
+        }
+        
+        .iphone-15 .feature-grid {
+            gap: 16px;
+        }
+        
+        .iphone-15 .feature-card {
+            border-radius: 16px;
+        }
+        
+        .iphone-15 .cta-button {
+            padding: 14px 28px;
+            font-size: 16px;
+        }
+        
+        .iphone-15 .demo-phone {
+            width: 200px;
+            height: 400px;
+        }
+        
+        .iphone-15 .phone-frame {
+            width: 200px;
+            height: 400px;
+        }
+
         /* 响应式设计 */
         @media (max-width: 768px) {
             .nav-menu {
@@ -2063,17 +2178,24 @@
 
             .hero-container {
                 grid-template-columns: 1fr;
-                gap: 40px;
+                gap: 32px;
                 text-align: center;
+                padding: 0 16px;
             }
 
             .hero-title {
-                font-size: 36px;
+                font-size: 32px;
+                line-height: 1.2;
+            }
+            
+            .hero-subtitle {
+                font-size: 18px;
             }
 
             .demo-container {
                 grid-template-columns: 1fr;
-                gap: 40px;
+                gap: 32px;
+                padding: 0 16px;
             }
 
             .demo-phones {
@@ -2106,8 +2228,27 @@
 
             .footer-grid {
                 grid-template-columns: 1fr;
-                gap: 40px;
+                gap: 32px;
+                padding: 0 16px;
             }
+            
+            /* 通用移动端优化 */
+            .container {
+                padding: 0 16px;
+            }
+            
+            .section-header {
+                margin-bottom: 48px;
+            }
+            
+            .section-title {
+                font-size: 28px;
+            }
+            
+            .section-description {
+                font-size: 16px;
+            }
+        }
 
             /* 内嵌演示区域响应式 */
             .embedded-demo-section {
@@ -3607,11 +3748,31 @@
             return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
         }
 
+        // iPhone 15 检测
+        function isIPhone15() {
+            const userAgent = navigator.userAgent;
+            const isIOS = /iPhone|iPad|iPod/.test(userAgent);
+            const screenWidth = window.screen.width;
+            const screenHeight = window.screen.height;
+            
+            // iPhone 15 的屏幕尺寸
+            return isIOS && (
+                (screenWidth === 393 && screenHeight === 852) || // iPhone 15
+                (screenWidth === 430 && screenHeight === 932) || // iPhone 15 Plus
+                window.innerWidth <= 430
+            );
+        }
+
         // 移动端加载优化
         function optimizeForMobile() {
             if (isMobile()) {
                 // 添加移动端类名
                 document.body.classList.add('mobile-device');
+                
+                // iPhone 15 特殊优化
+                if (isIPhone15()) {
+                    document.body.classList.add('iphone-15');
+                }
                 
                 // 优化触摸事件
                 document.addEventListener('touchstart', function() {}, {passive: true});
@@ -3626,6 +3787,19 @@
                     }
                     lastTouchEnd = now;
                 }, false);
+                
+                // 优化滚动性能
+                document.addEventListener('touchmove', function(e) {
+                    e.preventDefault();
+                }, { passive: false });
+                
+                // 防止橡皮筋效果
+                document.body.addEventListener('touchmove', function(e) {
+                    if (e.target.closest('.scrollable')) {
+                        return;
+                    }
+                    e.preventDefault();
+                }, { passive: false });
             }
         }
 
