@@ -732,12 +732,12 @@
         /* 交互式功能展示区域样式 */
         .interactive-features-container {
             display: grid;
-            grid-template-columns: 1fr 1.2fr 1fr;
+            grid-template-columns: 0.8fr 1.2fr;
             gap: var(--space-6);
             margin-top: var(--space-24);
             background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
             border-radius: var(--radius-3xl);
-            padding: var(--space-16);
+            padding: var(--space-12);
             border: 1px solid rgba(226, 232, 240, 0.5);
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
         }
@@ -856,7 +856,7 @@
         .demo-display-area {
             background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
             border-radius: var(--radius-xl);
-            padding: var(--space-6);
+            padding: var(--space-4);
             border: 1px solid rgba(203, 213, 225, 0.5);
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
             transition: all 0.3s ease;
@@ -866,9 +866,9 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: var(--space-6);
+            margin-bottom: var(--space-4);
             flex-wrap: wrap;
-            gap: var(--space-4);
+            gap: var(--space-3);
         }
 
         .demo-title-section h3 {
@@ -930,54 +930,96 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-bottom: var(--space-6);
-            padding: var(--space-12);
+            margin-bottom: var(--space-4);
+            padding: var(--space-6);
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.95) 100%);
             border-radius: var(--radius-2xl);
             border: 1px solid rgba(226, 232, 240, 0.3);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
-            min-height: 500px;
+            min-height: 400px;
         }
 
         /* 平台切换器样式 */
         .platform-switcher {
             display: flex;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: var(--radius-lg);
-            padding: 4px;
-            border: 1px solid rgba(226, 232, 240, 0.5);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: var(--radius-xl);
+            padding: 6px;
+            border: 1px solid rgba(124, 179, 66, 0.2);
+            box-shadow: 0 4px 12px rgba(124, 179, 66, 0.1);
+            backdrop-filter: blur(10px);
         }
 
         .platform-btn {
             display: flex;
             align-items: center;
-            gap: var(--space-1);
-            padding: var(--space-2) var(--space-3);
+            gap: var(--space-2);
+            padding: var(--space-3) var(--space-4);
             border: none;
             background: transparent;
-            border-radius: var(--radius-md);
+            border-radius: var(--radius-lg);
             font-size: var(--text-sm);
             font-weight: 500;
             color: #64748b;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
             white-space: nowrap;
+            position: relative;
+            overflow: hidden;
         }
 
         .platform-btn:hover {
-            background: rgba(99, 102, 241, 0.1);
-            color: #4f46e5;
+            background: rgba(124, 179, 66, 0.1);
+            color: var(--primary-color);
         }
 
         .platform-btn.active {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
             color: white;
-            box-shadow: 0 2px 4px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 4px 12px rgba(124, 179, 66, 0.4);
+            transform: translateY(-1px);
         }
 
         .platform-btn.active span {
             font-weight: 600;
+        }
+
+        .platform-btn.active i {
+            color: white;
+        }
+
+        /* 平台切换提示样式 */
+        .platform-switch-hint {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: var(--space-3) var(--space-4);
+            border-radius: var(--radius-lg);
+            font-size: var(--text-sm);
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(124, 179, 66, 0.3);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            animation: slideInRight 0.3s ease;
+        }
+
+        .platform-switch-hint i {
+            font-size: var(--text-base);
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
         }
 
         /* 推荐平台按钮特殊样式 */
@@ -1053,11 +1095,11 @@
         }
 
         .phone-frame {
-            width: 260px;
-            height: 520px;
+            width: 320px;
+            height: 640px;
             background: linear-gradient(145deg, #2d3748 0%, #1a202c 100%);
-            border-radius: 28px;
-            padding: 8px;
+            border-radius: 32px;
+            padding: 10px;
             box-shadow: 
                 0 0 0 1px rgba(124, 179, 66, 0.3),
                 0 12px 40px rgba(0, 0, 0, 0.15),
@@ -1089,9 +1131,9 @@
 
         .phone-status-bar {
             position: absolute;
-            top: 8px;
-            left: 8px;
-            right: 8px;
+            top: 10px;
+            left: 10px;
+            right: 10px;
             height: 36px;
             background: var(--secondary-color);
             color: white;
@@ -1101,8 +1143,8 @@
             padding: 0 var(--space-4);
             font-size: var(--text-sm);
             font-weight: 600;
-            border-top-left-radius: 22px;
-            border-top-right-radius: 22px;
+            border-top-left-radius: 24px;
+            border-top-right-radius: 24px;
             z-index: 5;
         }
 
@@ -1113,13 +1155,13 @@
 
         .phone-content {
             position: absolute;
-            top: 44px;
-            left: 8px;
-            right: 8px;
-            bottom: 8px;
+            top: 46px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
             background: #fff;
-            border-bottom-left-radius: 22px;
-            border-bottom-right-radius: 22px;
+            border-bottom-left-radius: 24px;
+            border-bottom-right-radius: 24px;
             overflow: hidden;
         }
 
@@ -1132,12 +1174,12 @@
         .demo-context {
             background: rgba(255, 255, 255, 0.05);
             border-radius: var(--radius-lg);
-            padding: var(--space-5);
+            padding: var(--space-3);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .context-info {
-            margin-bottom: var(--space-4);
+            margin-bottom: var(--space-2);
         }
 
         .context-info p {
@@ -1278,8 +1320,8 @@
             
             .interactive-features-container {
                 grid-template-columns: 1fr;
-                gap: var(--space-12);
-                padding: var(--space-12);
+                gap: var(--space-8);
+                padding: var(--space-8);
             }
 
             .features-left,
@@ -1293,8 +1335,8 @@
             }
 
             .single-demo-viewport {
-                padding: var(--space-6);
-                min-height: 400px;
+                padding: var(--space-4);
+                min-height: 350px;
             }
 
             .platform-switcher {
@@ -2493,6 +2535,36 @@
         ::-webkit-scrollbar-thumb:hover {
             background: var(--primary-dark);
         }
+
+        /* 核心功能展示图片样式 - 在features-section内部 */
+        .core-functions-image-container {
+            margin: var(--space-8) 0;
+            text-align: center;
+        }
+
+        .core-functions-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .core-functions-image:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.15);
+        }
+
+        /* 移动端响应式 */
+        @media (max-width: 768px) {
+            .core-functions-image-container {
+                margin: var(--space-6) 0;
+            }
+
+            .core-functions-image {
+                border-radius: 12px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -2525,7 +2597,7 @@
                     <i class="fab fa-weixin"></i>
                     微信直接使用 · 无需下载APP
                 </div>
-                <h1 class="hero-title">有个AI营养师朋友，减重不再孤单</h1>
+                <h1 class="hero-title">有个AI营养师朋友<br>减重不再孤单</h1>
                 <p class="hero-subtitle">
                     就像身边有个专业又贴心的营养师朋友，<strong style="color: var(--primary-color);">直接在微信里聊天</strong>，无需下载任何APP。拍照识别食物，智能推荐运动，记录每天进步，让减重变得轻松有趣。
                 </p>
@@ -2576,6 +2648,13 @@
                 </p>
             </div>
             
+            <!-- 核心功能展示图片 -->
+            <div class="core-functions-image-container">
+                <img src="https://cdn.gamma.app/zmujvs6k4gen9mt/generated-images/siqju0y1ISMvfbyxQW8Aq.png" 
+                     alt="核心功能展示 - 贴心陪伴减重全流程" 
+                     class="core-functions-image">
+            </div>
+            
             <!-- 交互式功能展示区域 -->
             <div class="interactive-features-container">
                 <!-- 左侧：功能分类 -->
@@ -2590,21 +2669,21 @@
                                 <span class="feature-dot"></span>
                                 <div class="feature-content">
                                     <strong>24小时答疑解惑</strong>
-                                    <p>微信随问随答，饮食运动问题即时解决</p>
-                    </div>
-                    </div>
+                                    <p>微信随问随答</p>
+                                </div>
+                            </div>
                             <div class="feature-item" onclick="showInteractiveDemo('daily-checkin', this)">
                                 <span class="feature-dot"></span>
                                 <div class="feature-content">
                                     <strong>饮食运动打卡</strong>
-                                    <p>拍照记录三餐，运动轨迹自动识别</p>
+                                    <p>拍照记录三餐</p>
                                 </div>
                             </div>
                             <div class="feature-item" onclick="showInteractiveDemo('emotional-support', this)">
                                 <span class="feature-dot"></span>
                                 <div class="feature-content">
                                     <strong>情绪关怀陪伴</strong>
-                                    <p>减重路上的心理支持，鼓励坚持不放弃</p>
+                                    <p>心理支持陪伴</p>
                                 </div>
                             </div>
                         </div>
@@ -2620,35 +2699,95 @@
                                 <span class="feature-dot"></span>
                                 <div class="feature-content">
                                     <strong>智能设备互联监测</strong>
-                                    <p>血糖、心率、体温等多设备实时数据同步</p>
-                    </div>
-                    </div>
+                                    <p>多设备实时数据同步</p>
+                                </div>
+                            </div>
                             <div class="feature-item" onclick="showInteractiveDemo('risk-detection', this)">
                                 <span class="feature-dot"></span>
                                 <div class="feature-content">
                                     <strong>健康风险预警</strong>
-                                    <p>AI分析血糖心率异常，提前预警干预</p>
+                                    <p>AI分析异常，提前预警</p>
                                 </div>
                             </div>
                             <div class="feature-item" onclick="showInteractiveDemo('progress-analysis', this)">
                                 <span class="feature-dot"></span>
                                 <div class="feature-content">
                                     <strong>综合健康分析</strong>
-                                    <p>多维生理指标趋势分析，科学减重指导</p>
+                                    <p>多维指标趋势分析</p>
                                 </div>
                             </div>
                         </div>
                 </div>
 
+                    <div class="feature-category">
+                        <h3 class="category-title">
+                            <i class="fas fa-magic"></i>
+                            智能干预与调整
+                        </h3>
+                        <div class="feature-items">
+                            <div class="feature-item" onclick="showInteractiveDemo('dynamic-adjustment', this)">
+                                <span class="feature-dot"></span>
+                                <div class="feature-content">
+                                    <strong>方案动态调整</strong>
+                                    <p>按日复盘，自动微调</p>
+                                </div>
+                            </div>
+                            <div class="feature-item" onclick="showInteractiveDemo('early-warning', this)">
+                                <span class="feature-dot"></span>
+                                <div class="feature-content">
+                                    <strong>异常预警干预</strong>
+                                    <p>连续不打卡主动提醒</p>
+                                </div>
+                            </div>
+                            <div class="feature-item" onclick="showInteractiveDemo('personalized-guidance', this)">
+                                <span class="feature-dot"></span>
+                                <div class="feature-content">
+                                    <strong>个性化指导</strong>
+                                    <p>定制专属减重方案</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="feature-category">
+                        <h3 class="category-title">
+                            <i class="fas fa-graduation-cap"></i>
+                            营养课程与激励
+                        </h3>
+                        <div class="feature-items">
+                            <div class="feature-item" onclick="showInteractiveDemo('nutrition-courses', this)">
+                                <span class="feature-dot"></span>
+                                <div class="feature-content">
+                                    <strong>系统化营养课程</strong>
+                                    <p>专业减重知识</p>
+                                </div>
+                            </div>
+                            <div class="feature-item" onclick="showInteractiveDemo('study-checkin', this)">
+                                <span class="feature-dot"></span>
+                                <div class="feature-content">
+                                    <strong>学习打卡激励</strong>
+                                    <p>每日学习打卡</p>
+                                </div>
+                            </div>
+                            <div class="feature-item" onclick="showInteractiveDemo('rewards-system', this)">
+                                <span class="feature-dot"></span>
+                                <div class="feature-content">
+                                    <strong>积分兑换商城</strong>
+                                    <p>积分兑换奖励</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
 
-                <!-- 中间：演示区域 -->
+                <!-- 右侧：演示区域 -->
                 <div class="demo-display-area">
                     <div class="demo-header">
                         <div class="demo-title-section">
                             <h3 id="interactive-demo-title">24小时答疑解惑</h3>
                             <p id="interactive-demo-subtitle">智能AI减重助手演示</p>
-                </div>
+                        </div>
 
                         <!-- 平台切换按钮 -->
                         <div class="platform-switcher">
@@ -2660,8 +2799,8 @@
                                 <i class="fas fa-mobile-alt"></i>
                                 <span>小程序</span>
                             </button>
-                            </div>
-                </div>
+                        </div>
+                    </div>
 
                     <div class="single-demo-viewport">
                         <!-- 单一演示平台 -->
@@ -2678,7 +2817,7 @@
                                         </div>
                                     </div>
                                     <div class="phone-content">
-                                        <iframe src="wechat-ai-chat.html" id="demo-iframe" 
+                                        <iframe src="./wechat-ai-chat.html" id="demo-iframe" 
                                                 frameborder="0" scrolling="no"></iframe>
                                     </div>
                                 </div>
@@ -2705,68 +2844,6 @@
                 </div>
                                         </div>
 
-                <!-- 右侧：功能分类 -->
-                <div class="features-right">
-                    <div class="feature-category">
-                        <h3 class="category-title">
-                            <i class="fas fa-magic"></i>
-                            智能干预与调整
-                        </h3>
-                        <div class="feature-items">
-                            <div class="feature-item" onclick="showInteractiveDemo('dynamic-adjustment', this)">
-                                <span class="feature-dot"></span>
-                                <div class="feature-content">
-                                    <strong>方案动态调整</strong>
-                                    <p>按日复盘，自动微调餐单运动计划</p>
-                                            </div>
-                                        </div>
-                            <div class="feature-item" onclick="showInteractiveDemo('early-warning', this)">
-                                <span class="feature-dot"></span>
-                                <div class="feature-content">
-                                    <strong>异常预警干预</strong>
-                                    <p>连续不打卡、体重停滞等主动提醒</p>
-                                    </div>
-                                </div>
-                            <div class="feature-item" onclick="showInteractiveDemo('personalized-guidance', this)">
-                                <span class="feature-dot"></span>
-                                <div class="feature-content">
-                                    <strong>个性化指导</strong>
-                                    <p>基于个人档案，定制专属减重方案</p>
-                                            </div>
-                                        </div>
-                                            </div>
-                                        </div>
-
-                    <div class="feature-category">
-                        <h3 class="category-title">
-                            <i class="fas fa-graduation-cap"></i>
-                            营养课程与激励
-                        </h3>
-                        <div class="feature-items">
-                            <div class="feature-item" onclick="showInteractiveDemo('nutrition-courses', this)">
-                                <span class="feature-dot"></span>
-                                <div class="feature-content">
-                                    <strong>系统化营养课程</strong>
-                                    <p>专业减重知识，分阶段深度学习</p>
-                                    </div>
-                                </div>
-                            <div class="feature-item" onclick="showInteractiveDemo('study-checkin', this)">
-                                <span class="feature-dot"></span>
-                                <div class="feature-content">
-                                    <strong>学习打卡激励</strong>
-                                    <p>每日学习打卡，获得荣誉徽章积分</p>
-                                            </div>
-                                        </div>
-                            <div class="feature-item" onclick="showInteractiveDemo('rewards-system', this)">
-                                <span class="feature-dot"></span>
-                                <div class="feature-content">
-                                    <strong>积分兑换商城</strong>
-                                    <p>积分兑换奖励，持续学习动力</p>
-                                            </div>
-                                        </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
@@ -3672,17 +3749,8 @@
 
         // 同时加载双端演示内容
         function loadDualDemoContent() {
-            const demoData = interactiveDemoMap[currentInteractiveFeature];
-            const wechatIframe = document.getElementById('wechat-demo-iframe');
-            const miniprogramIframe = document.getElementById('miniprogram-demo-iframe');
-            
-            if (wechatIframe && demoData.wechatSrc) {
-                wechatIframe.src = demoData.wechatSrc;
-            }
-            
-            if (miniprogramIframe && demoData.miniprogramSrc) {
-                miniprogramIframe.src = demoData.miniprogramSrc;
-            }
+            // 初始化单端演示内容
+            updateDemoContent();
         }
 
 
@@ -3690,14 +3758,38 @@
         let currentPlatform = 'wechat';
         let currentFeature = 'daily-companion';
 
+        // 获取功能对应的正确平台
+        function getCorrectPlatformForFeature(feature) {
+            const platformMap = {
+                'daily-companion': 'wechat',      // 24小时答疑解惑 - 微信端
+                'daily-checkin': 'wechat',        // 饮食运动打卡 - 微信端
+                'emotional-support': 'wechat',    // 情绪关怀陪伴 - 微信端
+                'health-monitoring': 'miniprogram', // 智能设备互联监测 - 小程序端
+                'nutrition-courses': 'miniprogram', // 系统化营养课程 - 小程序端
+                'study-checkin': 'miniprogram'    // 学习打卡激励 - 小程序端
+            };
+            return platformMap[feature] || 'wechat';
+        }
+
         function switchPlatform(platform) {
-            currentPlatform = platform;
+            // 根据当前功能确定正确的平台
+            const correctPlatform = getCorrectPlatformForFeature(currentFeature);
+            
+            // 如果用户点击的平台不是该功能对应的正确平台，则切换到正确平台并给出提示
+            if (platform !== correctPlatform) {
+                currentPlatform = correctPlatform;
+                
+                // 显示提示信息
+                showPlatformSwitchHint(correctPlatform);
+            } else {
+                currentPlatform = platform;
+            }
             
             // 更新按钮状态
             document.querySelectorAll('.platform-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
-            document.querySelector(`[data-platform="${platform}"]`).classList.add('active');
+            document.querySelector(`[data-platform="${currentPlatform}"]`).classList.add('active');
             
             // 切换iframe内容
             updateDemoContent();
@@ -3715,7 +3807,47 @@
             }
             
             // 更新平台切换提示
-            updatePlatformSwitchHint(platform);
+            updatePlatformSwitchHint(currentPlatform);
+        }
+
+        // 显示平台切换提示
+        function showPlatformSwitchHint(correctPlatform) {
+            const platformName = correctPlatform === 'wechat' ? '微信端' : '小程序';
+            const featureName = getFeatureDisplayName(currentFeature);
+            
+            // 创建提示元素
+            const hint = document.createElement('div');
+            hint.className = 'platform-switch-hint';
+            hint.innerHTML = `
+                <i class="fas fa-info-circle"></i>
+                <span>${featureName}功能仅在${platformName}提供，已自动切换</span>
+            `;
+            
+            // 添加到页面
+            const demoArea = document.querySelector('.demo-display-area');
+            if (demoArea) {
+                demoArea.appendChild(hint);
+                
+                // 3秒后自动移除
+                setTimeout(() => {
+                    if (hint.parentNode) {
+                        hint.parentNode.removeChild(hint);
+                    }
+                }, 3000);
+            }
+        }
+
+        // 获取功能显示名称
+        function getFeatureDisplayName(feature) {
+            const nameMap = {
+                'daily-companion': '24小时答疑解惑',
+                'daily-checkin': '饮食运动打卡',
+                'emotional-support': '情绪关怀陪伴',
+                'health-monitoring': '智能设备互联监测',
+                'nutrition-courses': '系统化营养课程',
+                'study-checkin': '学习打卡激励'
+            };
+            return nameMap[feature] || feature;
         }
 
         // 更新平台切换提示
@@ -3731,17 +3863,11 @@
                 btn.classList.remove('recommended');
             });
             
-            // 更新按钮文本，显示是否为推荐平台
+            // 更新按钮文本，不显示推荐标识
             const activeBtn = document.querySelector(`[data-platform="${platform}"]`);
             if (activeBtn) {
                 const icon = platform === 'wechat' ? 'fab fa-weixin' : 'fas fa-mobile-alt';
-                const recommendText = isPreferred ? ' (推荐)' : '';
-                activeBtn.innerHTML = `<i class="${icon}"></i><span>${platformName}${recommendText}</span>`;
-                
-                // 添加推荐状态样式
-                if (isPreferred) {
-                    activeBtn.classList.add('recommended');
-                }
+                activeBtn.innerHTML = `<i class="${icon}"></i><span>${platformName}</span>`;
             }
             
             // 更新非激活按钮
@@ -3757,37 +3883,37 @@
             const iframe = document.getElementById('demo-iframe');
             if (!iframe) return;
             
-            // 构建演示页面映射
+            // 构建演示页面映射 - 每个功能对应唯一页面
             const demoMap = {
                 'daily-companion': {
-                    wechat: 'wechat-ai-chat.html',
-                    miniprogram: '../小程序一级页面展示.html'
+                    wechat: './wechat-ai-chat.html',
+                    miniprogram: './wechat-ai-chat.html'  // 日常陪伴只跳转微信页面
                 },
                 'daily-checkin': {
-                    wechat: 'wechat-photo-checkin.html',
-                    miniprogram: '../小程序一级页面展示.html'
+                    wechat: './wechat-photo-checkin.html',
+                    miniprogram: './wechat-photo-checkin.html'  // 饮食打卡只跳转微信页面
                 },
                 'emotional-support': {
-                    wechat: 'wechat-emotional-care.html',
-                    miniprogram: '../小程序一级页面展示.html'
+                    wechat: './wechat-emotional-care.html',
+                    miniprogram: './wechat-emotional-care.html'  // 情绪关怀只跳转微信页面
                 },
                 'health-monitoring': {
-                    wechat: 'wechat-health-monitoring.html',
-                    miniprogram: '../小程序一级页面展示.html'
+                    wechat: './miniprogram-progress.html',
+                    miniprogram: './miniprogram-progress.html'  // 健康监测只跳转小程序页面
                 },
                 'nutrition-courses': {
-                    wechat: 'demo-placeholder.html',
-                    miniprogram: '../小程序一级页面展示.html'
+                    wechat: './miniprogram-learning.html',
+                    miniprogram: './miniprogram-learning.html'  // 营养课程只跳转小程序页面
                 },
                 'study-checkin': {
-                    wechat: 'demo-placeholder.html',
-                    miniprogram: '../小程序一级页面展示.html'
+                    wechat: './miniprogram-badges.html',
+                    miniprogram: './miniprogram-badges.html'  // 学习激励只跳转小程序页面
                 }
             };
             
             const defaultDemo = {
-                wechat: 'wechat-ai-chat.html',
-                miniprogram: '../小程序一级页面展示.html'
+                wechat: './wechat-ai-chat.html',
+                miniprogram: './wechat-ai-chat.html'  // 默认也显示微信页面
             };
             
             const demoSrc = (demoMap[currentFeature] && demoMap[currentFeature][currentPlatform]) 
@@ -3795,12 +3921,23 @@
                           || 'demo-placeholder.html';
             
             iframe.src = demoSrc;
+            console.log('Loading iframe with src:', demoSrc);
         }
 
         // 功能演示切换
         function showInteractiveDemo(featureKey, element) {
             // 更新当前功能
             currentFeature = featureKey;
+            
+            // 自动切换到该功能对应的正确平台
+            const correctPlatform = getCorrectPlatformForFeature(featureKey);
+            currentPlatform = correctPlatform;
+            
+            // 更新平台按钮状态
+            document.querySelectorAll('.platform-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-platform="${correctPlatform}"]`).classList.add('active');
             
             // 移除所有激活状态
             document.querySelectorAll('.feature-item').forEach(item => {
